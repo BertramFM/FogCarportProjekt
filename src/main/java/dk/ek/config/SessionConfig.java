@@ -1,4 +1,4 @@
-package app.config;
+package dk.ek.config;
 
 import jakarta.servlet.SessionTrackingMode;
 import org.eclipse.jetty.server.session.SessionHandler;

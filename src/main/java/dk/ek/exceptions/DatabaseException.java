@@ -1,4 +1,4 @@
-package app.exceptions;
+package dk.ek.exceptions;
 
 public class DatabaseException extends Exception {
     public DatabaseException(String userMessage) {

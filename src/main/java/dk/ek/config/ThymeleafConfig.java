@@ -1,4 +1,4 @@
-package app.config;
+package dk.ek.config;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
