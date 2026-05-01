@@ -1,4 +1,4 @@
-package app.services;
+package dk.ek.services;
 
 public class Validator {
     public static String validateUser(String email, String password) {
