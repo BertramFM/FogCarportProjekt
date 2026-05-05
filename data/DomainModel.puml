@@ -1,0 +1,26 @@
+@startuml
+'https://plantuml.com/deployment-diagram
+
+title Brugerroller
+
+card Kunde #lightgreen
+card Sælger #violet
+card Forespørgsel #yellow
+card Konfiguration #lightblue
+card Administrator #orange
+card Tilbud #lightgreen
+card Stykliste #lightgray
+card Ordre #lightblue
+card Betaling #lightgreen
+
+Sælger --> Konfiguration : justerer
+Sælger --> Kunde : behandler
+Kunde --> Forespørgsel : opretter
+Forespørgsel --> Konfiguration : indeholder
+Konfiguration --> Tilbud : danner
+Tilbud --> Stykliste : indeholder
+Tilbud --> Ordre : godkendes til
+Administrator -[dashed]-> Ordre : overvåger
+Ordre --> Betaling : udløser
+Betaling -[dashed]-> Stykliste : frigiver
+@enduml
