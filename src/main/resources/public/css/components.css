@@ -1,0 +1,28 @@
+navbar-adverts {
+    position: relative;
+    height: 30px;
+    width: 100%;
+    overflow: hidden;
+}
+
+adverts-container {
+    display: grid;
+    margin: auto;
+    justify-content: center;
+    height: 100%;
+}
+
+adverts-item {
+    display: grid;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+}
+
+adverts-item a {
+    cursor: pointer;
+    background-image: linear-gradient(transparent calc(100% - 1px), var(--navbar-advert-text) 1px);
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+    transition: color 0.2s, background-size .2s cubic-bezier(0.35, 0, 0.15, 1);
+}

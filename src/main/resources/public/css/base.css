@@ -1,4 +1,8 @@
 :root {
+    --white: rgb(255,255,255);
+    --black: rgb(0,0,0);
+    --navbar-advert-text: rgb(2,37,70);
+    --fog-blue: rgb(1,61,122);
 
 }
 
@@ -7,5 +11,7 @@
 }
 
 body {
-
+    font-family: Dinpro, helvetica, arial, sans-serif;
+    margin: 0;
+    height: 100vh;
 }
