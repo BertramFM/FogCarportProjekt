@@ -1,0 +1,74 @@
+@startuml
+'https://plantuml.com/state-diagram
+
+state start <<start>>
+
+
+start --> KUNDE
+
+state KUNDE {
+  state "Vælg carport mål" as carportMål
+  state "Vælg skur mål" as skurMål
+  state "Indsend forespørgsel" as send
+  state "SKUR"
+
+  carportMål --> SKUR
+  SKUR --> skurMål : JA
+  SKUR --> send : NEJ
+  skurMål --> send
+
+  state "Carport tilbud" as resolved
+  state end <<end>>
+
+  resolved --> end
+}
+
+send --> ask
+
+state SHOP {
+    state "Forespørgsel" as ask
+}
+
+ask --> sendTo
+
+state MAIL {
+    state "Send til sælger" as sendTo
+
+    state "Send tilbud" as sendDis
+
+    sendDis --> resolved
+
+}
+
+sendTo --> mail
+
+state SÆLGER {
+    state "Mail til sælger" as mail
+    state "RABAT" as discount
+
+    state "Materiale liste" as materialList
+    state "Ring til kunde" as callCustomer
+
+    materialList --> callCustomer
+    callCustomer --> sendDis
+}
+
+mail --> write
+discount --> newPrice : JA
+
+state TILBUDSBEREGNER {
+    state "Indtast forespørgsel" as write
+    state "Indtast ny pris" as newPrice
+}
+
+write -> discount
+newPrice --> material
+discount --> material : NEJ
+
+state MATERIALEBEREGNER {
+    state "Indtast forespørgsel" as material
+}
+
+material --> materialList
+
+@enduml
