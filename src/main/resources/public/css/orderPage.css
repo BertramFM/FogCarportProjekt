@@ -4,6 +4,7 @@
     --clr-border: #c4ccd4;
     --clr-red: #c0392b;
     --clr-blue: #014a8d;
+    --background: #e7edec
 }
 
 * {
@@ -39,8 +40,8 @@ body {
 }
 
 .headline {
-    padding-bottom: 30px;
-    font-size: 35px;
+    padding-bottom: 75px;
+    font-size: 43px;
     font-weight: 700;
 }
 
@@ -54,12 +55,12 @@ body {
 
 .form-background {
     background-color: #cfdad8;
-    padding: 20px;
+    padding: 20px 50px;
 }
 
 .form-background h2 {
-    font-size: 30px;
-    margin-bottom: 25px;
+    font-size: 40px;
+    margin: 0 0 55px;
 }
 
 label {
@@ -71,14 +72,35 @@ label {
 
 select {
     width: 100%;
+    padding: 5px 25px;
+    height: 60px;
+    font-family: var(--font-fam);
+    font-size: 20px;
+    background: var(--background);
+    border: 1px solid var(--clr-border);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+select:has(option[value=""]:checked) {
+    color: #999;
+}
+
+select:hover {
+    outline: 2px solid var(--clr-border);
+}
+
+.notes {
+    width: 100%;
     padding: 15px;
     font-family: var(--font-fam);
     font-size: 20px;
-    background: #e7edec;
-    border: 1px solid var(--clr-border);
+    background: var(--background);
+    resize: vertical;
+    min-height: 120px;
     border-radius: 3px;
-    appearance: none;
-    cursor: pointer;
+    border: none;
+    max-height: 500px;
 }
 
 input {
@@ -87,11 +109,44 @@ input {
     margin-bottom: 10px;
     font-family: var(--font-fam);
     font-size: 20px;
-    background: #e7edec;
+    background: var(--background);
     border: 1px solid var(--clr-border);
     border-radius: 3px;
     appearance: none;
     cursor: pointer;
+}
+
+.consent {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    padding-top: 20px;
+    gap: 20px;
+    width: 100%;
+    font-size: 30px;
+    margin-bottom: 30px;
+
+}
+
+.consent input {
+    cursor: pointer;
+    border-radius: 5px;
+    appearance: checkbox;
+    transform: scale(3);
+    margin-top: 15px;
+    width: 25px;
+    cursor: pointer;
+}
+
+
+.consent p {
+    font-size: 25px;
+}
+
+.privacy-link {
+    font-size: 25px;
+    color: var(--clr-blue);
+    text-decoration: underline;
 }
 
 .submit-btn {
@@ -101,35 +156,16 @@ input {
     color: white;
     font-family: var(--font-fam);
     font-weight: bold;
-    font-size: 16px;
+    font-size: 25px;
     padding: 24px 50px;
     border: none;
     border-radius: 3px;
     cursor: pointer;
-    margin-top: 50px;
+    margin: 100px 0 75px;
 }
 
-.consent {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: row;
-    padding-top: 20px;
-    gap: 20px;
-    width: 20px;
-    font-size: 30px;
-    cursor: pointer;
-    margin-bottom: 30px;
-}
-
-.consent p {
-    font-size: 25px;
-    min-width: 700px;
-    width: auto;
-
-}
-
-.privacy-link {
-    font-size: 25px;
+.submit-btn:hover {
+    opacity: 85%;
 }
 
 @media (min-width: 1024px) {
@@ -161,18 +197,53 @@ input {
     }
 
     .form-background h2 {
-        font-size: 40px;
+        font-size: 25px;
     }
 
-    form h2 {
-        font-size: 22px;
+    form label {
+        font-size: 18px;
     }
 
     select {
-        font-size: 20px;
+        font-size: 14px;
+        padding: 5px;
+        height: 40px;
     }
 
     .consent {
         font-size: 14px;
+    }
+
+    .consent input {
+        width: 15px;
+        transform: scale(1.5);
+        margin-top: 5px;
+    }
+
+    .consent p {
+        font-size: 14px;
+        min-width: 350px;
+    }
+
+    input {
+        font-size: 14px;
+    }
+
+    .notes {
+        font-size: 14px;
+    }
+
+    label {
+        font-size: 16px;
+    }
+
+    .privacy-link {
+        font-size: 16px;
+    }
+
+    .submit-btn {
+        font-size: 18px;
+        padding: 10px 20px;
+        margin: 60px 0 0;
     }
 }
