@@ -42,32 +42,38 @@
     <div class="form-background">
         <h2>Carport med fladt tag</h2>
         <form>
-            <label>Tagtype</label>
-            <select>
+            <label>Tagtype *</label>
+            <select required>
+                <option value="" disabled selected>Vælg tagtype</option>
                 <option>Uden tagplader</option>
                 <option>Plasttrapezplader</option>
             </select>
-            <label>Carport bredde</label>
-            <select>
+            <label>Carport bredde *</label>
+            <select required>
+                <option value="" disabled selected>Carport bredde</option>
+
                 <option>240cm</option>
                 <option>270cm</option>
                 <option>300cm</option>
                 <option>Skal muligvis loades med th</option>
             </select>
-            <label>Carport længde</label>
-            <select>
+            <label>Carport længde *</label>
+            <select required>
+                <option value="" disabled selected>Carport længde</option>
                 <option>240cm</option>
                 <option>270cm</option>
                 <option>300cm</option>
                 <option>Skal muligvis loades med th</option>
             </select>
-            <label>Redskabsrum</label>
-            <select>
+            <label>Redskabsrum *</label>
+            <select required>
+                <option value="" disabled selected>Vælg redskabsrum</option>
                 <option>Uden redskabsrum</option>
                 <option>Med redskabsrum</option>
             </select>
             <label>Redskabsrum bredde</label>
             <select>
+                <option value="" disabled selected>Redskabsrum bredde</option>
                 <option>240cm</option>
                 <option>270cm</option>
                 <option>300cm</option>
@@ -75,24 +81,25 @@
             </select>
             <label>Redskabsrum længde</label>
             <select>
+                <option value="" disabled selected>Redskabsrum længde</option>
                 <option>240cm</option>
                 <option>270cm</option>
                 <option>300cm</option>
                 <option>Skal muligvis loades med th</option>
             </select>
             <label>Evt. bemærkning</label>
-            <input type="text">
-            <label>Kontakt information</label>
-            <input type="text" placeholder="Fornavn">
-            <input type="text" placeholder="Efternavn">
-            <input type="text" placeholder="Adresse">
-            <input type="text" placeholder="Postnummer">
-            <input type="text" placeholder="By">
-            <input type="text" placeholder="Email">
-            <input type="text" placeholder="Telefon">
+            <textarea class="notes" ></textarea>
+            <label>Kontakt information *</label>
+            <input type="text" placeholder="Fornavn" required>
+            <input type="text" placeholder="Efternavn" required>
+            <input type="text" placeholder="Adresse" required>
+            <input type="text" placeholder="Postnummer" required>
+            <input type="text" placeholder="By" required>
+            <input type="text" placeholder="Email" required>
+            <input type="text" placeholder="Telefon" required>
         </form>
         <div>
-            <label>Kontak samtykke</label>
+            <label>Kontakt samtykke *</label>
             <div class="consent">
                 <input type="checkbox" required>
                 <p>Jeg giver samtykke til, at Johannes Fog A/S må kontakte mig via telefon og/eller
@@ -102,7 +109,7 @@
             <a href="" class="privacy-link">Læs mere om persondatapolitik her</a>
         </div>
 
-        <button type="submit" class="submit-btn">Bestil tilbud</button>
+        <button type="submit" class="submit-btn">Send forespørgelse</button>
     </div>
 </div>
 
