@@ -1,23 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Order Flat Roof</title>
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <link rel="stylesheet" th:href="@{/css/orderPage.css}">
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/components.css}">
+    <script th:src="@{/js/navbarSearch.js}" defer></script>
 </head>
 <body>
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<header>
-    <div class="header-info">
-        <div>30 dages returret</div>
-        <div>Klik og hent inden for 3 timer*</div>
-        <div>1-3 dages levering*</div>
-        <div>Lån en trailer gratis</div>
-    </div>
-</header>
-
-<div class="wrapper">
+    <div class="wrapper">
     <p class="siteRoute">
         Byg selv-produket / Carporte / Quick-Byg carporte / Quick-Byg carport med fladt tag
     </p>
