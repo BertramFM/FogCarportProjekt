@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vælg tag</title>
+</head>
+<body>
+
+    <form action="/carport" method="post">
+        <select name="roofTypeId">
+            <option th:each="roof : ${roofTypes}"
+                    th:value="${roof.id}"
+                    th:text="${roof.name}">
+            </option>
+        </select>
+
+        <button type="submit">Continue</button>
+    </form>
+
+</body>
+</html>
