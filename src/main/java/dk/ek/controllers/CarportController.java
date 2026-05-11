@@ -43,7 +43,7 @@ public class CarportController {
 
         carportService.saveCarport(carport);
 
-        ctx.render("carport.html");
+        ctx.render("orderConfirmation.html");
     }
 
     private static void showRoofTypes(Context ctx, CarportService roofService) {
@@ -59,7 +59,7 @@ public class CarportController {
         carport.setRoofType(roofType);
         ctx.sessionAttribute("carport", carport);
         ctx.attribute("materials", materialService.getAllMaterials());
-        ctx.render("carport.html");
+        ctx.render(getCarportTemplate(carport));
     }
 
     private static void showCarportPage(Context ctx, MaterialService materialService) {
@@ -67,8 +67,19 @@ public class CarportController {
         Carport carport = ctx.sessionAttribute("carport");
 
         ctx.attribute("carport", carport);
+
         ctx.attribute("materials", materialService.getAllMaterials());
 
-        ctx.render("carport.html");
+        ctx.render(getCarportTemplate(carport));
+    }
+
+    private static String getCarportTemplate(Carport carport){
+        int roofTypeId = carport.getRoofType().getId();
+
+        if (roofTypeId == 1){
+            return "flatRoof.html";
+        }
+
+        return "highRoof.html";
     }
 }
