@@ -1,12 +1,14 @@
     package dk.ek.services;
 
     import dk.ek.entities.Carport;
+    import dk.ek.entities.Material;
     import dk.ek.entities.RoofType;
     import dk.ek.persistence.ConnectionPool;
 
     import java.sql.Connection;
     import java.sql.PreparedStatement;
     import java.sql.ResultSet;
+    import java.sql.Statement;
     import java.util.ArrayList;
     import java.util.List;
 
@@ -17,20 +19,48 @@
             this.connectionPool = connectionPool;
         }
 
-        public void saveCarport(Carport carport){
-            try(Connection connection = connectionPool.getConnection()){
-                String sql = "insert into orders (rooftypeid, length, width) values (?, ?, ?)";
-                PreparedStatement ps = connection.prepareStatement(sql);
-                ps.setInt(1, carport.getRoofType().getId());
-                ps.setInt(2, carport.getLength());
-                ps.setInt(3, carport.getWidth());
-                ps.executeUpdate();
+            public void saveCarport(Carport carport){
+                try(Connection connection = connectionPool.getConnection()){
+                    String sql = "insert into orders (rooftypeid, length, width) values (?, ?, ?)";
+                    PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                    ps.setInt(1, carport.getRoofType().getId());
+                    ps.setInt(2, carport.getLength());
+                    ps.setInt(3, carport.getWidth());
+                    ps.executeUpdate();
 
-            }catch (Exception e){
-                e.printStackTrace();
+                   ResultSet rs = ps.getGeneratedKeys();
+
+                    if (!rs.next()) {
+                        throw new RuntimeException("Failed to retrieve order id, no keys generated  ");
+                    }
+
+                   int orderId = rs.getInt(1);
+
+                   String insertMaterialSql = "insert into order_material (order_id, material_id, quantity) values (?, ?, ?)";
+
+                   PreparedStatement insertMaterialPs = connection.prepareStatement(insertMaterialSql);
+
+                   for (Material m : carport.getCarportMaterial()){
+                       insertMaterialPs.setInt(1, orderId);
+                       insertMaterialPs.setInt(2, m.getId());
+                       insertMaterialPs.setInt(3, 1);
+                       insertMaterialPs.addBatch();
+                   }
+
+                   for (Material m : carport.getRoofMaterial()){
+                       insertMaterialPs.setInt(1, orderId);
+                       insertMaterialPs.setInt(2, m.getId());
+                       insertMaterialPs.setInt(3, 1);
+                       insertMaterialPs.addBatch();
+                   }
+
+                   insertMaterialPs.executeBatch();
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
             }
-
-        }
 
         public RoofType getRoofTypeById(int id){
             try (Connection con  = connectionPool.getConnection()) {

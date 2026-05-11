@@ -1,10 +1,15 @@
 package dk.ek.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Carport {
     private int id;
     private RoofType roofType;
     private int length;
     private int width;
+    private List<Material> carportMaterial = new ArrayList<>();
+    private List<Material> roofMaterial = new ArrayList<>();
 
     public Carport(int id, RoofType roofType, int length, int width) {
         this.id = id;
@@ -14,6 +19,22 @@ public class Carport {
     }
 
     public Carport(){}
+
+    public List<Material> getCarportMaterial() {
+        return carportMaterial;
+    }
+
+    public void setCarportMaterial(List<Material> carportMaterial) {
+        this.carportMaterial = carportMaterial;
+    }
+
+    public List<Material> getRoofMaterial() {
+        return roofMaterial;
+    }
+
+    public void setRoofMaterial(List<Material> roofMaterial) {
+        this.roofMaterial = roofMaterial;
+    }
 
     public int getId() {
         return id;
