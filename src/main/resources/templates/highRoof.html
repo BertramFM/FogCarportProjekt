@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bestil carport med høj rejsning</title>
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/orderPage.css}">
+  <link rel="stylesheet" th:href="@{/css/base.css}">
+  <link rel="stylesheet" th:href="@{/css/components.css}">
+  <script th:src="@{/js/navbarSearch.js}" defer></script>
+</head>
+<body>
+<!-- Navbar -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="wrapper">
+  <p class="siteRoute">
+    Byg selv-produket / Carporte / Quick-Byg carporte / Quick-Byg carport med høj rejsning
+  </p>
+  <div class="quick-build-text">
+    <div class="text-block">
+      <h1 class="headline">Bestil Quick-Byg tilbud - carport med høj rejsning</h1>
+      <div>
+        <p class="info-text">Med et specialudviklet computerprogram kan vi lynhurtigt beregne prisen og udskrive
+          en skitsetegning på en carport indenfor vores standardprogram.
+        </p>
+        <p class="info-text">
+          Tilbud og skitsetegning fremsendes på mail hurtigst muligt.
+          Ved bestilling medfølger standardbyggevejledning.
+        </p>
+        <p class="info-text">
+          Udfyld formularen omhyggeligt og klik på "Bestil tilbud".
+          Felter markeret med * SKAL udfyldes!
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="form-background">
+    <h2>Carport med fladt tag</h2>
+    <form>
+      <label>Tagtype *</label>
+      <select required>
+        <option value="" disabled selected>Vælg tagtype</option>
+        <option>Betontagsten - Koralrød</option>
+        <option>Betontagsten - Sort</option>
+        <option>Eternittag B6 - Grå</option>
+        <option>Eternittag B6 - Sortblå</option>
+        <option>Eternittag B7 - Sortblå</option>
+      </select>
+      <label>Taghældning *</label>
+      <select required>
+        <option value="" disabled selected>Vælg hældning</option>
+        <option>15 grader</option>
+        <option>20 grader</option>
+        <option>25 grader</option>
+        <option>30 grader</option>
+        <option>35 grader</option>
+        <option>40 grader</option>
+        <option>45 grader</option>
+      </select>
+      <label>Carport bredde *</label>
+      <select required>
+        <option value="" disabled selected>Carport bredde</option>
+
+        <option>240cm</option>
+        <option>270cm</option>
+        <option>300cm</option>
+        <option>Skal muligvis loades med th</option>
+      </select>
+      <label>Carport længde *</label>
+      <select required>
+        <option value="" disabled selected>Carport længde</option>
+        <option>240cm</option>
+        <option>270cm</option>
+        <option>300cm</option>
+        <option>Skal muligvis loades med th</option>
+      </select>
+      <label>Redskabsrum *</label>
+      <select required>
+        <option value="" disabled selected>Vælg redskabsrum</option>
+        <option>Uden redskabsrum</option>
+        <option>Med redskabsrum</option>
+      </select>
+      <label>Redskabsrum bredde</label>
+      <select>
+        <option value="" disabled selected>Redskabsrum bredde</option>
+        <option>240cm</option>
+        <option>270cm</option>
+        <option>300cm</option>
+        <option>Skal loades med th</option>
+      </select>
+      <label>Redskabsrum længde</label>
+      <select>
+        <option value="" disabled selected>Redskabsrum længde</option>
+        <option>240cm</option>
+        <option>270cm</option>
+        <option>300cm</option>
+        <option>Skal muligvis loades med th</option>
+      </select>
+      <label>Evt. bemærkning</label>
+      <textarea class="notes" ></textarea>
+      <label>Kontakt information *</label>
+      <input type="text" placeholder="Fornavn" required>
+      <input type="text" placeholder="Efternavn" required>
+      <input type="text" placeholder="Adresse" required>
+      <input type="text" placeholder="Postnummer" required>
+      <input type="text" placeholder="By" required>
+      <input type="text" placeholder="Email" required>
+      <input type="text" placeholder="Telefon" required>
+    </form>
+    <div>
+      <label>Kontakt samtykke *</label>
+      <div class="consent">
+        <input type="checkbox" required>
+        <p>Jeg giver samtykke til, at Johannes Fog A/S må kontakte mig via telefon og/eller
+          e-email i forbindelse med tilbud på QuickByg carport og at de afgivne oplysninger opbevares og behandles
+          jf. Fogs persondatapolitik.</p>
+      </div>
+      <a href="" class="privacy-link">Læs mere om persondatapolitik her</a>
+    </div>
+
+    <button type="submit" class="submit-btn">Send forespørgelse</button>
+  </div>
+</div>
+
+</body>
+</html>
