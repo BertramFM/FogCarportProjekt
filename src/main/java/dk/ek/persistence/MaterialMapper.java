@@ -1,17 +1,17 @@
-package dk.ek.services;
+package dk.ek.persistence;
 
 import dk.ek.entities.Material;
-import dk.ek.persistence.ConnectionPool;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MaterialService {
+public class MaterialMapper {
     private ConnectionPool connectionPool;
 
-    public MaterialService(ConnectionPool connectionPool) {
+    public MaterialMapper(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
     }
 

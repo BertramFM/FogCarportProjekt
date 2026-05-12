@@ -5,8 +5,8 @@ import dk.ek.config.ThymeleafConfig;
 import dk.ek.controllers.MainController;
 import dk.ek.controllers.CarportController;
 import dk.ek.persistence.ConnectionPool;
-import dk.ek.services.CarportService;
-import dk.ek.services.MaterialService;
+import dk.ek.persistence.CarportMapper;
+import dk.ek.persistence.MaterialMapper;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
@@ -32,6 +32,6 @@ public class Main {
 
         // Routing
         MainController.addRoutes(app, connectionPool);
-        CarportController.addRoutes(app, new CarportService(connectionPool), new MaterialService(connectionPool));
+        CarportController.addRoutes(app, new CarportMapper(connectionPool), new MaterialMapper(connectionPool));
     }
 }

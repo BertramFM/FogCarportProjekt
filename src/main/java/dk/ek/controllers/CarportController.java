@@ -3,8 +3,8 @@ package dk.ek.controllers;
 import dk.ek.entities.Carport;
 import dk.ek.entities.Material;
 import dk.ek.entities.RoofType;
-import dk.ek.services.CarportService;
-import dk.ek.services.MaterialService;
+import dk.ek.persistence.CarportMapper;
+import dk.ek.persistence.MaterialMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -13,15 +13,15 @@ import java.util.List;
 
 public class CarportController {
 
-    public static void addRoutes(Javalin app, CarportService roofService, MaterialService materialService) {
+    public static void addRoutes(Javalin app, CarportMapper roofService, MaterialMapper materialMapper) {
         app.get("/rooftypes", ctx -> showRoofTypes(ctx, roofService));
-        app.post("/carport", ctx -> tempCarport(ctx, roofService, materialService));
-        app.post("/carport/save", ctx -> saveCarport(ctx, roofService, materialService));
-        app.get("/carport", ctx -> showCarportPage(ctx, materialService));
+        app.post("/carport", ctx -> tempCarport(ctx, roofService, materialMapper));
+        app.post("/carport/save", ctx -> saveCarport(ctx, roofService, materialMapper));
+        app.get("/carport", ctx -> showCarportPage(ctx, materialMapper));
 
     }
 
-    private static void saveCarport(Context ctx, CarportService carportService, MaterialService materialService) {
+    private static void saveCarport(Context ctx, CarportMapper carportMapper, MaterialMapper materialMapper) {
 
         Carport carport = ctx.sessionAttribute("carport");
 
@@ -30,8 +30,8 @@ public class CarportController {
         int width = Integer.parseInt(ctx.formParam("width"));
         int materialId = Integer.parseInt(ctx.formParam("carportMaterialId"));
 
-        Material roofMaterial = materialService.getMaterialById(roofMaterialId);
-        Material selectedMaterial = materialService.getMaterialById(materialId);
+        Material roofMaterial = materialMapper.getMaterialById(roofMaterialId);
+        Material selectedMaterial = materialMapper.getMaterialById(materialId);
 
         carport.setLength(length);
         carport.setWidth(width);
@@ -41,34 +41,34 @@ public class CarportController {
 
         ctx.sessionAttribute("carport", carport);
 
-        carportService.saveCarport(carport);
+        carportMapper.saveCarport(carport);
 
         ctx.render("orderConfirmation.html");
     }
 
-    private static void showRoofTypes(Context ctx, CarportService roofService) {
+    private static void showRoofTypes(Context ctx, CarportMapper roofService) {
         List<RoofType> roofTypes = roofService.getRoofTypes();
         ctx.attribute("roofTypes", roofTypes);
         ctx.render("pickRoofType.html");
     }
 
-    private static void tempCarport(Context ctx, CarportService roofService, MaterialService materialService) {
+    private static void tempCarport(Context ctx, CarportMapper roofService, MaterialMapper materialMapper) {
         int roofTypeId = Integer.parseInt(ctx.formParam("roofTypeId"));
         RoofType roofType = roofService.getRoofTypeById(roofTypeId);
         Carport carport = new Carport();
         carport.setRoofType(roofType);
         ctx.sessionAttribute("carport", carport);
-        ctx.attribute("materials", materialService.getAllMaterials());
+        ctx.attribute("materials", materialMapper.getAllMaterials());
         ctx.render(getCarportTemplate(carport));
     }
 
-    private static void showCarportPage(Context ctx, MaterialService materialService) {
+    private static void showCarportPage(Context ctx, MaterialMapper materialMapper) {
 
         Carport carport = ctx.sessionAttribute("carport");
 
         ctx.attribute("carport", carport);
 
-        ctx.attribute("materials", materialService.getAllMaterials());
+        ctx.attribute("materials", materialMapper.getAllMaterials());
 
         ctx.render(getCarportTemplate(carport));
     }
