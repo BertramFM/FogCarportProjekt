@@ -62,6 +62,7 @@
     background-size: 0% 100%;
     transition: color 0.2s, background-size .2s cubic-bezier(0.35, 0, 0.15, 1);
     white-space: nowrap;
+    font-weight: 200;
 }
 
 .adverts-item span:hover {
@@ -110,6 +111,7 @@
     color: var(--navbar-text);
     font-size: 16px;
     text-decoration: none;
+    font-weight: 200;
 }
 
 .navbar-item:hover {
@@ -251,4 +253,5 @@
     line-height: 13px;
     display: block;
     white-space: nowrap;
+    font-weight: 200;
 }

@@ -53,6 +53,7 @@
     margin-bottom: 15px;
     font-size: 16px;
     line-height: 24px;
+    font-weight: 200;
 }
 
 .roof-option-boxes {
@@ -107,6 +108,7 @@
     display: flex;
     align-items: center;
     font-size: 12px;
+    font-weight: 200;
 }
 
 .roof-option-description svg {
