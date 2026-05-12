@@ -1,10 +1,15 @@
-.navbar-header {
+.navbar {
     top: 0;
     position: sticky;
     z-index: 400;
+}
+
+.navbar-header {
+
     transition: top 0.4s ease-in-out;
     background-color: var(--white);
 }
+
 .navbar-content {
     margin: 0 auto;
     max-width: 1680px;
@@ -43,7 +48,7 @@
 .adverts-item a {
     font-size: 14px;
     line-height: 18px;
-    font-family: Dinpro, helvetica, arial, sans-serif;
+    font-family: "Dinpro", helvetica, arial, sans-serif;
     text-decoration: none;
     color: var(--navbar-advert-text);
 }
@@ -105,7 +110,6 @@
     color: var(--navbar-text);
     font-size: 16px;
     text-decoration: none;
-    font-weight: 500;
 }
 
 .navbar-item:hover {
@@ -241,7 +245,7 @@
 }
 
 .navbar-acc-text {
-    font-family: Dinpro, helvetica, arial, sans-serif;
+    font-family: "Dinpro", helvetica, arial, sans-serif;
     color: var(--black);
     font-size: 12px;
     line-height: 13px;
