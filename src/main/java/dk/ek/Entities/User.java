@@ -1,4 +1,4 @@
-package dk.ek.Entities;
+package dk.ek.entities;
 
 
 public class User {
