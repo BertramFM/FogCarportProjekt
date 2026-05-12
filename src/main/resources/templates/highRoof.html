@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bestil carport med høj rejsning</title>
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+  <link rel="stylesheet" th:href="@{/css/orderPage.css}">
+  <link rel="stylesheet" th:href="@{/css/base.css}">
+  <link rel="stylesheet" th:href="@{/css/components.css}">
+  <script th:src="@{/js/navbarSearch.js}" defer></script>
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="wrapper">
+
+  <p class="siteRoute">
+    Byg selv-produket / Carporte / Quick-Byg carporte / Quick-Byg carport med høj rejsning
+  </p>
+
+  <div class="quick-build-text">
+    <div class="text-block">
+
+      <h1 class="headline">
+        Bestil Quick-Byg tilbud - carport med høj rejsning
+      </h1>
+
+      <div>
+        <p class="info-text">
+          Med et specialudviklet computerprogram kan vi lynhurtigt beregne prisen og udskrive
+          en skitsetegning på en carport indenfor vores standardprogram.
+        </p>
+
+        <p class="info-text">
+          Tilbud og skitsetegning fremsendes på mail hurtigst muligt.
+          Ved bestilling medfølger standardbyggevejledning.
+        </p>
+
+        <p class="info-text">
+          Udfyld formularen omhyggeligt og klik på "Bestil tilbud".
+          Felter markeret med * SKAL udfyldes!
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="form-background">
+
+    <h2>Carport med fladt tag</h2>
+
+    <form action="/carport/save" method="post">
+
+      <label>Tagtype *</label>
+
+      <select name="roofMaterialId" required>
+
+        <option value="" disabled selected>
+          Vælg tagtype
+        </option>
+
+        <option th:each="rm : ${materials}"
+                th:value="${rm.id}"
+                th:text="${rm.name}">
+        </option>
+
+      </select>
+
+
+      <label>Taghældning *</label>
+
+      <select name="roofAngle" required>
+
+        <option value="" disabled selected>
+          Vælg hældning
+        </option>
+
+        <option value="15">15 grader</option>
+        <option value="20">20 grader</option>
+        <option value="25">25 grader</option>
+        <option value="30">30 grader</option>
+        <option value="35">35 grader</option>
+        <option value="40">40 grader</option>
+        <option value="45">45 grader</option>
+
+      </select>
+
+
+      <label>Carport bredde *</label>
+
+      <select name="width" required>
+
+        <option value="" disabled selected>
+          Carport bredde
+        </option>
+
+        <option value="240">240cm</option>
+        <option value="270">270cm</option>
+        <option value="300">300cm</option>
+
+      </select>
+
+
+      <label>Carport længde *</label>
+
+      <select name="length" required>
+
+        <option value="" disabled selected>
+          Carport længde
+        </option>
+
+        <option value="240">240cm</option>
+        <option value="270">270cm</option>
+        <option value="300">300cm</option>
+
+      </select>
+
+
+      <label>Carport materiale *</label>
+
+      <select name="carportMaterialId" required>
+
+        <option value="" disabled selected>
+          Vælg materiale
+        </option>
+
+        <option th:each="m : ${materials}"
+                th:value="${m.id}"
+                th:text="${m.name}">
+        </option>
+
+      </select>
+
+
+      <label>Redskabsrum *</label>
+
+      <select name="shed" required>
+
+        <option value="" disabled selected>
+          Vælg redskabsrum
+        </option>
+
+        <option value="false">
+          Uden redskabsrum
+        </option>
+
+        <option value="true">
+          Med redskabsrum
+        </option>
+
+      </select>
+
+
+      <label>Redskabsrum bredde</label>
+
+      <select name="shedWidth">
+
+        <option value="" disabled selected>
+          Redskabsrum bredde
+        </option>
+
+        <option value="240">240cm</option>
+        <option value="270">270cm</option>
+        <option value="300">300cm</option>
+
+      </select>
+
+
+      <label>Redskabsrum længde</label>
+
+      <select name="shedLength">
+
+        <option value="" disabled selected>
+          Redskabsrum længde
+        </option>
+
+        <option value="240">240cm</option>
+        <option value="270">270cm</option>
+        <option value="300">300cm</option>
+
+      </select>
+
+
+      <label>Evt. bemærkning</label>
+
+      <textarea name="notes" class="notes"></textarea>
+
+
+      <label>Kontakt information *</label>
+
+      <input type="text"
+             name="firstname"
+             placeholder="Fornavn"
+             required>
+
+      <input type="text"
+             name="lastname"
+             placeholder="Efternavn"
+             required>
+
+      <input type="text"
+             name="address"
+             placeholder="Adresse"
+             required>
+
+      <input type="text"
+             name="zipcode"
+             placeholder="Postnummer"
+             required>
+
+      <input type="text"
+             name="city"
+             placeholder="By"
+             required>
+
+      <input type="email"
+             name="email"
+             placeholder="Email"
+             required>
+
+      <input type="text"
+             name="phone"
+             placeholder="Telefon"
+             required>
+
+
+      <div>
+
+        <label>Kontakt samtykke *</label>
+
+        <div class="consent">
+
+          <input type="checkbox"
+                 name="consent"
+                 required>
+
+          <p>
+            Jeg giver samtykke til, at Johannes Fog A/S må kontakte mig via telefon og/eller
+            e-email i forbindelse med tilbud på QuickByg carport og at de afgivne oplysninger
+            opbevares og behandles jf. Fogs persondatapolitik.
+          </p>
+
+        </div>
+
+        <a href="" class="privacy-link">
+          Læs mere om persondatapolitik her
+        </a>
+
+      </div>
+
+
+      <button type="submit" class="submit-btn">
+        Send forespørgelse
+      </button>
+
+    </form>
+
+  </div>
+</div>
+
+</body>
+</html>

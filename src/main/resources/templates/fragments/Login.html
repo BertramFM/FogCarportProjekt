@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="form-page">
+  <section class="form-card">
+
+    <div class="auth-tabs">
+      <button type="button" id="loginTab" class="auth-tab" onclick="showForm('login')">Login</button>
+      <button type="button" id="registerTab" class="auth-tab" onclick="showForm('register')">Register</button>
+    </div>
+
+    <div id="loginForm" class="auth-form">
+      <h1>Login</h1>
+
+      <form method="post" action="/login" class="login-form">
+        <label for="loginEmail">Email</label>
+        <input id="loginEmail" name="email" type="email" required>
+
+
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" name="password" type="password" required>
+
+        <button type="submit">Login</button>
+      </form>
+
+      <button type="button" class="switch-link" onclick="showForm('register')">
+        Har du ikke en bruger? Opret dig her!
+      </button>
+    </div>
+
+    <div id="registerForm" class="auth-form">
+      <h1>Register</h1>
+
+      <form method="post" action="/registerUser" class="login-form">
+        <label for="registerEmail">Email</label>
+        <input id="registerEmail" name="email" type="email" required>
+
+
+        <label for="registerPassword">Password</label>
+        <input id="registerPassword" name="password" type="password" required>
+
+        <label for="registerBalance">Balance</label>
+        <input id="registerBalance" name="balance" type="number" step="0.01" required>
+
+        <button type="submit">Register</button>
+      </form>
+
+      <button type="button" class="switch-link" onclick="showForm('login')">
+        Har du allerede en bruger? Log ind
+      </button>
+    </div>
+
+    <p th:if="${message}" th:text="${message}" class="message"></p>
+
+  </section>
+</main>
+
+<script src="/js/script.js"></script>
+
+</body>
+</html>
