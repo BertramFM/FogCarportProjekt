@@ -1,6 +1,6 @@
 package dk.ek.controllers;
 
-import dk.ek.Entities.User;
+import dk.ek.entities.User;
 import dk.ek.services.UserService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
