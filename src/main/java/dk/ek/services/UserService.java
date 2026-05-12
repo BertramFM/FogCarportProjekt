@@ -2,7 +2,7 @@ package dk.ek.services;
 
 
 
-import dk.ek.Entities.User;
+import dk.ek.entities.User;
 import dk.ek.persistence.ConnectionPool;
 
 import java.sql.Connection;

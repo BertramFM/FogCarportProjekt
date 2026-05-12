@@ -92,15 +92,18 @@
 
 .navbar-item {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     height: 70px;
     cursor: pointer;
+    border-bottom: 2px solid transparent;
 }
 
 .navbar-item a {
+    text-align: center;
     color: var(--navbar-text);
     font-size: 16px;
-    border-bottom: 2px solid transparent;
     text-decoration: none;
     font-weight: 500;
 }
