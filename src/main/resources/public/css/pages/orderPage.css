@@ -1,23 +1,7 @@
 :root {
-    --font-fam: Dinpro, helvetica, arial, sans-serif;
     --clr-panel: #dde2e7;
     --clr-border: #c4ccd4;
     --clr-red: #c0392b;
-    --clr-blue: #014a8d;
-    --background: #e7edec
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family:  var(--font-fam);
-    background: #fff;
-    color: #1a1e22;
-    margin: 0;
 }
 
 .wrapper {
@@ -74,9 +58,8 @@ select {
     width: 100%;
     padding: 5px 25px;
     height: 60px;
-    font-family: var(--font-fam);
     font-size: 20px;
-    background: var(--background);
+    background: var(--main-body-background);
     border: 1px solid var(--clr-border);
     border-radius: 3px;
     cursor: pointer;
@@ -93,9 +76,8 @@ select:hover {
 .notes {
     width: 100%;
     padding: 15px;
-    font-family: var(--font-fam);
     font-size: 20px;
-    background: var(--background);
+    background: var(--main-body-background);
     resize: vertical;
     min-height: 120px;
     border-radius: 3px;
@@ -107,9 +89,8 @@ input {
     width: 100%;
     padding: 15px;
     margin-bottom: 10px;
-    font-family: var(--font-fam);
     font-size: 20px;
-    background: var(--background);
+    background: var(--main-body-background);
     border: 1px solid var(--clr-border);
     border-radius: 3px;
     appearance: none;
@@ -145,16 +126,15 @@ input {
 
 .privacy-link {
     font-size: 25px;
-    color: var(--clr-blue);
+    color: var(--fog-blue);
     text-decoration: underline;
 }
 
 .submit-btn {
     display: flex;
     align-items: center;
-    background: var(--clr-blue);
+    background: var(--fog-blue);
     color: white;
-    font-family: var(--font-fam);
     font-weight: bold;
     font-size: 25px;
     padding: 24px 50px;
