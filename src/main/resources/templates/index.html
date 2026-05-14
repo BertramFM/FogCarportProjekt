@@ -6,13 +6,85 @@
 <!-- Navbar -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <main>
-        <H1>Velkommen til Fog</H1>
-        <p>Her kommer cool magi</p>
+<main>
 
-        <form th:action="@{/rooftypes}" method="get">
-            <button type="submit">Vælg</button>
-        </form>
+    <section class="main-body-section">
+        <div class="main-body-content">
+            <div class="main-body-item">
+                <div class="main-image-box">
+                    <img th:src="@{/images/carport.png}">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="main-body-section">
+        <div class="main-body-content">
+            <div class="main-body-item">
+
+                <h2>Lad os tegne din carport drøm - bestil et Quick-Byg tilbud</h2>
+
+                <div class="main-body-spacer"><!----></div>
+
+                <div class="main-body-paragraph">
+                    <p>
+                        Med et specialudviklet computerprogram kan vi lynhurtigt beregne prisen og udskrive en
+                        skitsetegning på en carport indenfor vores standardprogram.
+                        <br>
+                        Tilbud og skitsetegning fremsendes på mail hurtigst muligt.
+                        <br>
+                        Ved bestilling medfølger standardbyggevejledning.
+                    </p>
+                    <p>
+                        Vælg nedenfor, om du ønsker tilbud på carport med fladt tag eller carport med høj rejsning.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="main-body-section">
+        <div class="main-body-content">
+            <div class="main-body-item">
+                <div class="roof-option-boxes">
+
+                    <div class="roof-option">
+                        <div class="roof-option-content">
+                            <img th:src="@{/images/flatroof.svg}" style="position: unset">
+                            <p>Carport med fladt tag</p>
+                            <a class="roof-option-button" href="/flatRoof">
+                                <span class="roof-option-link"></span>
+                            </a>
+                            <div class="roof-option-description">
+                                Bestil tilbud på Quick-Byg carport med fladt tag
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" width="1em" height="1em">
+                                    <path fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m13 18 5-6-5-6m5 6H7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="roof-option">
+                        <div class="roof-option-content">
+                            <img th:src="@{/images/highroof.svg}" style="position: unset">
+                            <p>Carport med høj rejsning</p>
+                            <a class="roof-option-button" href="/highRoof">
+                                <span class="roof-option-link"></span>
+                            </a>
+                            <div class="roof-option-description">
+                                Bestil tilbud på Quick-Byg carport med høj rejsning
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" width="1em" height="1em">
+                                    <path fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m13 18 5-6-5-6m5 6H7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
 </main>
 </body>
