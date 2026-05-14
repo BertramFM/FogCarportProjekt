@@ -1,13 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Bestil Carport med fladt tag</title>
-    <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{/css/orderPage.css}">
-    <link rel="stylesheet" th:href="@{/css/base.css}">
-    <link rel="stylesheet" th:href="@{/css/components.css}">
-    <script th:src="@{/js/navbarSearch.js}" defer></script>
+    <th:block th:insert="~{fragments/head :: head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/pages/orderPage.css}">
 </head>
 <body>
     <!-- Navbar -->
@@ -15,7 +10,7 @@
 
     <div class="wrapper">
     <p class="siteRoute">
-        Byg selv-produket / Carporte / Quick-Byg carporte / Quick-Byg carport med fladt tag
+        Byg selv-produktet / Carporte / Quick-Byg carporte / Quick-Byg carport med fladt tag
     </p>
     <div class="quick-build-text">
         <div class="text-block">
