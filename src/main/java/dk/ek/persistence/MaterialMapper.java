@@ -26,10 +26,11 @@ public class MaterialMapper {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new Material(
-                           rs.getInt("id"),
+                            rs.getInt("id"),
                             rs.getString("name"),
-                            rs.getString("category"),
-                            rs.getString("unit")
+                            rs.getString("unit"),
+                            rs.getDouble("price_per_unit"),
+                            rs.getString("category")
                     );
                 }
             }
@@ -54,8 +55,9 @@ public class MaterialMapper {
                 materials.add(new Material(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getString("category"),
-                        rs.getString("unit")
+                        rs.getString("unit"),
+                        rs.getDouble("price_per_unit"),
+                        rs.getString("category")
                 ));
             }
 
