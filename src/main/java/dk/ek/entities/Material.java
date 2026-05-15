@@ -4,45 +4,35 @@ public class Material {
 
     private int id;
     private String name;
-    private String category;
     private String unit;
+    private double pricePerUnit;
+    private String category;
 
-    public Material(int id, String name, String category, String unit) {
+    public Material(int id, String name, String unit, double pricePerUnit, String category) {
         this.id = id;
         this.name = name;
-        this.category = category;
         this.unit = unit;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public String getUnit() {
-        return unit;
+        this.pricePerUnit = pricePerUnit;
+        this.category = category;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public double getPricePerUnit() {
+        return pricePerUnit;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public String getCategory() {
+        return category;
     }
 }
