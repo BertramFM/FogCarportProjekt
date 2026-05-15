@@ -1,7 +1,7 @@
 package dk.ek.controllers;
 
 import dk.ek.entities.Carport;
-import dk.ek.entities.Material;
+import dk.ek.entities.Materials;
 import dk.ek.entities.RoofType;
 import dk.ek.persistence.CarportMapper;
 import dk.ek.persistence.MaterialMapper;
@@ -30,14 +30,14 @@ public class CarportController {
         int width = Integer.parseInt(ctx.formParam("width"));
         int materialId = Integer.parseInt(ctx.formParam("carportMaterialId"));
 
-        Material roofMaterial = materialMapper.getMaterialById(roofMaterialId);
-        Material selectedMaterial = materialMapper.getMaterialById(materialId);
+        Materials roofMaterials = materialMapper.getMaterialById(roofMaterialId);
+        Materials selectedMaterials = materialMapper.getMaterialById(materialId);
 
         carport.setLength(length);
         carport.setWidth(width);
 
-        carport.getRoofMaterial().add(roofMaterial);
-        carport.getCarportMaterial().add(selectedMaterial);
+        carport.getRoofMaterial().add(roofMaterials);
+        carport.getCarportMaterial().add(selectedMaterials);
 
         ctx.sessionAttribute("carport", carport);
 

@@ -1,7 +1,7 @@
     package dk.ek.persistence;
 
     import dk.ek.entities.Carport;
-    import dk.ek.entities.Material;
+    import dk.ek.entities.Materials;
     import dk.ek.entities.RoofType;
 
     import java.sql.Connection;
@@ -39,14 +39,14 @@
 
                    PreparedStatement insertMaterialPs = connection.prepareStatement(insertMaterialSql);
 
-                   for (Material m : carport.getCarportMaterial()){
+                   for (Materials m : carport.getCarportMaterial()){
                        insertMaterialPs.setInt(1, orderId);
                        insertMaterialPs.setInt(2, m.getId());
                        insertMaterialPs.setInt(3, 1);
                        insertMaterialPs.addBatch();
                    }
 
-                   for (Material m : carport.getRoofMaterial()){
+                   for (Materials m : carport.getRoofMaterial()){
                        insertMaterialPs.setInt(1, orderId);
                        insertMaterialPs.setInt(2, m.getId());
                        insertMaterialPs.setInt(3, 1);

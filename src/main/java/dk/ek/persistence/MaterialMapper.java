@@ -1,6 +1,6 @@
 package dk.ek.persistence;
 
-import dk.ek.entities.Material;
+import dk.ek.entities.Materials;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +15,7 @@ public class MaterialMapper {
         this.connectionPool = connectionPool;
     }
 
-    public Material getMaterialById(int id) {
+    public Materials getMaterialById(int id) {
         String sql = "select * from materials where id = ?";
 
         try (Connection con = connectionPool.getConnection();
@@ -25,7 +25,7 @@ public class MaterialMapper {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return new Material(
+                    return new Materials(
                             rs.getInt("id"),
                             rs.getString("name"),
                             rs.getString("unit"),
@@ -42,8 +42,8 @@ public class MaterialMapper {
         return null;
     }
 
-    public List<Material> getAllMaterials(){
-        List<Material> materials = new ArrayList<>();
+    public List<Materials> getAllMaterials(){
+        List<Materials> materials = new ArrayList<>();
         String sql = "select * from materials";
 
         try(Connection connection = connectionPool.getConnection() ){
@@ -52,7 +52,7 @@ public class MaterialMapper {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                materials.add(new Material(
+                materials.add(new Materials(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("unit"),

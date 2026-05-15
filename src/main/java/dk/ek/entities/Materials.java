@@ -1,6 +1,6 @@
 package dk.ek.entities;
 
-public class Material {
+public class Materials {
 
     private int id;
     private String name;
@@ -8,7 +8,7 @@ public class Material {
     private double pricePerUnit;
     private String category;
 
-    public Material(int id, String name, String unit, double pricePerUnit, String category) {
+    public Materials(int id, String name, String unit, double pricePerUnit, String category) {
         this.id = id;
         this.name = name;
         this.unit = unit;
