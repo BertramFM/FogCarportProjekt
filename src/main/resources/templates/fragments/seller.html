@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sælger dashboard</title>
+</head>
+<body>
+
+<h1>Sælger dashboard</h1>
+
+<h2>Alle kunder</h2>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Navn</th>
+        <th>Adresse</th>
+        <th>Email</th>
+        <th>Telefon</th>
+        <th>Postnummer</th>
+        <th>By</th>
+    </tr>
+
+    <tr th:each="customer : ${customers}">
+        <td th:text="${customer.id}"></td>
+        <td th:text="${customer.firstname + ' ' + customer.lastname}"></td>
+        <td th:text="${customer.address}"></td>
+        <td th:text="${customer.email}"></td>
+        <td th:text="${customer.phone}"></td>
+        <td th:text="${customer.zipcode}"></td>
+        <td th:text="${customer.city}"></td>
+    </tr>
+</table>
+
+<h2>Alle ordrer</h2>
+
+<table border="1">
+    <tr>
+        <th>Ordre ID</th>
+        <th>Kunde</th>
+        <th>Sælger</th>
+        <th>Tagtype</th>
+        <th>Bredde</th>
+        <th>Længde</th>
+        <th>Skur</th>
+        <th>Status</th>
+        <th>Oprettet</th>
+    </tr>
+
+    <tr th:each="order : ${orders}">
+        <td th:text="${order.id}"></td>
+        <td th:text="${order.customerName}"></td>
+        <td th:text="${order.employeeName}"></td>
+        <td th:text="${order.roofType}"></td>
+        <td th:text="${order.width}"></td>
+        <td th:text="${order.length}"></td>
+        <td th:text="${order.toolShed ? 'Ja' : 'Nej'}"></td>
+        <td th:text="${order.status}"></td>
+        <td th:text="${order.createdAt}"></td>
+    </tr>
+</table>
+
+</body>
+</html>
