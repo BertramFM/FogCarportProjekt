@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+<head th:replace="~{fragments/head :: head}"></head>
+
+<main class="form-page">
+  <section class="form-card">
+
+    <div class="auth-tabs">
+      <button type="button" class="auth-tab" onclick="showForm('login')">Login</button>
+    </div>
+
+    <!-- LOGIN ONLY -->
+    <div id="loginForm" class="auth-form">
+      <h1>Login</h1>
+
+      <form method="post" action="/login" class="login-form">
+        <label for="loginEmail">Email</label>
+        <input id="loginEmail" name="email" type="email" required>
+
+        <button type="submit">Login</button>
+      </form>
+    </div>
+
+    <p th:if="${message}" th:text="${message}" class="message"></p>
+
+  </section>
+</main>
+
+<script src="/js/script.js"></script>
+
+</body>
+</html>

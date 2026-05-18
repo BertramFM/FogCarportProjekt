@@ -4,9 +4,11 @@ import dk.ek.config.SessionConfig;
 import dk.ek.config.ThymeleafConfig;
 import dk.ek.controllers.MainController;
 import dk.ek.controllers.CarportController;
+import dk.ek.controllers.UserController;
 import dk.ek.persistence.ConnectionPool;
 import dk.ek.persistence.CarportMapper;
 import dk.ek.persistence.MaterialMapper;
+import dk.ek.persistence.EmployeeMapper;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
@@ -32,6 +34,7 @@ public class Main {
 
         // Routing
         MainController.addRoutes(app, connectionPool);
+        UserController.addRoutes(app, new EmployeeMapper(connectionPool));
         CarportController.addRoutes(app, new CarportMapper(connectionPool), new MaterialMapper(connectionPool));
     }
 }
