@@ -2,20 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Vælg tag</title>
+    <title>Choose Roof Type</title>
 </head>
 <body>
 
-    <form action="/carport" method="post">
-        <select name="roofTypeId">
-            <option th:each="roof : ${roofTypes}"
-                    th:value="${roof.id}"
-                    th:text="${roof.name}">
-            </option>
-        </select>
+<form action="/carport" method="post">
 
-        <button type="submit">Continue</button>
-    </form>
+    <label for="roofType">Choose roof type:</label>
+
+    <select name="roofType" id="roofType">
+
+        <option value="Flat">
+            Flat Roof
+        </option>
+
+        <option value="High">
+            High Roof
+        </option>
+
+    </select>
+
+    <button type="submit">
+        Continue
+    </button>
+
+</form>
 
 </body>
 </html>
