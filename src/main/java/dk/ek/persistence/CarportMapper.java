@@ -32,18 +32,14 @@ public class CarportMapper {
                     Statement.RETURN_GENERATED_KEYS
             );
 
-            // TEMP hardcoded ids until login/customer system exists
-            ps.setInt(1, 1); // customer_id
-            ps.setInt(2, 1); // employee_id
-
             ps.setString(3, carport.getRoofType().getName());
 
             ps.setInt(4, carport.getWidth());
             ps.setInt(5, carport.getLength());
 
-            ps.setBoolean(6, false); // tool_shed
-            ps.setInt(7, 0); // shed_width
-            ps.setInt(8, 0); // shed_length
+            ps.setBoolean(6, false);
+            ps.setInt(7, 0);
+            ps.setInt(8, 0);
 
             ps.setString(9, "Generated order");
             ps.setString(10, "pending");
@@ -67,7 +63,6 @@ public class CarportMapper {
             PreparedStatement materialPs =
                     connection.prepareStatement(materialSql);
 
-            // Carport materials
             for (Material m : carport.getCarportMaterial()) {
 
                 materialPs.setInt(1, orderId);
@@ -77,7 +72,6 @@ public class CarportMapper {
                 materialPs.addBatch();
             }
 
-            // Roof materials
             for (Material m : carport.getRoofMaterial()) {
 
                 materialPs.setInt(1, orderId);
