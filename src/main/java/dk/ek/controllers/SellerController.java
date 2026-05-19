@@ -1,16 +1,17 @@
 package dk.ek.controllers;
 
-import dk.ek.entities.User;
+
+import dk.ek.persistence.EmployeeMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
 public class SellerController {
 
-    public static void addRoutes(Javalin app, SellerMapper sellerMapper) {
-        app.get("/seller", ctx -> showSellerPage(ctx, sellerMapper));
+    public static void addRoutes(Javalin app, EmployeeMapper employeeMapper) {
+        app.get("/seller", ctx -> showSellerPage(ctx, employeeMapper));
     }
 
-    private static void showSellerPage(Context ctx, SellerMapper sellerMapper) {
+    private static void showSellerPage(Context ctx, EmployeeMapper employeeMapper) {
         User currentUser = ctx.sessionAttribute("currentUser");
 
         if (currentUser == null) {
@@ -23,8 +24,8 @@ public class SellerController {
             return;
         }
 
-        ctx.attribute("customers", sellerMapper.getAllCustomers());
-        ctx.attribute("orders", sellerMapper.getAllOrders());
+        ctx.attribute("customers", employeeMapper.getAllCustomers());
+        ctx.attribute("orders", employeeMapper.getAllOrders());
 
         ctx.render("seller.html");
     }
