@@ -1,33 +1,68 @@
 package dk.ek.entities;
 
 public class Customer {
+
     private int id;
     private String firstname;
     private String lastname;
     private String address;
     private String email;
     private String phone;
-    private int zipcode;
+    private int zipcodeId;
     private String city;
 
-    public Customer(int id, String firstname, String lastname, String address,
-                    String email, String phone, int zipcode, String city) {
-        this.id = id;
+    public Customer(String firstname, String lastname, String address,
+                    String email, String phone, int zipcodeId, String city) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.address = address;
         this.email = email;
         this.phone = phone;
-        this.zipcode = zipcode;
+        this.zipcodeId = zipcodeId;
         this.city = city;
     }
 
-    public int getId() { return id; }
-    public String getFirstname() { return firstname; }
-    public String getLastname() { return lastname; }
-    public String getAddress() { return address; }
-    public String getEmail() { return email; }
-    public String getPhone() { return phone; }
-    public int getZipcode() { return zipcode; }
-    public String getCity() { return city; }
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setZipcodeId(int zipcodeId) {
+        this.zipcodeId = zipcodeId;
+    }
+
+    public int getId(){
+        return id;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+    public String getPhone(){
+        return phone;
+    }
+
+    public int getZipcodeId() {
+        return zipcodeId;
+    }
 }

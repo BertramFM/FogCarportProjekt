@@ -1,15 +1,17 @@
 package dk.ek.controllers;
 
-import dk.ek.entities.User;
-import dk.ek.services.UserService;
+import dk.ek.entities.Employee;
+import dk.ek.persistence.EmployeeMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+
 public class UserController {
 
-    public static void addRoutes(Javalin app, UserService userService) {
+    public static void addRoutes(Javalin app, EmployeeMapper employeeMapper) {
+
         app.get("/login", ctx -> showLogin(ctx));
-        app.post("/login", ctx -> login(ctx, userService));
+        app.post("/login", ctx -> login(ctx,employeeMapper ));
         app.get("/logout", ctx -> logout(ctx));
 
         app.get("/registerUser", ctx -> showRegister(ctx));
@@ -31,41 +33,39 @@ public class UserController {
         ctx.redirect("/");
     }
 
-    private static void login(Context ctx, UserService userService) {
-        String email = ctx.formParam("email");
-        String password = ctx.formParam("password");
+    private static void login(Context ctx, EmployeeMapper employeeMapper) {
 
-        if (email == null || password == null ||
-                email.trim().isEmpty() || password.trim().isEmpty()) {
-            ctx.attribute("message", "Email og password skal udfyldes");
+        String email = ctx.formParam("email");
+
+        if (email == null || email.trim().isEmpty()) {
+            ctx.attribute("message", "Email skal udfyldes");
             ctx.attribute("activeTab", "login");
             ctx.render("login");
             return;
         }
 
-        User user = userService.login(email.trim(), password.trim());
+        Employee employee = employeeMapper.getEmployeeByEmail(email.trim());
 
-        if (user != null) {
-            ctx.sessionAttribute("currentUser", user);
+        if (employee != null) {
+            ctx.sessionAttribute("currentUser", employee);
 
-            if ("admin".equals(user.getRole())) {
-                ctx.redirect("/admin");
-            } else if ("sales".equals(user.getRole())) {
-                ctx.redirect("/seller");
+            if ("Sales".equals(employee.getRole())) {
+                ctx.render("admin.html");
             } else {
-                ctx.redirect("/order");
+                ctx.redirect("/");
             }
-
         } else {
-            ctx.attribute("message", "Forkert email eller kodeord");
+            ctx.attribute("message", "Forkert mail, brugernavn eller kodeord");
             ctx.attribute("activeTab", "login");
             ctx.render("login");
         }
     }
 
     private static void register(Context ctx, UserService userService) {
+
         String email = ctx.formParam("email");
         String password = ctx.formParam("password");
+
 
         if (email == null || password == null ||
                 email.trim().isEmpty() || password.trim().isEmpty()) {
@@ -75,21 +75,26 @@ public class UserController {
             return;
         }
 
-        if (userService.emailExists(email.trim())) {
+        if(userService.emailExists(email)){
             ctx.attribute("message", "Email findes allerede. Prøv igen");
             ctx.attribute("activeTab", "register");
             ctx.render("login");
             return;
         }
 
-        boolean created = userService.createUser(email.trim(), password.trim());
+
+        String trimEmail = email.trim();
+        String trimPassword = password.trim();
+
+
+        boolean created = userService.createUser(trimEmail, trimPassword);
 
         if (created) {
             ctx.attribute("message", "Bruger oprettet! Du kan nu logge ind.");
             ctx.attribute("activeTab", "login");
             ctx.render("login");
         } else {
-            ctx.attribute("message", "Bruger kunne ikke oprettes");
+            ctx.attribute("message", "Brugeren findes allerede");
             ctx.attribute("activeTab", "register");
             ctx.render("login");
         }
