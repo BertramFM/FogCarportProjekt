@@ -33,18 +33,12 @@ public class CustomerMapper {
         }
     }
 
-    public boolean createCustomer(String firstname,
-                                  String lastname,
-                                  String address,
-                                  String email,
-                                  String phone,
-                                  int zipcodeId) {
-
+    public boolean createCustomer(String firstname, String lastname, String address, String email, String phone, int zipcodeId) {
         String sql = """
-            insert into customers
-            (firstname, lastname, address, email, phone, zipcode_id)
-            values (?, ?, ?, ?, ?, ?)
-        """;
+                insert into customers
+                (firstname, lastname, address, email, phone, zipcode_id)
+                values (?, ?, ?, ?, ?, ?)
+            """;
 
         try (Connection con = database.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
