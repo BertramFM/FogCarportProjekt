@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MaterialMapper {
+
     private ConnectionPool connectionPool;
 
     public MaterialMapper(ConnectionPool connectionPool) {
@@ -16,22 +17,26 @@ public class MaterialMapper {
     }
 
     public Material getMaterialById(int id) {
-        String sql = "select * from materials where id = ?";
 
-        try (Connection con = connectionPool.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql = "SELECT * FROM materials WHERE id = ?";
+
+        try (
+                Connection con = connectionPool.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)
+        ) {
 
             ps.setInt(1, id);
 
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new Material(
-                           rs.getInt("id"),
-                            rs.getString("name"),
-                            rs.getString("category"),
-                            rs.getString("unit")
-                    );
-                }
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                return new Material(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("unit"),
+                        rs.getDouble("price_per_unit")
+                );
             }
 
         } catch (Exception e) {
@@ -41,27 +46,32 @@ public class MaterialMapper {
         return null;
     }
 
-    public List<Material> getAllMaterials(){
-        List<Material> materials = new ArrayList<>();
-        String sql = "select * from materials";
+    public List<Material> getAllMaterials() {
 
-        try(Connection connection = connectionPool.getConnection() ){
-            PreparedStatement ps = connection.prepareStatement(sql);
+        List<Material> materials = new ArrayList<>();
+
+        String sql = "SELECT * FROM materials";
+
+        try (Connection con = connectionPool.getConnection()) {
+
+            PreparedStatement ps = con.prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
-            while(rs.next()){
+            while (rs.next()) {
+
                 materials.add(new Material(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getString("category"),
-                        rs.getString("unit")
+                        rs.getString("unit"),
+                        rs.getDouble("price_per_unit")
                 ));
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return materials;
     }
 }
