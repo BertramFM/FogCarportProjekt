@@ -1,6 +1,7 @@
 package dk.ek.controllers;
 
 import dk.ek.entities.Employee;
+import dk.ek.persistence.CustomerMapper;
 import dk.ek.persistence.EmployeeMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -8,14 +9,14 @@ import io.javalin.http.Context;
 
 public class UserController {
 
-    public static void addRoutes(Javalin app, EmployeeMapper employeeMapper) {
+    public static void addRoutes(Javalin app, EmployeeMapper employeeMapper, CustomerMapper customerMapper) {
 
         app.get("/login", ctx -> showLogin(ctx));
         app.post("/login", ctx -> login(ctx,employeeMapper ));
         app.get("/logout", ctx -> logout(ctx));
 
         app.get("/registerUser", ctx -> showRegister(ctx));
-        app.post("/registerUser", ctx -> register(ctx, userService));
+        app.post("/registerUser", ctx -> register(ctx, customerMapper));
     }
 
     private static void showLogin(Context ctx) {
@@ -61,7 +62,7 @@ public class UserController {
         }
     }
 
-    private static void register(Context ctx, UserService userService) {
+    private static void register(Context ctx, CustomerMapper customerMapper) {
 
         String email = ctx.formParam("email");
         String password = ctx.formParam("password");
@@ -75,7 +76,7 @@ public class UserController {
             return;
         }
 
-        if(userService.emailExists(email)){
+        if(customerMapper.emailExists(email)){
             ctx.attribute("message", "Email findes allerede. Prøv igen");
             ctx.attribute("activeTab", "register");
             ctx.render("login");
@@ -87,16 +88,16 @@ public class UserController {
         String trimPassword = password.trim();
 
 
-        boolean created = userService.createUser(trimEmail, trimPassword);
+        //boolean created = CustomerMapper.createCustomer(trimEmail, trimPassword);
 
-        if (created) {
-            ctx.attribute("message", "Bruger oprettet! Du kan nu logge ind.");
-            ctx.attribute("activeTab", "login");
-            ctx.render("login");
-        } else {
-            ctx.attribute("message", "Brugeren findes allerede");
-            ctx.attribute("activeTab", "register");
-            ctx.render("login");
-        }
+//        if (created) {
+//            ctx.attribute("message", "Bruger oprettet! Du kan nu logge ind.");
+//            ctx.attribute("activeTab", "login");
+//            ctx.render("login");
+//        } else {
+//            ctx.attribute("message", "Brugeren findes allerede");
+//            ctx.attribute("activeTab", "register");
+//            ctx.render("login");
+//        }
     }
 }
