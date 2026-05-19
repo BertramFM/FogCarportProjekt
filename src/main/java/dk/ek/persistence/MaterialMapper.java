@@ -1,69 +1,108 @@
 package dk.ek.persistence;
 
 import dk.ek.entities.Materials;
+import dk.ek.exceptions.DatabaseException;
 
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MaterialMapper {
-    private ConnectionPool connectionPool;
 
-    public MaterialMapper(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
-    }
+    private static Materials getMaterialById(int id, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM materials WHERE id = ?";
 
-    public Materials getMaterialById(int id) {
-        String sql = "select * from materials where id = ?";
-
-        try (Connection con = connectionPool.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
             ps.setInt(1, id);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new Materials(
-                            rs.getInt("id"),
-                            rs.getString("name"),
-                            rs.getString("unit"),
-                            rs.getDouble("price_per_unit"),
-                            rs.getString("category")
-                    );
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public List<Materials> getAllMaterials(){
-        List<Materials> materials = new ArrayList<>();
-        String sql = "select * from materials";
-
-        try(Connection connection = connectionPool.getConnection() ){
-            PreparedStatement ps = connection.prepareStatement(sql);
-
             ResultSet rs = ps.executeQuery();
 
-            while(rs.next()){
-                materials.add(new Materials(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("unit"),
-                        rs.getDouble("price_per_unit"),
-                        rs.getString("category")
-                ));
+            if (rs.next()) {
+                return materialsMap(rs);
+            } else {
+                throw new DatabaseException("Materiale ikke fundet");
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new DatabaseException("DB fejl: ", e.getMessage());
         }
-        return materials;
+    }
+
+    private static List<Materials> getAllMaterials(ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM materials ORDER BY category, name";
+        List<Materials> materials = new ArrayList<>();
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                materials.add(materialsMap(rs));
+            }
+            return materials;
+
+        } catch (SQLException e) {
+            throw new DatabaseException("DB fejl: ", e.getMessage());
+        }
+    }
+
+    private static List<Materials> getMaterialsByCategory(String category, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM materials WHERE category = ? ORDER BY name";
+        List<Materials> materials = new ArrayList<>();
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setString(1, category);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                materials.add(materialsMap(rs));
+            }
+            return materials;
+
+        } catch (SQLException e) {
+            throw new DatabaseException("DB fejl: ", e.getMessage());
+        }
+    }
+
+    public static List<Materials> getMaterialsById (int orderId, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT m.*, om.amount FROM materials m\n" +
+                "JOIN order_materials om ON om.material_id = m.id\n" +
+                "WHERE om.order_id = ?\n" +
+                "ORDER BY m.category, m.name";
+        List<Materials> materials = new ArrayList<>();
+
+        try (
+            Connection connection = connectionPool.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)
+            ) {
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                materials.add(materialsMap(rs));
+            }
+            return materials;
+
+        } catch (SQLException e) {
+            throw new DatabaseException("DB fejl: ", e.getMessage());
+        }
+    }
+
+    private static Materials materialsMap(ResultSet rs) throws SQLException {
+        return new Materials(
+                rs.getInt("id"),
+                rs.getString("name"),
+                rs.getString("unit"),
+                rs.getDouble("price_per_unit"),
+                rs.getString("category")
+        );
     }
 }
