@@ -1,16 +1,18 @@
-package dk.ek.persistence;
+    package dk.ek.persistence;
 
-import dk.ek.entities.Carport;
-import dk.ek.entities.Material;
+    import dk.ek.entities.Carport;
+    import dk.ek.entities.Materials;
+    import dk.ek.entities.RoofType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CarportMapper {
-
-    private ConnectionPool connectionPool;
+    public class CarportMapper {
+        private ConnectionPool connectionPool;
 
     public CarportMapper(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
@@ -63,7 +65,7 @@ public class CarportMapper {
             PreparedStatement materialPs =
                     connection.prepareStatement(materialSql);
 
-            for (Material m : carport.getCarportMaterial()) {
+            for (Materials m : carport.getCarportMaterial()) {
 
                 materialPs.setInt(1, orderId);
                 materialPs.setInt(2, m.getId());
@@ -72,7 +74,7 @@ public class CarportMapper {
                 materialPs.addBatch();
             }
 
-            for (Material m : carport.getRoofMaterial()) {
+            for (Materials m : carport.getRoofMaterial()) {
 
                 materialPs.setInt(1, orderId);
                 materialPs.setInt(2, m.getId());
