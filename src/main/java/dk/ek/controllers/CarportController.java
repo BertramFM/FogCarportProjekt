@@ -12,15 +12,11 @@ import io.javalin.http.Context;
 public class CarportController {
 
     public static void addRoutes(Javalin app, CarportMapper carportMapper, MaterialMapper materialMapper) {
-        app.post("/carport", ctx ->
-                createTempCarport(ctx, materialMapper));
+        app.post("/carport", ctx -> createTempCarport(ctx, materialMapper));
 
-        app.post("/carport/save", ctx ->
-                saveCarport(ctx, carportMapper, materialMapper));
+        app.post("/carport/save", ctx -> saveCarport(ctx, carportMapper, materialMapper));
 
-        app.get("/carport", ctx ->
-                showCarportPage(ctx, materialMapper));
-
+        app.get("/carport", ctx -> showCarportPage(ctx, materialMapper));
     }
 
     private static void saveCarport(
