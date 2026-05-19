@@ -29,6 +29,9 @@
     --navbar-text: rgb(16,24,32);
 
     --main-body-background: rgb(245,245,245);
+
+    --roof-form-background: rgb(207, 218, 216);
+    --roof-form-border: rgb(55, 53, 47);
 }
 
 * {
