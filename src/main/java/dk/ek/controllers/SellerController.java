@@ -1,7 +1,6 @@
 package dk.ek.controllers;
 
 import dk.ek.entities.User;
-import dk.ek.persistence.SellerMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 

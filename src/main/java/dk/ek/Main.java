@@ -6,12 +6,9 @@ import dk.ek.controllers.MainController;
 import dk.ek.controllers.CarportController;
 import dk.ek.controllers.UserController;
 import dk.ek.controllers.SellerController;
-import dk.ek.controllers.UserController;
 import dk.ek.persistence.ConnectionPool;
 import dk.ek.persistence.CarportMapper;
 import dk.ek.persistence.MaterialMapper;
-import dk.ek.persistence.SellerMapper;
-import dk.ek.services.UserService;
 import dk.ek.persistence.EmployeeMapper;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
@@ -35,14 +32,11 @@ public class Main {
             config.fileRenderer(new JavalinThymeleaf(ThymeleafConfig.templateEngine()));
         }).start(7070);
 
-        UserService userService = new UserService(connectionPool);
         CarportMapper carportMapper = new CarportMapper(connectionPool);
         MaterialMapper materialMapper = new MaterialMapper(connectionPool);
-        SellerMapper sellerMapper = new SellerMapper(connectionPool);
 
         MainController.addRoutes(app, connectionPool);
         CarportController.addRoutes(app, carportMapper, materialMapper);
-        SellerController.addRoutes(app, sellerMapper);
         UserController.addRoutes(app, new EmployeeMapper(connectionPool));
         CarportController.addRoutes(app, new CarportMapper(connectionPool), new MaterialMapper(connectionPool));
     }

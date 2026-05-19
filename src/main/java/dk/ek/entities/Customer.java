@@ -22,6 +22,8 @@ public class Customer {
         this.city = city;
     }
 
+    public Customer(){}
+
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
