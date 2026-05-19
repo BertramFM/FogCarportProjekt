@@ -1,288 +1,206 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="da">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Bestil carport med høj rejsning</title>
-
-  <link rel="stylesheet" th:href="@{/css/header.css}">
-  <link rel="stylesheet" th:href="@{/css/pages/orderPage.css}">
-  <link rel="stylesheet" th:href="@{/css/base/base.css}">
-  <link rel="stylesheet" th:href="@{/css/components/navbar.css}">
-
-  <script th:src="@{/js/navbarSearch.js}" defer></script>
+    <th:block th:insert="~{fragments/head :: head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/pages/orderPage.css}">
+    <script th:src="@{/js/navbarSearch.js}" defer></script>
 </head>
 
 <body>
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<div class="wrapper">
+<div class="order-page">
 
-  <p class="siteRoute">
-    Byg selv-produkter / Carporte / Quick-Byg carporte
-  </p>
-
-  <div class="quick-build-text">
-
-    <div class="text-block">
-
-      <h1 class="headline">
-        Bestil Quick-Byg tilbud - carport med høj rejsning
-      </h1>
-
-      <div>
-
-        <p class="info-text">
-          Med et specialudviklet computerprogram kan vi lynhurtigt beregne prisen
-          og udskrive en skitsetegning.
-        </p>
-
-        <p class="info-text">
-          Tilbud og skitsetegning fremsendes på mail hurtigst muligt.
-        </p>
-
-        <p class="info-text">
-          Udfyld formularen omhyggeligt og klik på "Send forespørgelse".
-        </p>
-
-      </div>
-
+    <!-- Breadcrumb -->
+    <div class="order-container breadcrumb">
+        Byg selv-produkter / Carporte / Quick-Byg carporte /
+        Quick-Byg carport med høj rejsning
     </div>
 
-  </div>
-
-  <div class="form-background">
-
-    <h2>Carport med høj rejsning</h2>
-
-    <form action="/carport/save" method="post">
-
-      <!-- Roof material -->
-
-      <label>Tagmateriale *</label>
-
-      <select name="roofMaterialId" required>
-
-        <option value="" disabled selected>
-          Vælg tagmateriale
-        </option>
-
-        <option th:each="rm : ${materials}"
-                th:value="${rm.id}"
-                th:text="${rm.name}">
-        </option>
-
-      </select>
-
-
-      <!-- Roof angle -->
-
-      <label>Taghældning *</label>
-
-      <select name="roofAngle" required>
-
-        <option value="" disabled selected>
-          Vælg hældning
-        </option>
-
-        <option value="15">15 grader</option>
-        <option value="20">20 grader</option>
-        <option value="25">25 grader</option>
-        <option value="30">30 grader</option>
-        <option value="35">35 grader</option>
-        <option value="40">40 grader</option>
-        <option value="45">45 grader</option>
-
-      </select>
-
-
-      <!-- Width -->
-
-      <label>Carport bredde *</label>
-
-      <select name="width" required>
-
-        <option value="" disabled selected>
-          Vælg bredde
-        </option>
-
-        <option value="240">240 cm</option>
-        <option value="270">270 cm</option>
-        <option value="300">300 cm</option>
-
-      </select>
-
-
-      <!-- Length -->
-
-      <label>Carport længde *</label>
-
-      <select name="length" required>
-
-        <option value="" disabled selected>
-          Vælg længde
-        </option>
-
-        <option value="240">240 cm</option>
-        <option value="270">270 cm</option>
-        <option value="300">300 cm</option>
-
-      </select>
-
-
-      <!-- Carport material -->
-
-      <label>Carport materiale *</label>
-
-      <select name="carportMaterialId" required>
-
-        <option value="" disabled selected>
-          Vælg materiale
-        </option>
-
-        <option th:each="m : ${materials}"
-                th:value="${m.id}"
-                th:text="${m.name}">
-        </option>
-
-      </select>
-
-
-      <!-- Tool shed -->
-
-      <label>Redskabsrum *</label>
-
-      <select name="toolShed" required>
-
-        <option value="" disabled selected>
-          Vælg redskabsrum
-        </option>
-
-        <option value="false">
-          Uden redskabsrum
-        </option>
-
-        <option value="true">
-          Med redskabsrum
-        </option>
-
-      </select>
-
-
-      <!-- Shed width -->
-
-      <label>Redskabsrum bredde</label>
-
-      <select name="shedWidth">
-
-        <option value="" disabled selected>
-          Vælg bredde
-        </option>
-
-        <option value="240">240 cm</option>
-        <option value="270">270 cm</option>
-        <option value="300">300 cm</option>
-
-      </select>
-
-
-      <!-- Shed length -->
-
-      <label>Redskabsrum længde</label>
-
-      <select name="shedLength">
-
-        <option value="" disabled selected>
-          Vælg længde
-        </option>
-
-        <option value="240">240 cm</option>
-        <option value="270">270 cm</option>
-        <option value="300">300 cm</option>
-
-      </select>
-
-
-      <!-- Notes -->
-
-      <label>Bemærkning</label>
-
-      <textarea name="note" class="notes"></textarea>
-
-
-      <!-- Customer info -->
-
-      <label>Kontaktinformation *</label>
-
-      <input type="text"
-             name="firstname"
-             placeholder="Fornavn"
-             required>
-
-      <input type="text"
-             name="lastname"
-             placeholder="Efternavn"
-             required>
-
-      <input type="text"
-             name="address"
-             placeholder="Adresse"
-             required>
-
-      <input type="text"
-             name="zipcode"
-             placeholder="Postnummer"
-             required>
-
-      <input type="text"
-             name="city"
-             placeholder="By"
-             required>
-
-      <input type="email"
-             name="email"
-             placeholder="Email"
-             required>
-
-      <input type="text"
-             name="phone"
-             placeholder="Telefon"
-             required>
-
-
-      <!-- Consent -->
-
-      <div>
-
-        <label>Kontakt samtykke *</label>
-
-        <div class="consent">
-
-          <input type="checkbox"
-                 name="consent"
-                 required>
-
-          <p>
-            Jeg giver samtykke til, at Johannes Fog A/S må kontakte mig
-            via telefon og/eller email.
-          </p>
-
-        </div>
-
-        <a href="#" class="privacy-link">
-          Læs mere om persondatapolitik her
-        </a>
-
-      </div>
-
-
-      <button type="submit" class="submit-btn">
-        Send forespørgelse
-      </button>
-
-    </form>
-
-  </div>
+    <div class="order-container order-grid">
+
+        <!-- LEFT SIDE TEXT -->
+        <section class="order-info">
+            <h1>Bestil Quick-Byg tilbud - carport med høj rejsning</h1>
+
+            <p>
+                Med et specialudviklet computerprogram kan vi lynhurtigt
+                beregne prisen og udskrive en skitsetegning.
+            </p>
+
+            <p>
+                Tilbud og skitsetegning fremsendes på mail hurtigst muligt.
+            </p>
+
+            <p>
+                Udfyld formularen omhyggeligt og klik på
+                "Send forespørgelse".
+            </p>
+        </section>
+
+        <!-- RIGHT SIDE FORM -->
+        <section class="order-form-wrapper">
+
+            <h2>Carport med høj rejsning</h2>
+
+            <form action="/carport/save" method="post" class="order-form">
+
+                <!-- Roof material -->
+                <div class="form-group">
+                    <label>Tagmateriale *</label>
+                    <select name="roofMaterialId" required>
+                        <option value="" disabled selected hidden>
+                            Vælg tagmateriale
+                        </option>
+                        <option th:each="rm : ${materials}"
+                                th:value="${rm.id}"
+                                th:text="${rm.name}">
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Roof angle -->
+                <div class="form-group">
+                    <label>Taghældning *</label>
+                    <select name="roofAngle" required>
+                        <option value="" disabled selected hidden>
+                            Vælg hældning
+                        </option>
+                        <option value="15">15 grader</option>
+                        <option value="20">20 grader</option>
+                        <option value="25">25 grader</option>
+                        <option value="30">30 grader</option>
+                        <option value="35">35 grader</option>
+                        <option value="40">40 grader</option>
+                        <option value="45">45 grader</option>
+                    </select>
+                </div>
+
+                <!-- Width -->
+                <div class="form-group">
+                    <label>Carport bredde *</label>
+                    <select name="width" required>
+                        <option value="" disabled selected hidden>
+                            Vælg bredde
+                        </option>
+                        <option value="240">240 cm</option>
+                        <option value="270">270 cm</option>
+                        <option value="300">300 cm</option>
+                    </select>
+                </div>
+
+                <!-- Length -->
+                <div class="form-group">
+                    <label>Carport længde *</label>
+                    <select name="length" required>
+                        <option value="" disabled selected hidden>
+                            Vælg længde
+                        </option>
+                        <option value="240">240 cm</option>
+                        <option value="270">270 cm</option>
+                        <option value="300">300 cm</option>
+                    </select>
+                </div>
+
+                <!-- Carport material -->
+                <div class="form-group">
+                    <label>Carport materiale *</label>
+                    <select name="carportMaterialId" required>
+                        <option value="" disabled selected hidden>
+                            Vælg materiale
+                        </option>
+                        <option th:each="m : ${materials}"
+                                th:value="${m.id}"
+                                th:text="${m.name}">
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Tool shed -->
+                <div class="form-group">
+                    <label>Redskabsrum *</label>
+                    <select name="toolShed" required>
+                        <option value="" disabled selected hidden>
+                            Vælg redskabsrum
+                        </option>
+                        <option value="false">Uden redskabsrum</option>
+                        <option value="true">Med redskabsrum</option>
+                    </select>
+                </div>
+
+                <!-- Shed width -->
+                <div class="form-group">
+                    <label>Redskabsrum bredde</label>
+                    <select name="shedWidth">
+                        <option value="" disabled selected hidden>
+                            Vælg bredde
+                        </option>
+                        <option value="240">240 cm</option>
+                        <option value="270">270 cm</option>
+                        <option value="300">300 cm</option>
+                    </select>
+                </div>
+
+                <!-- Shed length -->
+                <div class="form-group">
+                    <label>Redskabsrum længde</label>
+                    <select name="shedLength">
+                        <option value="" disabled selected hidden>
+                            Vælg længde
+                        </option>
+                        <option value="240">240 cm</option>
+                        <option value="270">270 cm</option>
+                        <option value="300">300 cm</option>
+                    </select>
+                </div>
+
+                <!-- Notes -->
+                <div class="form-group">
+                    <label>Bemærkning</label>
+                    <textarea name="note"></textarea>
+                </div>
+
+                <!-- Contact -->
+                <div class="form-group">
+                    <label>Kontaktinformation *</label>
+
+                    <div class="input-grid">
+                        <input type="text" name="firstname" placeholder="Fornavn" required>
+                        <input type="text" name="lastname" placeholder="Efternavn" required>
+                        <input type="text" name="address" placeholder="Adresse" required>
+                        <input type="text" name="zipcode" placeholder="Postnummer" required>
+                        <input type="text" name="city" placeholder="By" required>
+                        <input type="email" name="email" placeholder="Email" required>
+                        <input type="text" name="phone" placeholder="Telefon" required>
+                    </div>
+                </div>
+
+                <!-- Consent -->
+                <div class="form-group consent-group">
+                    <label class="consent-label">
+                        <input type="checkbox" name="consent" required>
+                        <span>
+                            Jeg giver samtykke til, at Johannes Fog A/S må
+                            kontakte mig via telefon og/eller e-mail.
+                        </span>
+                    </label>
+
+                    <a href="#" class="privacy-link">
+                        Læs mere om persondatapolitik her
+                    </a>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Send forespørgelse
+                </button>
+
+            </form>
+
+        </section>
+
+    </div>
 
 </div>
 
