@@ -15,23 +15,10 @@ import java.util.List;
 
 public class CustomerMapper {
 
-    public static void createCustomer(Customers customer, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "INSERT INTO customers (firstname, lastname, address, email, phone, zipcode) VALUES (?, ?, ?, ?, ?, ?)";
-
-        try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql)
-        ) {
-            ps.setString(1, customer.getFirstname());
-            ps.setString(2, customer.getLastname());
-            ps.setString(3, customer.getAddress());
-            ps.setString(4, customer.getEmail());
-            ps.setString(5, customer.getPhone());
-            ps.setInt(6, customer.getZipcode());
-    public boolean emailExists(String email) {
+    public static boolean emailExists(String email, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "select 1 from customers where email = ?";
 
-        try (Connection con = database.getConnection();
+        try (Connection con = connectionPool.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, email);
@@ -46,24 +33,19 @@ public class CustomerMapper {
         }
     }
 
-    public boolean createCustomer(String firstname, String lastname, String address, String email, String phone, int zipcodeId) {
-        String sql = """
-                insert into customers
-                (firstname, lastname, address, email, phone, zipcode_id)
-                values (?, ?, ?, ?, ?, ?)
-            """;
+    public static void createCustomer(Customers customer, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "INSERT INTO customers (firstname, lastname, address, email, phone, zipcode) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection con = database.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            if (emailExists(email)) return false;
-
-            ps.setString(1, firstname);
-            ps.setString(2, lastname);
-            ps.setString(3, address);
-            ps.setString(4, email);
-            ps.setString(5, phone);
-            ps.setInt(6, zipcodeId);
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setString(1, customer.getFirstname());
+            ps.setString(2, customer.getLastname());
+            ps.setString(3, customer.getAddress());
+            ps.setString(4, customer.getEmail());
+            ps.setString(5, customer.getPhone());
+            ps.setInt(6, customer.getZipcode());
 
             ps.executeUpdate();
 

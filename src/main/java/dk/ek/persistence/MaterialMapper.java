@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MaterialMapper {
 
-    private static Materials getMaterialById(int id, ConnectionPool connectionPool) throws DatabaseException {
+    public static Materials getMaterialById(int id, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT * FROM materials WHERE id = ?";
 
         try (
@@ -34,7 +34,7 @@ public class MaterialMapper {
         }
     }
 
-    private static List<Materials> getAllMaterials(ConnectionPool connectionPool) throws DatabaseException {
+    public static List<Materials> getAllMaterials(ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT * FROM materials ORDER BY category, name";
         List<Materials> materials = new ArrayList<>();
 
@@ -53,7 +53,7 @@ public class MaterialMapper {
         }
     }
 
-    private static List<Materials> getMaterialsByCategory(String category, ConnectionPool connectionPool) throws DatabaseException {
+    public static List<Materials> getMaterialsByCategory(String category, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT * FROM materials WHERE category = ? ORDER BY name";
         List<Materials> materials = new ArrayList<>();
 

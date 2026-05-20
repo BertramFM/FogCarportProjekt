@@ -1,7 +1,6 @@
 package dk.ek.persistence;
 
 import dk.ek.entities.Employee;
-import dk.ek.persistence.ConnectionPool;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,18 +8,13 @@ import java.util.List;
 
 public class EmployeeMapper {
 
-    private final ConnectionPool database;
-
-    public EmployeeMapper(ConnectionPool database) {
-        this.database = database;
-    }
-
-    public Employee getEmployeeByEmail(String email) {
+    public static Employee getEmployeeByEmail(String email, ConnectionPool connectionPool) {
 
         String sql = "select * from employees where email = ?";
 
-        try (Connection con = database.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
 
             ps.setString(1, email);
 
@@ -46,11 +40,12 @@ public class EmployeeMapper {
         return null;
     }
 
-    public boolean emailExists(String email) {
+    public boolean emailExists(String email, ConnectionPool connectionPool) {
         String sql = "select 1 from employees where email = ?";
 
-        try (Connection con = database.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
 
             ps.setString(1, email);
 
@@ -64,17 +59,18 @@ public class EmployeeMapper {
         }
     }
 
-    public boolean createEmployee(String firstname, String lastname, String email, String role) {
+    public boolean createEmployee(String firstname, String lastname, String email, String role, ConnectionPool connectionPool) {
 
         String sql = """
             insert into employees (firstname, lastname, email, role)
             values (?, ?, ?, ?)
         """;
 
-        try (Connection con = database.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)
+            ) {
 
-            if (emailExists(email)) return false;
+            if (emailExists(email, connectionPool)) return false;
 
             ps.setString(1, firstname);
             ps.setString(2, lastname);
@@ -90,12 +86,13 @@ public class EmployeeMapper {
         }
     }
 
-    public Employee getEmployeeById(int id) {
+    public Employee getEmployeeById(int id, ConnectionPool connectionPool) {
 
         String sql = "select * from employees where id = ?";
 
-        try (Connection con = database.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
 
             ps.setInt(1, id);
 
@@ -121,15 +118,18 @@ public class EmployeeMapper {
         return null;
     }
 
-    public List<Employee> getAllEmployees() {
+    public static List<Employee> getAllEmployees(ConnectionPool connectionPool) {
 
-        List<Employee> list = new ArrayList<>();
+        List<Employee> EmployeeList = new ArrayList<>();
 
         String sql = "select * from employees";
 
-        try (Connection con = database.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);
+             ) {
+
+            ResultSet rs = ps.executeQuery();
+
 
             while (rs.next()) {
 
@@ -141,13 +141,13 @@ public class EmployeeMapper {
                 employee.setEmail(rs.getString("email"));
                 employee.setRole(rs.getString("role"));
 
-                list.add(employee);
+                EmployeeList.add(employee);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return list;
+        return EmployeeList;
     }
 }
