@@ -82,6 +82,7 @@ public class CarportController {
             carportMapper.saveCarport(carport);
 
             ctx.sessionAttribute("carport", carport);
+            MailController.sendOrderConfirmation(ctx);
 
             ctx.render("orderConfirmation.html");
         } catch (Exception e) {

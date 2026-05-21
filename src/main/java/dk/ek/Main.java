@@ -2,10 +2,7 @@ package dk.ek;
 
 import dk.ek.config.SessionConfig;
 import dk.ek.config.ThymeleafConfig;
-import dk.ek.controllers.MainController;
-import dk.ek.controllers.CarportController;
-import dk.ek.controllers.SellerController;
-import dk.ek.controllers.UserController;
+import dk.ek.controllers.*;
 import dk.ek.persistence.*;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;

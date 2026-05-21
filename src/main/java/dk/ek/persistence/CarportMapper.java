@@ -78,11 +78,11 @@ public class CarportMapper {
     public void saveCarport(Carport carport) {
 
         String orderSql = """
-                INSERT INTO orders
-                (customer_id, employee_id, roof_type, width, length,
-                 tool_shed, shed_width, shed_length, note, status, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now())
-                """;
+        INSERT INTO orders
+        (customer_id, employee_id, roof_type, width, length,
+         tool_shed, shed_width, shed_length, note, status, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now())
+        """;
 
         try (Connection connection = connectionPool.getConnection()) {
 
@@ -91,12 +91,18 @@ public class CarportMapper {
                     Statement.RETURN_GENERATED_KEYS
             );
 
+            ps.setInt(1, 3);
+
+            // employee_id
+            ps.setInt(2, 1);
+
             ps.setString(3, carport.getRoofType().getName());
 
             ps.setInt(4, carport.getWidth());
             ps.setInt(5, carport.getLength());
 
             ps.setBoolean(6, false);
+
             ps.setInt(7, 0);
             ps.setInt(8, 0);
 
