@@ -114,7 +114,7 @@ public class CustomerMapper {
                 customer.setAddress(rs.getString("address"));
                 customer.setEmail(rs.getString("email"));
                 customer.setPhone(rs.getString("phone"));
-                customer.setZipcodeId(rs.getInt("zipcode_id"));
+                customer.setZipcodeId(rs.getInt("zipcode"));
 
                 list.add(customer);
             }

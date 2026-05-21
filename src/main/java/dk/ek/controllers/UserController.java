@@ -12,7 +12,7 @@ public class UserController {
     public static void addRoutes(Javalin app, EmployeeMapper employeeMapper, CustomerMapper customerMapper) {
 
         app.get("/login", ctx -> showLogin(ctx));
-        app.post("/login", ctx -> login(ctx,employeeMapper ));
+       // app.post("/login", ctx -> login(ctx,employeeMapper ));
         app.get("/logout", ctx -> logout(ctx));
 
         app.get("/registerUser", ctx -> showRegister(ctx));
@@ -51,7 +51,7 @@ public class UserController {
             ctx.sessionAttribute("currentUser", employee);
 
             if ("Sales".equals(employee.getRole())) {
-                ctx.render("admin.html");
+                ctx.render("seller.html");
             } else {
                 ctx.redirect("/");
             }

@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CarportMapper {
 
@@ -14,6 +16,63 @@ public class CarportMapper {
 
     public CarportMapper(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
+    }
+
+    public Carport getCarportById(int id) {
+        String sql = "SELECT * FROM orders WHERE id = ?";
+        try(Connection connection = connectionPool.getConnection()){
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                Carport carport = new Carport();
+                carport.setId(rs.getInt("id"));
+                carport.setWidth(rs.getInt("width"));
+                carport.setLength(rs.getInt("length"));
+                carport.setToolShed(rs.getBoolean("tool_shed"));
+                carport.setShedWidth(rs.getInt("shed_width"));
+                carport.setShedLength(rs.getInt("shed_length"));
+                carport.setNote(rs.getString("note"));
+                carport.setStatus(rs.getString("status"));
+                carport.setCreatedAt(rs.getDate("created_at"));
+                return carport;
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Carport> getAllOrders() {
+        List<Carport> allOrders = new ArrayList<>();
+        String sql = "SELECT * FROM orders";
+        try(Connection connection = connectionPool.getConnection()){
+            PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery();
+
+             while(rs.next()){
+                 allOrders.add(new Carport(
+                         rs.getInt("id"),
+                         rs.getInt("customer_id"),
+                         rs.getInt("employee_id"),
+                         rs.getString("roof_type"),
+                         rs.getInt("width"),
+                         rs.getInt("length"),
+                         rs.getBoolean("tool_shed"),
+                         rs.getInt("shed_width"),
+                         rs.getInt("shed_length"),
+                         rs.getString("note"),
+                         rs.getString("status"),
+                         rs.getDate("created_at")
+                 ));
+             }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return allOrders;
     }
 
     public void saveCarport(Carport carport) {

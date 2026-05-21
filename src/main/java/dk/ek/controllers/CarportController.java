@@ -32,35 +32,61 @@ public class CarportController {
             return;
         }
 
-        int roofMaterialId =
-                Integer.parseInt(ctx.formParam("roofMaterialId"));
+        try {
 
-        int carportMaterialId =
-                Integer.parseInt(ctx.formParam("carportMaterialId"));
+            int roofMaterialId = Integer.parseInt(ctx.formParam("roofMaterialId"));
+            int carportMaterialId = Integer.parseInt(ctx.formParam("carportMaterialId"));
 
-        int length =
-                Integer.parseInt(ctx.formParam("length"));
+            Material roofMaterial = materialMapper.getMaterialById(roofMaterialId);
+            Material carportMaterial = materialMapper.getMaterialById(carportMaterialId);
 
-        int width =
-                Integer.parseInt(ctx.formParam("width"));
+            int length = Integer.parseInt(ctx.formParam("length"));
+            int width = Integer.parseInt(ctx.formParam("width"));
 
-        Material roofMaterial =
-                materialMapper.getMaterialById(roofMaterialId);
+            boolean toolShed = Boolean.parseBoolean(ctx.formParam("toolShed"));
 
-        Material carportMaterial =
-                materialMapper.getMaterialById(carportMaterialId);
+            Integer shedWidth = null;
+            Integer shedLength = null;
 
-        carport.setLength(length);
-        carport.setWidth(width);
+            if (toolShed) {
+                String shedWidthParam = ctx.formParam("shedWidth");
+                String shedLengthParam = ctx.formParam("shedLength");
 
-        carport.getRoofMaterial().add(roofMaterial);
-        carport.getCarportMaterial().add(carportMaterial);
+                if (shedWidthParam != null && !shedWidthParam.isEmpty()) {
+                    shedWidth = Integer.parseInt(shedWidthParam);
+                }
 
-        ctx.sessionAttribute("carport", carport);
+                if (shedLengthParam != null && !shedLengthParam.isEmpty()) {
+                    shedLength = Integer.parseInt(shedLengthParam);
+                }
+            }
 
-        carportMapper.saveCarport(carport);
+            String note = ctx.formParam("note");
 
-        ctx.render("orderConfirmation.html");
+            String firstname = ctx.formParam("firstname");
+            String lastname = ctx.formParam("lastname");
+
+            String address = ctx.formParam("address");
+            String zipcode = ctx.formParam("zipcode");
+            String city = ctx.formParam("city");
+
+            String email = ctx.formParam("email");
+            String phone = ctx.formParam("phone");
+
+            carport.setLength(length);
+            carport.setWidth(width);
+
+            carport.getRoofMaterial().add(roofMaterial);
+            carport.getCarportMaterial().add(carportMaterial);
+
+            carportMapper.saveCarport(carport);
+
+            ctx.sessionAttribute("carport", carport);
+
+            ctx.render("orderConfirmation.html");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
