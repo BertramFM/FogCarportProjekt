@@ -38,7 +38,8 @@ public class Carport {
     private String email;
     private String phone;
 
-    public Carport() {}
+    public Carport() {
+    }
 
     public Carport(
             int id,
@@ -52,8 +53,7 @@ public class Carport {
             int shedLength,
             String note,
             String status,
-            Date createdAt
-    ) {
+            Date createdAt) {
         this.id = id;
         this.customerId = customerId;
         this.employeeId = employeeId;
@@ -68,17 +68,37 @@ public class Carport {
         this.roofType = RoofType;
     }
 
-    public int getCustomerId() { return customerId; }
-    public void setCustomerId(int customerId) { this.customerId = customerId; }
+    public int getCustomerId() {
+        return customerId;
+    }
 
-    public int getEmployeeId() { return employeeId; }
-    public void setEmployeeId(int employeeId) { this.employeeId = employeeId; }
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public int getEmployeeId() {
+        return employeeId;
+    }
 
-    public Date getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public int getId() {
         return id;
