@@ -54,7 +54,7 @@
         <td th:text="${order.roofType}"></td>
         <td th:text="${order.width}"></td>
         <td th:text="${order.length}"></td>
-        <td th:text="${order.toolShed ? 'Ja' : 'Nej'}"></td>
+        <td th:text="${order.isToolShed ? 'Ja' : 'Nej'}"></td>
         <td th:text="${order.status}"></td>
         <td th:text="${order.createdAt}"></td>
         <td>
@@ -67,7 +67,7 @@
 
 <button onclick="drawOrders()">Draw all orders</button>
 
-<svg id="svg" width="1200" height="800" style="border:1px solid black"></svg>
+<svg id="svg" width="1200" height="10" style="border:1px solid black"></svg>
 
 </body>
 

@@ -30,7 +30,7 @@ public class SellerController {
         }
 
         ctx.attribute("customers", CustomerMapper.getAllCustomers(connectionPool));
-        ctx.attribute("orders", OrderMapper.getAllOrders(connectionPool));
+
 
         ctx.render("seller.html");
     }

@@ -5,6 +5,7 @@ import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.ConnectionPool;
 import dk.ek.persistence.CustomerMapper;
 import dk.ek.persistence.EmployeeMapper;
+import dk.ek.persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -53,6 +54,11 @@ public class UserController {
             ctx.sessionAttribute("currentUser", employee);
 
             if ("sales".equals(employee.getRole())) {
+                try {
+                    ctx.attribute("orders", OrderMapper.getAllOrders(connectionPool));
+                } catch (DatabaseException e) {
+                    throw new RuntimeException(e);
+                }
                 ctx.render("seller.html");
             } else {
                 ctx.redirect("/");
