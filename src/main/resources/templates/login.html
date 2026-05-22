@@ -44,8 +44,7 @@
 
         <!-- LOGIN -->
 
-        <div id="loginForm"
-             class="auth-form active">
+        <div id="loginForm" class="auth-form active">
 
             <h1>Login</h1>
 
@@ -57,15 +56,12 @@
                        name="email"
                        required>
 
-<!--                <label>Telefon</label>-->
-<!--                <input type="tel"-->
-<!--                       name="phone"-->
-<!--                       required>-->
-
                 <label>Adgangskode</label>
                 <input type="password"
                        name="password"
                        required>
+
+                <p th:if="${msg != null}" th:text="${msg}"></p>
 
                 <button type="submit">
                     Login
