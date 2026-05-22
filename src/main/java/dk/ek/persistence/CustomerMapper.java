@@ -2,7 +2,7 @@ package dk.ek.persistence;
 
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.entities.Customer;
-import org.mindrot.jbcrypt.BCrypt;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

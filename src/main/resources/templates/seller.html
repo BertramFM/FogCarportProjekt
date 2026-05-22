@@ -5,7 +5,6 @@
     <title>Sælger dashboard</title>
     <link rel="stylesheet" th:href="@{/css/pages/seller.css}">
 </head>
-
 <body>
 
 <main class="seller-page">
@@ -74,7 +73,7 @@
                         <td th:text="${order.roofType}"></td>
                         <td th:text="${order.width}"></td>
                         <td th:text="${order.length}"></td>
-                        <td th:text="${order.toolShed ? 'Ja' : 'Nej'}"></td>
+                        <td th:text="${order.isToolShed ? 'Ja' : 'Nej'}"></td>
                         <td th:text="${order.status}"></td>
                         <td th:text="${order.createdAt}"></td>
                         <td>
@@ -90,6 +89,23 @@
         <section class="dashboard-card">
             <div class="drawing-header">
                 <h2>Tegninger</h2>
+    <tr th:each="order : ${orders}">
+        <td th:text="${order.id}"></td>
+        <td th:text="${order.customerId}"></td>
+        <td th:text="${order.employeeId}"></td>
+        <td th:text="${order.roofType}"></td>
+        <td th:text="${order.width}"></td>
+        <td th:text="${order.length}"></td>
+        <td th:text="${order.isToolShed ? 'Ja' : 'Nej'}"></td>
+        <td th:text="${order.status}"></td>
+        <td th:text="${order.createdAt}"></td>
+        <td>
+            <a th:href="@{'/seller/draw/' + ${order.id}}">
+                View drawing
+            </a>
+        </td>
+    </tr>
+</table>
 
                 <button class="draw-button" onclick="drawOrders()">
                     Draw all orders
@@ -106,7 +122,9 @@
 </main>
 
 <script th:inline="javascript">
+
     const orders = /*[[${orders}]]*/ [];
+
 </script>
 
 <script src="/js/drawing.js"></script>
