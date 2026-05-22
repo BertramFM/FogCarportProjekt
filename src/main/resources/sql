@@ -1,257 +1,102 @@
 BEGIN;
 
--- =========================
--- ZIP CODES
--- =========================
+DROP TABLE IF EXISTS public.order_materials CASCADE;
+DROP TABLE IF EXISTS public.orders CASCADE;
+DROP TABLE IF EXISTS public.customers CASCADE;
+DROP TABLE IF EXISTS public.employees CASCADE;
+DROP TABLE IF EXISTS public.materials CASCADE;
+DROP TABLE IF EXISTS public.zip_code CASCADE;
 
 CREATE TABLE IF NOT EXISTS public.zip_code
 (
     zip_code integer NOT NULL,
-    city varchar(100) NOT NULL,
+    city character varying(100) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT zip_code_pkey PRIMARY KEY (zip_code)
 );
-
--- =========================
--- USERS (LOGIN SYSTEM)
--- =========================
-
-CREATE TABLE IF NOT EXISTS public.users
-(
-    id serial PRIMARY KEY,
-    email varchar(100) NOT NULL UNIQUE,
-    password varchar(100) NOT NULL,
-    role varchar(50) NOT NULL DEFAULT 'user'
-);
-
--- =========================
--- CUSTOMERS
--- =========================
-
 CREATE TABLE IF NOT EXISTS public.customers
 (
     id serial NOT NULL,
-    firstname varchar(50) NOT NULL,
-    lastname varchar(50) NOT NULL,
-    address varchar(100) NOT NULL,
-    email varchar(100) NOT NULL UNIQUE,
-    phone varchar(20) NOT NULL,
-    zipcode integer NOT NULL,
-
-    CONSTRAINT customers_pkey PRIMARY KEY (id)
+    firstname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    lastname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    address character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    phone character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    zip_code integer NOT NULL,
+    password_hash character varying(100),
+    CONSTRAINT customers_pkey PRIMARY KEY (id),
+    CONSTRAINT customers_email_key UNIQUE (email)
 );
-
--- =========================
--- EMPLOYEES
--- =========================
-
 CREATE TABLE IF NOT EXISTS public.employees
 (
     id serial NOT NULL,
-    firstname varchar(50) NOT NULL,
-    lastname varchar(50) NOT NULL,
-    email varchar(100) NOT NULL UNIQUE,
-    role varchar(50) NOT NULL DEFAULT 'sales',
-
-    CONSTRAINT employees_pkey PRIMARY KEY (id)
+    firstname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    lastname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    role character varying(50) COLLATE pg_catalog."default" NOT NULL DEFAULT 'sales'::character varying,
+    password_hash character varying(100) NOT NULL,
+    CONSTRAINT employees_pkey PRIMARY KEY (id),
+    CONSTRAINT employees_email_key UNIQUE (email)
 );
-
--- =========================
--- MATERIALS
--- =========================
-
 CREATE TABLE IF NOT EXISTS public.materials
 (
     id serial NOT NULL,
-    name varchar(100) NOT NULL,
-    unit varchar(20) NOT NULL,
-    price_per_unit numeric(10,2) NOT NULL,
-
+    name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    unit character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    price_per_unit numeric(10, 2) NOT NULL,
+    category character varying(50) COLLATE pg_catalog."default",
     CONSTRAINT materials_pkey PRIMARY KEY (id)
 );
-
--- =========================
--- ORDERS
--- =========================
-
 CREATE TABLE IF NOT EXISTS public.orders
 (
     id serial NOT NULL,
-
     customer_id integer NOT NULL,
-
     employee_id integer,
-
-    roof_type varchar(50) NOT NULL,
-
+    roof_type character varying(50) COLLATE pg_catalog."default" NOT NULL,
     width integer NOT NULL,
     length integer NOT NULL,
-
-    tool_shed boolean NOT NULL DEFAULT false,
-
+    tool_shed boolean NOT NULL,
     shed_width integer,
     shed_length integer,
-
-    note text,
-
-    status varchar(20) NOT NULL DEFAULT 'unclaimed',
-
-    created_at timestamp NOT NULL DEFAULT now(),
-
+    note text COLLATE pg_catalog."default",
+    status character varying(20) COLLATE pg_catalog."default" NOT NULL DEFAULT 'unclaimed'::character varying,
+    created_at timestamp without time zone NOT NULL DEFAULT now(),
+    roof_slope integer,
     CONSTRAINT orders_pkey PRIMARY KEY (id)
 );
-
--- =========================
--- ORDER MATERIALS
--- =========================
-
 CREATE TABLE IF NOT EXISTS public.order_materials
 (
     id serial NOT NULL,
-
     order_id integer NOT NULL,
     material_id integer NOT NULL,
-
-    amount integer NOT NULL DEFAULT 1,
-
+    amount integer NOT NULL,
     CONSTRAINT order_materials_pkey PRIMARY KEY (id)
 );
 
--- =========================
--- FOREIGN KEYS
--- =========================
-
 ALTER TABLE IF EXISTS public.customers
-    ADD CONSTRAINT customers_zipcode_fkey
-    FOREIGN KEY (zipcode)
-    REFERENCES public.zip_code (zip_code);
-
-ALTER TABLE IF EXISTS public.orders
-    ADD CONSTRAINT orders_customer_id_fkey
-    FOREIGN KEY (customer_id)
-    REFERENCES public.customers (id);
-
-ALTER TABLE IF EXISTS public.orders
-    ADD CONSTRAINT orders_employee_id_fkey
-    FOREIGN KEY (employee_id)
-    REFERENCES public.employees (id);
-
+    ADD CONSTRAINT customers_zip_code_fkey FOREIGN KEY (zip_code)
+    REFERENCES public.zip_code (zip_code) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
 ALTER TABLE IF EXISTS public.order_materials
-    ADD CONSTRAINT order_materials_order_id_fkey
-    FOREIGN KEY (order_id)
-    REFERENCES public.orders (id);
-
+    ADD CONSTRAINT order_materials_material_id_fkey FOREIGN KEY (material_id)
+    REFERENCES public.materials (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
 ALTER TABLE IF EXISTS public.order_materials
-    ADD CONSTRAINT order_materials_material_id_fkey
-    FOREIGN KEY (material_id)
-    REFERENCES public.materials (id);
+    ADD CONSTRAINT order_materials_order_id_fkey FOREIGN KEY (order_id)
+    REFERENCES public.orders (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+ALTER TABLE IF EXISTS public.orders
+    ADD CONSTRAINT orders_customer_id_fkey FOREIGN KEY (customer_id)
+    REFERENCES public.customers (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+ALTER TABLE IF EXISTS public.orders
+    ADD CONSTRAINT orders_employee_id_fkey FOREIGN KEY (employee_id)
+    REFERENCES public.employees (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
 
--- =========================
--- TEST USERS
--- =========================
-
-INSERT INTO users (email, password, role)
-VALUES
-('admin@test.dk', '1234', 'admin'),
-('seller@test.dk', '1234', 'sales'),
-('user@test.dk', '1234', 'user');
-
--- =========================
--- TEST EMPLOYEE
--- =========================
-
-INSERT INTO employees (firstname, lastname, email, role)
-VALUES
-('Test', 'Seller', 'seller@test.dk', 'sales');
-
--- =========================
--- TEST ZIPCODES
--- =========================
-
-INSERT INTO zip_code (zip_code, city)
-VALUES
-(2800, 'Kongens Lyngby'),
-(2100, 'København Ø'),
-(5000, 'Odense');
-
--- =========================
--- TEST CUSTOMERS
--- =========================
-
-INSERT INTO customers
-(firstname, lastname, address, email, phone, zipcode)
-VALUES
-('Mads', 'Jensen', 'Testvej 1', 'mads@test.dk', '12345678', 2800),
-
-('Anna', 'Nielsen', 'Eksempelvej 12', 'anna@test.dk', '87654321', 2100);
-
--- =========================
--- TEST MATERIALS
--- =========================
-
-INSERT INTO materials (name, unit, price_per_unit)
-VALUES
-('Træbjælke', 'stk', 99.95),
-
-('Tagplade', 'stk', 149.50),
-
-('Skruer', 'pakke', 49.95);
-
--- =========================
--- TEST ORDERS
--- =========================
-
-INSERT INTO orders
-(
-    customer_id,
-    employee_id,
-    roof_type,
-    width,
-    length,
-    tool_shed,
-    shed_width,
-    shed_length,
-    note,
-    status
-)
-VALUES
-(
-    1,
-    1,
-    'Flat Roof',
-    600,
-    780,
-    true,
-    200,
-    200,
-    'Kunden ønsker sort tag',
-    'processing'
-),
-
-(
-    2,
-    1,
-    'High Roof',
-    500,
-    700,
-    false,
-    null,
-    null,
-    'Ingen kommentar',
-    'unclaimed'
-);
-
--- =========================
--- TEST ORDER MATERIALS
--- =========================
-
-INSERT INTO order_materials
-(order_id, material_id, amount)
-VALUES
-(1, 1, 4),
-(1, 2, 10),
-(1, 3, 2),
-
-(2, 1, 3),
-(2, 2, 8);
-
-COMMIT;
+END;

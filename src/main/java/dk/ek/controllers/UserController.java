@@ -1,24 +1,24 @@
 package dk.ek.controllers;
 
 import dk.ek.entities.Employee;
-import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.ConnectionPool;
-import dk.ek.persistence.CustomerMapper;
 import dk.ek.persistence.EmployeeMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-
 
 public class UserController {
 
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
 
         app.get("/login", ctx -> showLogin(ctx));
-        app.post("/login", ctx -> login(ctx, connectionPool ));
+        app.post("/login", ctx -> login(ctx, connectionPool));
         app.get("/logout", ctx -> logout(ctx));
 
+        app.post("/employeeLogin", ctx -> employeeLogin(ctx, connectionPool));
+        app.get("/seller", ctx -> showSeller(ctx, connectionPool));
+
         app.get("/registerUser", ctx -> showRegister(ctx));
-//        app.post("/registerUser", ctx -> register(ctx, connectionPool));
+        // app.post("/registerUser", ctx -> register(ctx, connectionPool));
     }
 
     private static void showLogin(Context ctx) {
@@ -53,7 +53,7 @@ public class UserController {
             ctx.sessionAttribute("currentUser", employee);
 
             if ("sales".equals(employee.getRole())) {
-                ctx.render("seller.html");
+                ctx.redirect("/seller");
             } else {
                 ctx.redirect("/");
             }
@@ -63,6 +63,16 @@ public class UserController {
             ctx.render("login");
         }
     }
+
+    private static void employeeLogin(Context ctx, ConnectionPool connectionPool) {
+        ctx.redirect("/seller");
+    }
+
+    private static void showSeller(Context ctx, ConnectionPool connectionPool) {
+        ctx.render("seller.html");
+    }
+}
+
 
 //    private static void register(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
 //
@@ -103,4 +113,3 @@ public class UserController {
 //            ctx.render("login");
 //        }
 //    }
-}

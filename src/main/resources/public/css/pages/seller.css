@@ -1,0 +1,140 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #004b73;
+    color: #111;
+}
+
+.seller-page {
+    min-height: 100vh;
+    padding: 40px;
+    background: #004b73;
+}
+
+.seller-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.seller-header {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+.seller-header h1 {
+    font-size: 38px;
+    margin-bottom: 8px;
+}
+
+.seller-header p {
+    color: #555;
+    font-weight: bold;
+}
+
+.back-button {
+    background: #004b73;
+    color: white;
+    text-decoration: none;
+    padding: 14px 20px;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.dashboard-card {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+.dashboard-card h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+th {
+    background: #004b73;
+    color: white;
+    text-align: left;
+    padding: 14px;
+}
+
+td {
+    padding: 13px;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+    background: #f4f4f4;
+}
+
+tr:hover {
+    background: #eaf3f8;
+}
+
+.table-link {
+    color: #004b73;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.table-link:hover {
+    text-decoration: underline;
+}
+
+.drawing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.draw-button {
+    background: #004b73;
+    color: white;
+    border: none;
+    padding: 14px 22px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.draw-button:hover,
+.back-button:hover {
+    opacity: 0.9;
+}
+
+.svg-wrapper {
+    width: 100%;
+    overflow: auto;
+    border: 2px solid #004b73;
+    border-radius: 6px;
+}
+
+#svg {
+    background: white;
+    display: block;
+}
