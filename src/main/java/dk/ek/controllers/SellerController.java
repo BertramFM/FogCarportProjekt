@@ -12,7 +12,7 @@ public class SellerController {
 
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.get("/seller", ctx -> showSellerPage(ctx, connectionPool));
-        app.post("/login", ctx -> login(ctx, connectionPool));
+        //app.post("/seller/login", ctx -> login(ctx, connectionPool));
         app.get("/seller/draw/{id}", ctx -> showDrawing(ctx, connectionPool));
     }
 
@@ -38,7 +38,7 @@ public class SellerController {
     private static void login(Context ctx, ConnectionPool connectionPool) {
         String email = ctx.formParam("email");
 
-        Employee employee = EmployeeMapper.getEmployeeByEmail(email);
+        Employee employee = EmployeeMapper.getEmployeeByEmail(email, connectionPool);
 
         if ("sales".equalsIgnoreCase(employee.getRole())) {
             ctx.sessionAttribute("currentUser", employee);
@@ -53,7 +53,7 @@ public class SellerController {
     private static void showDrawing(Context ctx, ConnectionPool connectionPool) {
         int orderId = Integer.parseInt(ctx.pathParam("id"));
 
-        Carport order = CarportMapper.getCarportById(orderId);
+        Carport order = CarportMapper.getCarportById(orderId, connectionPool);
 
         ctx.attribute("order", order);
         ctx.render("drawing.html");
