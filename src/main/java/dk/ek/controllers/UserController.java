@@ -9,6 +9,7 @@ import dk.ek.persistence.EmployeeMapper;
 import dk.ek.persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import org.mindrot.jbcrypt.BCrypt;
 
 
 public class UserController {
@@ -47,25 +48,52 @@ public class UserController {
         String password = ctx.formParam("password");
 
         if (email == null || email.trim().isEmpty()) {
-            ctx.attribute("message", "Email skal udfyldes");
+            ctx.attribute("msg", "Email skal udfyldes");
             ctx.attribute("activeTab", "login");
-            ctx.render("/login");
+            ctx.render("login");
             return;
         }
 
-        Customer customer = CustomerMapper.getCustomerByEmail(email, connectionPool);
-
-        if (customer.getPassword() == null){
-            ctx.render("/login");
-        } else if (customer.getPassword().matches(password)) {
-            ctx.sessionAttribute("currentUser", customer);
-
-
-        } else {
-            ctx.attribute("message", "Forkert mail eller kodeord");
+        if (!CustomerMapper.emailExists(email.trim(), connectionPool)) {
+            ctx.attribute("msg", "Email eller adgangskode er forkert");
             ctx.attribute("activeTab", "login");
             ctx.render("login");
+            return;
         }
+
+        Customer customer = CustomerMapper.getCustomerByEmail(email.trim(), connectionPool);
+
+        // === Skal fjernes når Bcrypt er implementeret ===
+        if (customer.getPassword() == null){
+            ctx.attribute("msg", "Du har ikke oprettet en konto. Gå til 'Registrer' og opret en konto");
+            ctx.attribute("activeTab", "login");
+            ctx.render("login");
+            return;
+        } else if (customer.getPassword().matches(password)) {
+            ctx.sessionAttribute("currentUser", customer);
+            ctx.redirect("/loginPage");
+        } else {
+            ctx.attribute("msg", "Email eller adgangskode er forkert");
+            ctx.render("login");
+        }
+
+        // === Tilføj når BCrypt bliver implementeret
+//        if (customer.getPassword() == null) {
+//            ctx.attribute("msg", "Du har ikke oprettet en konto. Gå til 'Registrer' og opret en konto");
+//            ctx.attribute("activeTab", "login");
+//            ctx.render("login");
+//            return;
+//        }
+//
+//        if (!BCrypt.checkpw(password, customer.getPassword())) {
+//            ctx.attribute("msg", "Forkert email eller adgangskode");
+//            ctx.attribute("activeTab", "login");
+//            ctx.render("login");
+//            return;
+//        }
+//
+//        ctx.sessionAttribute("currentUser", customer);
+//        ctx.redirect("/login");
     }
 
     private static void employeeLogin(Context ctx, ConnectionPool connectionPool) {
