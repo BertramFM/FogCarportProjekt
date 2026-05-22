@@ -7,9 +7,9 @@ import dk.ek.persistence.ConnectionPool;
 import dk.ek.persistence.CustomerMapper;
 import dk.ek.persistence.EmployeeMapper;
 import dk.ek.persistence.OrderMapper;
+import dk.ek.services.Validator;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-import org.mindrot.jbcrypt.BCrypt;
 
 
 public class UserController {
@@ -17,14 +17,14 @@ public class UserController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
 
         app.get("/login", ctx -> showLogin(ctx));
-        app.post("/login", ctx -> login(ctx, connectionPool ));
+        app.post("/login", ctx -> login(ctx, connectionPool));
         app.get("/logout", ctx -> logout(ctx));
 
         app.post("/employeeLogin", ctx -> employeeLogin(ctx, connectionPool));
         app.get("/seller", ctx -> showSeller(ctx, connectionPool));
 
         app.get("/registerUser", ctx -> showRegister(ctx));
-//        app.post("/registerUser", ctx -> register(ctx, connectionPool));
+        app.post("/registerUser", ctx -> register(ctx, connectionPool));
     }
 
     private static void showLogin(Context ctx) {
@@ -64,7 +64,7 @@ public class UserController {
         Customer customer = CustomerMapper.getCustomerByEmail(email.trim(), connectionPool);
 
         // === Skal fjernes når Bcrypt er implementeret ===
-        if (customer.getPassword() == null){
+        if (customer.getPassword() == null) {
             ctx.attribute("msg", "Du har ikke oprettet en konto. Gå til 'Registrer' og opret en konto");
             ctx.attribute("activeTab", "login");
             ctx.render("login");
@@ -127,45 +127,39 @@ public class UserController {
     private static void showSeller(Context ctx, ConnectionPool connectionPool) {
         ctx.render("seller.html");
     }
+
+    private static void register(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+
+        String email = ctx.formParam("email");
+        String phone = ctx.formParam("phone");
+        String password = ctx.formParam("password");
+
+        if (!CustomerMapper.emailExists(email, connectionPool)) {
+            ctx.attribute("message", "Email eller telefonnummer findes ikke");
+            ctx.attribute("activeTab", "register");
+            ctx.render("login");
+            return;
+        }
+
+        Customer customer = CustomerMapper.getCustomerFromEmailAndPhone(email, phone, connectionPool);
+
+        if (customer == null) {
+            ctx.attribute("message", "Email eller telefonnummer findes ikke");
+            ctx.attribute("activeTab", "register");
+            ctx.render("login");
+            return;
+        }
+
+        String message = Validator.validatePassword(password);
+        if (message != null){
+            ctx.attribute("msg", message);
+            ctx.attribute("activeTab", "register");
+            ctx.render("login");
+            return;
+        }
+
+        CustomerMapper.updatePassword(email, password, connectionPool);
+        ctx.sessionAttribute("currentUser", customer);
+        ctx.redirect("/loginPage");
+    }
 }
-
-
-//    private static void register(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-//
-//        String email = ctx.formParam("email");
-//        String phone = ctx.formParam("phone");
-//        String password = ctx.formParam("password");
-//
-//
-//        if (email == null || password == null ||
-//                email.trim().isEmpty() || password.trim().isEmpty()) {
-//            ctx.attribute("message", "Alle felter skal udfyldes");
-//            ctx.attribute("activeTab", "register");
-//            ctx.render("login");
-//            return;
-//        }
-//
-//        if(CustomerMapper.emailExists(email, connectionPool)){
-//            ctx.attribute("message", "Email findes allerede. Prøv igen");
-//            ctx.attribute("activeTab", "register");
-//            ctx.render("login");
-//            return;
-//        }
-//
-//
-//        String trimEmail = email.trim();
-//        String trimPassword = password.trim();
-//
-//
-//        boolean created = CustomerMapper.createCustomer(trimEmail, trimPassword);
-//
-//        if (created) {
-//            ctx.attribute("message", "Bruger oprettet! Du kan nu logge ind.");
-//            ctx.attribute("activeTab", "login");
-//            ctx.render("login");
-//        } else {
-//            ctx.attribute("message", "Brugeren findes allerede");
-//            ctx.attribute("activeTab", "register");
-//            ctx.render("login");
-//        }
-//    }
