@@ -3,7 +3,6 @@ package dk.ek.persistence;
 import dk.ek.entities.Materials;
 import dk.ek.exceptions.DatabaseException;
 
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
