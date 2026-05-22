@@ -1,0 +1,102 @@
+BEGIN;
+
+DROP TABLE IF EXISTS public.order_materials CASCADE;
+DROP TABLE IF EXISTS public.orders CASCADE;
+DROP TABLE IF EXISTS public.customers CASCADE;
+DROP TABLE IF EXISTS public.employees CASCADE;
+DROP TABLE IF EXISTS public.materials CASCADE;
+DROP TABLE IF EXISTS public.zip_code CASCADE;
+
+CREATE TABLE IF NOT EXISTS public.zip_code
+(
+    zip_code integer NOT NULL,
+    city character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT zip_code_pkey PRIMARY KEY (zip_code)
+);
+CREATE TABLE IF NOT EXISTS public.customers
+(
+    id serial NOT NULL,
+    firstname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    lastname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    address character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    phone character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    zip_code integer NOT NULL,
+    password_hash character varying(100),
+    CONSTRAINT customers_pkey PRIMARY KEY (id),
+    CONSTRAINT customers_email_key UNIQUE (email)
+);
+CREATE TABLE IF NOT EXISTS public.employees
+(
+    id serial NOT NULL,
+    firstname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    lastname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    role character varying(50) COLLATE pg_catalog."default" NOT NULL DEFAULT 'sales'::character varying,
+    password_hash character varying(100) NOT NULL,
+    CONSTRAINT employees_pkey PRIMARY KEY (id),
+    CONSTRAINT employees_email_key UNIQUE (email)
+);
+CREATE TABLE IF NOT EXISTS public.materials
+(
+    id serial NOT NULL,
+    name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    unit character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    price_per_unit numeric(10, 2) NOT NULL,
+    category character varying(50) COLLATE pg_catalog."default",
+    CONSTRAINT materials_pkey PRIMARY KEY (id)
+);
+CREATE TABLE IF NOT EXISTS public.orders
+(
+    id serial NOT NULL,
+    customer_id integer NOT NULL,
+    employee_id integer,
+    roof_type character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    width integer NOT NULL,
+    length integer NOT NULL,
+    tool_shed boolean NOT NULL,
+    shed_width integer,
+    shed_length integer,
+    note text COLLATE pg_catalog."default",
+    status character varying(20) COLLATE pg_catalog."default" NOT NULL DEFAULT 'unclaimed'::character varying,
+    created_at timestamp without time zone NOT NULL DEFAULT now(),
+    roof_slope integer,
+    CONSTRAINT orders_pkey PRIMARY KEY (id)
+);
+CREATE TABLE IF NOT EXISTS public.order_materials
+(
+    id serial NOT NULL,
+    order_id integer NOT NULL,
+    material_id integer NOT NULL,
+    amount integer NOT NULL,
+    CONSTRAINT order_materials_pkey PRIMARY KEY (id)
+);
+
+ALTER TABLE IF EXISTS public.customers
+    ADD CONSTRAINT customers_zip_code_fkey FOREIGN KEY (zip_code)
+    REFERENCES public.zip_code (zip_code) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+ALTER TABLE IF EXISTS public.order_materials
+    ADD CONSTRAINT order_materials_material_id_fkey FOREIGN KEY (material_id)
+    REFERENCES public.materials (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+ALTER TABLE IF EXISTS public.order_materials
+    ADD CONSTRAINT order_materials_order_id_fkey FOREIGN KEY (order_id)
+    REFERENCES public.orders (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+ALTER TABLE IF EXISTS public.orders
+    ADD CONSTRAINT orders_customer_id_fkey FOREIGN KEY (customer_id)
+    REFERENCES public.customers (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+ALTER TABLE IF EXISTS public.orders
+    ADD CONSTRAINT orders_employee_id_fkey FOREIGN KEY (employee_id)
+    REFERENCES public.employees (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+END;
