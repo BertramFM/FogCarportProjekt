@@ -9,6 +9,11 @@ import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.InternetAddress;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
+import jakarta.activation.FileDataSource;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMultipart;
 
 import java.util.Properties;
 public class MailService {
@@ -21,6 +26,7 @@ public class MailService {
     }
 
     public static void sendMail(String to, String subject, String body) {
+
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
@@ -28,29 +34,57 @@ public class MailService {
         properties.put("mail.smtp.port", "587");
 
         Session session = Session.getInstance(
-                properties,
-                new Authenticator() {
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(FROM_EMAIL, APP_PASSWORD);
-                    }
+            properties,
+            new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(FROM_EMAIL, APP_PASSWORD);
                 }
+            }
         );
 
-        try{
+        try {
 
-            Message message = new MimeMessage(session);
+            MimeMessage message = new MimeMessage(session);
+
             message.setFrom(new InternetAddress(FROM_EMAIL));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+            message.setRecipients(
+                Message.RecipientType.TO,
+                InternetAddress.parse(to)
+            );
+
             message.setSubject(subject);
 
-            message.setContent(body, "text/html; charset=utf-8");
+            // HTML del
+            MimeBodyPart htmlPart = new MimeBodyPart();
+            htmlPart.setContent(body, "text/html; charset=utf-8");
+
+            // Billede del
+            MimeBodyPart imagePart = new MimeBodyPart();
+
+            DataSource fds = new FileDataSource(
+                "src/main/resources/public/images/logo.png"
+            );
+
+            imagePart.setDataHandler(new DataHandler(fds));
+
+            // matcher cid:fogLogo i HTML
+            imagePart.setHeader("Content-ID", "<logo>");
+
+            imagePart.setDisposition(MimeBodyPart.INLINE);
+
+            // Multipart mail
+            MimeMultipart multipart = new MimeMultipart();
+
+            multipart.addBodyPart(htmlPart);
+            multipart.addBodyPart(imagePart);
+
+            message.setContent(multipart);
 
             Transport.send(message);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }

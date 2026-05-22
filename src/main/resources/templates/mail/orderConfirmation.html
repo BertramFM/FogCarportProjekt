@@ -5,22 +5,31 @@
     <title>Title</title>
 </head>
 <body>
-<p>Tak for din forespørgsel, <span th:text="${firstname}"></span></p>
+<p>Hej <span th:text="${firstname}"></span>, Tak for din forespørgsel.</p>
 
-<h3>Carport detaljer</h3>
+<p>Du vil blive kontaktet af en sælger inden for 3 hverdage, angående stykliste og plantegning af din brugerdefinerede carport.</p>
+
+<h3>Carport detaljer:</h3>
 <ul>
-    <li>Bredde: <span th:text="${width}"></span></li>
-    <li>Længde: <span th:text="${length}"></span></li>
+    <li>Bredde af Carport: <span th:text="${width}"></span>cm</li>
+    <li>Længde af Carport: <span th:text="${length}"></span>cm</li>
     <li>Taghældning: <span th:text="${roofAngle}"></span></li>
-    <li>Redskabsrum: <span th:text="${toolShed}"></span></li>
+    <li>
+        Redskabsrum:
+        <span th:text="${toolShed ? 'Ja - ' + shedWidth + 'cm x ' + shedLength + 'cm' : 'Nej'}"></span>
+    </li>
 </ul>
 
-<h3>Kontakt</h3>
+<p>Bruger bemærkning: <span th:text="${note}"></span></p>
+
+<h3>Hvis du har spørgsmål kan du kontakte os med følgende:</h3>
 <ul>
-    <li>Email: <span th:text="${email}"></span></li>
-    <li>Telefon: <span th:text="${phone}"></span></li>
+    <li>Johannes Fog A/S CVR-nr. 16314439</li>
+    <li>Email: info@johannesfog.dk.</li>
+    <li>Telefon: 47 16 08 00</li>
 </ul>
 
-<p>Bemærkning: <span th:text="${note}"></span></p>
+<img src="cid:logo">
+
 </body>
 </html>
