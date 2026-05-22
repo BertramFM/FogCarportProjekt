@@ -1,11 +1,10 @@
 package dk.ek.controllers;
 
+import dk.ek.entities.Carport;
 import dk.ek.entities.Employee;
 import dk.ek.exceptions.DatabaseException;
-import dk.ek.persistence.ConnectionPool;
-import dk.ek.persistence.CustomerMapper;
-import dk.ek.persistence.EmployeeMapper;
-import dk.ek.persistence.OrderMapper;
+import dk.ek.persistence.*;
+import dk.ek.persistence.CarportMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -13,6 +12,8 @@ public class SellerController {
 
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.get("/seller", ctx -> showSellerPage(ctx, connectionPool));
+        //app.post("/seller/login", ctx -> login(ctx, connectionPool));
+        app.get("/seller/draw/{id}", ctx -> showDrawing(ctx, connectionPool));
     }
 
     private static void showSellerPage(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
@@ -23,7 +24,7 @@ public class SellerController {
             return;
         }
 
-        if (!"admin".equals(currentUser.getRole()) && !"sales".equals(currentUser.getRole())) {
+        if (!"sales".equals(currentUser.getRole())) {
             ctx.redirect("/");
             return;
         }
@@ -32,5 +33,29 @@ public class SellerController {
         ctx.attribute("orders", OrderMapper.getAllOrders(connectionPool));
 
         ctx.render("seller.html");
+    }
+
+    private static void login(Context ctx, ConnectionPool connectionPool) {
+        String email = ctx.formParam("email");
+
+        Employee employee = EmployeeMapper.getEmployeeByEmail(email, connectionPool);
+
+        if ("sales".equalsIgnoreCase(employee.getRole())) {
+            ctx.sessionAttribute("currentUser", employee);
+            ctx.redirect("/seller");
+        } else {
+            ctx.redirect("/");
+        }
+
+
+    }
+
+    private static void showDrawing(Context ctx, ConnectionPool connectionPool) {
+        int orderId = Integer.parseInt(ctx.pathParam("id"));
+
+        Carport order = CarportMapper.getCarportById(orderId, connectionPool);
+
+        ctx.attribute("order", order);
+        ctx.render("drawing.html");
     }
 }

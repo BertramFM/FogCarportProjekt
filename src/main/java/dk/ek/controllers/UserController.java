@@ -53,7 +53,7 @@ public class UserController {
             ctx.sessionAttribute("currentUser", employee);
 
             if ("Sales".equals(employee.getRole())) {
-                ctx.render("admin.html");
+                ctx.render("seller.html");
             } else {
                 ctx.redirect("/");
             }

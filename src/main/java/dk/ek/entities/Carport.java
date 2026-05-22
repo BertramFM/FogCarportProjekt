@@ -8,6 +8,7 @@ public class Carport {
     private RoofType roofType;
     private int length;
     private int width;
+    private int roofAngle;
     private List<Materials> carportMaterials = new ArrayList<>();
     private List<Materials> roofMaterials = new ArrayList<>();
 
@@ -50,6 +51,14 @@ public class Carport {
 
     public void setRoofType(RoofType roofType) {
         this.roofType = roofType;
+    }
+
+    public int getRoofAngle() {
+        return roofAngle;
+    }
+
+    public void setRoofAngle(int roofAngle) {
+        this.roofAngle = roofAngle;
     }
 
     public int getLength() {
