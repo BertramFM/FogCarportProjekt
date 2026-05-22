@@ -14,6 +14,17 @@ public class Material {
         this.pricePerUnit = pricePerUnit;
     }
 
+
+    public Material2(int id, String name, String unit, double pricePerUnit) {
+        this.id = id;
+        this.name = name;
+        this.pricePerMeter = pricePerMeter;
+
+    }
+
+
+
+
     public int getId() {
         return id;
     }
