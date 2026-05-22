@@ -1,6 +1,7 @@
 package dk.ek.controllers;
 
 import dk.ek.entities.Employee;
+import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.ConnectionPool;
 import dk.ek.persistence.EmployeeMapper;
 import dk.ek.persistence.OrderMapper;
@@ -120,4 +121,3 @@ public class UserController {
 //            ctx.render("login");
 //        }
 //    }
-}

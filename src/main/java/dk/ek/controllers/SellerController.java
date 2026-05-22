@@ -11,7 +11,7 @@ import io.javalin.http.Context;
 public class SellerController {
 
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
-        app.get("/seller", ctx -> showSellerPage(ctx, connectionPool));
+        //app.get("/seller", ctx -> showSellerPage(ctx, connectionPool));
         //app.post("/seller/login", ctx -> login(ctx, connectionPool));
         app.get("/seller/draw/{id}", ctx -> showDrawing(ctx, connectionPool));
     }
