@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +59,24 @@ public class CustomerMapper {
             } else {
                 throw new DatabaseException("Fejl ved oprettelse af kunde");
             }
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    public static void updatePassword(String email, String password, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "UPDATE customers SET password_hash = ? WHERE email = ?";
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            // === When Bcrypt is implemented add this
+            // ps.setString(1, BCrypt.hashpw(password, BCrypt.gensalt()));
+            ps.setString(1, password);
+            ps.setString(2, email);
+            ps.executeUpdate();
 
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
@@ -165,5 +182,29 @@ public class CustomerMapper {
                 rs.getString("city"),
                 rs.getString("password_hash")
         );
+    }
+
+    public static Customer getCustomerFromEmailAndPhone(String email, String phone, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT c.*, z.city FROM customers c\n" +
+                "JOIN zip_code z USING (zip_code)\n" +
+                "WHERE c.email = ? AND c.phone = ?";
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setString(1, email);
+            ps.setString(2, phone);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return customerRow(rs);
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
     }
 }
