@@ -1,0 +1,89 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.form-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #004b73;
+}
+
+.form-card {
+    width: 100%;
+    max-width: 520px;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.auth-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.auth-tab {
+    border: none;
+    padding: 14px;
+    cursor: pointer;
+    font-weight: bold;
+    background: #d9d9d9;
+    color: #222;
+}
+
+.auth-tab.active {
+    background: #004b73;
+    color: white;
+}
+
+.auth-form {
+    display: none;
+}
+
+.auth-form.active {
+    display: block;
+}
+
+.auth-form h1 {
+    margin: 0 0 20px;
+    font-size: 34px;
+}
+
+.auth-form label {
+    display: block;
+    margin: 14px 0 6px;
+    font-weight: bold;
+}
+
+.auth-form input {
+    width: 100%;
+    height: 44px;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    font-size: 16px;
+}
+
+.auth-form button[type="submit"] {
+    width: 100%;
+    margin-top: 20px;
+    border: none;
+    background: #004b73;
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.auth-form button[type="submit"]:hover,
+.auth-tab:hover {
+    opacity: 0.9;
+}
