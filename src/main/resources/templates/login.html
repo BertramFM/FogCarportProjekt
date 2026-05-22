@@ -4,60 +4,135 @@
   <title>Login</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" th:href="@{/css/base/base.css}">
+  <link rel="stylesheet" th:href="@{/css/components/navbar.css}">
+  <link rel="stylesheet" th:href="@{/css/pages/login.css}">
 </head>
+
 <body>
 
-
 <main class="form-page">
+
   <section class="form-card">
 
     <div class="auth-tabs">
-      <button type="button" id="loginTab" class="auth-tab" onclick="showForm('login')">Login</button>
-      <button type="button" id="registerTab" class="auth-tab" onclick="showForm('register')">Register</button>
+
+      <button type="button"
+              id="loginTab"
+              class="auth-tab active"
+              onclick="showForm('login')">
+        Login
+      </button>
+
+      <button type="button"
+              id="registerTab"
+              class="auth-tab"
+              onclick="showForm('register')">
+        Register
+      </button>
+
+      <button type="button"
+              id="employeeTab"
+              class="auth-tab"
+              onclick="showForm('employee')">
+        Medarbejder
+      </button>
+
     </div>
 
-    <!-- LOGIN ONLY -->
-    <div id="loginForm" class="auth-form">
+    <!-- LOGIN -->
+
+    <div id="loginForm" class="auth-form active">
+
       <h1>Login</h1>
 
-      <form method="post" action="/login" class="login-form">
-        <label for="loginEmail">Email</label>
-        <input id="loginEmail" name="email" type="email" required>
+      <form method="post" action="/login">
 
+        <label>Email</label>
+        <input type="email"
+               name="email"
+               required>
 
-        <label for="loginPassword">Password</label>
-        <input id="loginPassword" name="password" type="password" required>
+        <label>Telefon</label>
+        <input type="tel"
+               name="phone"
+               required>
 
-        <button type="submit">Login</button>
+        <label>Adgangskode</label>
+        <input type="password"
+               name="password"
+               required>
+
+        <button type="submit">
+          Login
+        </button>
+
       </form>
 
-      <button type="button" class="switch-link" onclick="showForm('register')">
-        Har du ikke en bruger? Opret dig her!
-      </button>
     </div>
+
+
+    <!-- REGISTER -->
 
     <div id="registerForm" class="auth-form">
+
       <h1>Register</h1>
 
-      <form method="post" action="/registerUser" class="login-form">
-        <label for="registerEmail">Email</label>
-        <input id="registerEmail" name="email" type="email" required>
+      <form method="post" action="/registerUser">
 
+        <label>Email</label>
+        <input type="email"
+               name="email"
+               required>
 
-        <label for="registerPassword">Password</label>
-        <input id="registerPassword" name="password" type="password" required>
+        <label>Telefon</label>
+        <input type="tel"
+               name="phone"
+               required>
 
-        <button type="submit">Register</button>
+        <label>Adgangskode</label>
+        <input type="password"
+               name="password"
+               required>
+
+        <button type="submit">
+          Opret bruger
+        </button>
+
       </form>
 
-      <button type="button" class="switch-link" onclick="showForm('login')">
-        Har du allerede en bruger? Log ind
-      </button>
     </div>
 
-    <p th:if="${message}" th:text="${message}" class="message"></p>
+
+    <!-- MEDARBEJDER -->
+
+    <div id="employeeForm" class="auth-form">
+
+      <h1>Medarbejder Login</h1>
+
+      <form method="post" action="/employeeLogin">
+
+        <label>Email</label>
+        <input type="email"
+               name="email"
+               required>
+
+        <label>Adgangskode</label>
+        <input type="password"
+               name="password"
+               required>
+
+        <button type="submit">
+          Login som medarbejder
+        </button>
+
+      </form>
+
+    </div>
 
   </section>
+
 </main>
 
 <script src="/js/script.js"></script>
