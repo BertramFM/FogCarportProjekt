@@ -49,8 +49,15 @@ public class CarportController {
             shedWidth = Integer.parseInt(ctx.formParam("shedWidth"));
             shedLength = Integer.parseInt(ctx.formParam("shedLength"));
         }
-        Customer customer = new Customer(firstname, lastname, address, email, phone, zipcode, city);
-        int customerId = CustomerMapper.createCustomer(customer, connectionPool);
+
+        int customerId;
+        if (CustomerMapper.emailExists(email, connectionPool)) {
+            Customer exist = CustomerMapper.getCustomerByEmail(email, connectionPool);
+            customerId = exist.getId();
+        } else {
+            Customer customer = new Customer(firstname, lastname, address, email, phone, zipcode, city);
+            customerId = CustomerMapper.createCustomer(customer, connectionPool);
+        }
 
         ctx.sessionAttribute("customerId", customerId);
 
