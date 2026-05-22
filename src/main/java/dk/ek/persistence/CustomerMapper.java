@@ -1,24 +1,24 @@
 package dk.ek.persistence;
 
+import dk.ek.entities.Customers;
+import dk.ek.exceptions.DatabaseException;
 import dk.ek.entities.Customer;
 import dk.ek.persistence.ConnectionPool;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerMapper {
 
-    private final ConnectionPool database;
-
-    public CustomerMapper(ConnectionPool database) {
-        this.database = database;
-    }
-
-    public boolean emailExists(String email) {
+    public static boolean emailExists(String email, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "select 1 from customers where email = ?";
 
-        try (Connection con = database.getConnection();
+        try (Connection con = connectionPool.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, email);
@@ -33,96 +33,128 @@ public class CustomerMapper {
         }
     }
 
-    public boolean createCustomer(String firstname, String lastname, String address, String email, String phone, int zipcodeId) {
-        String sql = """
-                insert into customers
-                (firstname, lastname, address, email, phone, zipcode_id)
-                values (?, ?, ?, ?, ?, ?)
-            """;
+    public static void createCustomer(Customers customer, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "INSERT INTO customers (firstname, lastname, address, email, phone, zipcode) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection con = database.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            if (emailExists(email)) return false;
-
-            ps.setString(1, firstname);
-            ps.setString(2, lastname);
-            ps.setString(3, address);
-            ps.setString(4, email);
-            ps.setString(5, phone);
-            ps.setInt(6, zipcodeId);
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setString(1, customer.getFirstname());
+            ps.setString(2, customer.getLastname());
+            ps.setString(3, customer.getAddress());
+            ps.setString(4, customer.getEmail());
+            ps.setString(5, customer.getPhone());
+            ps.setInt(6, customer.getZipcode());
 
             ps.executeUpdate();
-            return true;
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new DatabaseException(e.getMessage());
         }
     }
 
-    public Customer getCustomerById(int id) {
+    public static Customers getCustomerById (int id, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM customers WHERE id = ?";
 
-        String sql = "select * from customers where id = ?";
-
-        try (Connection con = database.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
             ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
 
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-
-                    Customer customer = new Customer();
-
-                    customer.setId(rs.getInt("id"));
-                    customer.setFirstname(rs.getString("firstname"));
-                    customer.setLastname(rs.getString("lastname"));
-                    customer.setAddress(rs.getString("address"));
-                    customer.setEmail(rs.getString("email"));
-                    customer.setPhone(rs.getString("phone"));
-                    customer.setZipcodeId(rs.getInt("zipcode_id"));
-
-                    return customer;
-                }
+            if (rs.next()) {
+                return new Customers(
+                        rs.getInt("id"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
+                        rs.getString("address"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getInt("zipcode")
+                );
+            } else {
+                throw new DatabaseException("Kunde ikke fundet");
             }
-
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("DB fejl", e.getMessage());
         }
-
-        return null;
     }
 
-    public List<Customer> getAllCustomers() {
+    public static Customers getCustomerByEmail (String email, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM customers WHERE email = ?";
 
-        List<Customer> list = new ArrayList<>();
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
 
-        String sql = "select * from customers";
+            if (rs.next()) {
+                return new Customers(
+                        rs.getInt("id"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
+                        rs.getString("address"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getInt("zipcode")
+                );
+            } else {
+                throw new DatabaseException("Kunde ikke fundet");
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("DB fejl", e.getMessage());
+        }
+    }
 
-        try (Connection con = database.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+    public static List<Customers> getAllCustomers(ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM customers";
+        List<Customers> customers = new ArrayList<>();
+
+        try(
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
+                customers.add(new Customers(
+                        rs.getInt("id"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
+                        rs.getString("address"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getInt("zipcode")
+                ));
+            }
+            return customers;
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 
-                Customer customer = new Customer();
+    public static String getCityByZipcode (int zipcode, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT city FROM zip_code WHERE zip_code = ?";
 
-                customer.setId(rs.getInt("id"));
-                customer.setFirstname(rs.getString("firstname"));
-                customer.setLastname(rs.getString("lastname"));
-                customer.setAddress(rs.getString("address"));
-                customer.setEmail(rs.getString("email"));
-                customer.setPhone(rs.getString("phone"));
-                customer.setZipcodeId(rs.getInt("zipcode"));
+        try(
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setInt(1, zipcode);
+            ResultSet rs = ps.executeQuery();
 
-                list.add(customer);
+            if (rs.next()) {
+                return rs.getString("city");
+            } else {
+                throw new DatabaseException("Postnummer ikke fundet");
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException(e.getMessage());
         }
-
-        return list;
     }
 }

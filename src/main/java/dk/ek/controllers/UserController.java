@@ -1,6 +1,8 @@
 package dk.ek.controllers;
 
 import dk.ek.entities.Employee;
+import dk.ek.exceptions.DatabaseException;
+import dk.ek.persistence.ConnectionPool;
 import dk.ek.persistence.CustomerMapper;
 import dk.ek.persistence.EmployeeMapper;
 import io.javalin.Javalin;
@@ -9,14 +11,14 @@ import io.javalin.http.Context;
 
 public class UserController {
 
-    public static void addRoutes(Javalin app, EmployeeMapper employeeMapper, CustomerMapper customerMapper) {
+    public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
 
         app.get("/login", ctx -> showLogin(ctx));
-       // app.post("/login", ctx -> login(ctx,employeeMapper ));
+        app.post("/login", ctx -> login(ctx, connectionPool ));
         app.get("/logout", ctx -> logout(ctx));
 
         app.get("/registerUser", ctx -> showRegister(ctx));
-        app.post("/registerUser", ctx -> register(ctx, customerMapper));
+//        app.post("/registerUser", ctx -> register(ctx, connectionPool));
     }
 
     private static void showLogin(Context ctx) {
@@ -34,7 +36,7 @@ public class UserController {
         ctx.redirect("/");
     }
 
-    private static void login(Context ctx, EmployeeMapper employeeMapper) {
+    private static void login(Context ctx, ConnectionPool connectionPool) {
 
         String email = ctx.formParam("email");
 
@@ -45,7 +47,7 @@ public class UserController {
             return;
         }
 
-        Employee employee = employeeMapper.getEmployeeByEmail(email.trim());
+        Employee employee = EmployeeMapper.getEmployeeByEmail(email.trim(), connectionPool);
 
         if (employee != null) {
             ctx.sessionAttribute("currentUser", employee);
@@ -62,34 +64,34 @@ public class UserController {
         }
     }
 
-    private static void register(Context ctx, CustomerMapper customerMapper) {
-
-        String email = ctx.formParam("email");
-        String password = ctx.formParam("password");
-
-
-        if (email == null || password == null ||
-                email.trim().isEmpty() || password.trim().isEmpty()) {
-            ctx.attribute("message", "Alle felter skal udfyldes");
-            ctx.attribute("activeTab", "register");
-            ctx.render("login");
-            return;
-        }
-
-        if(customerMapper.emailExists(email)){
-            ctx.attribute("message", "Email findes allerede. Prøv igen");
-            ctx.attribute("activeTab", "register");
-            ctx.render("login");
-            return;
-        }
-
-
-        String trimEmail = email.trim();
-        String trimPassword = password.trim();
-
-
-        //boolean created = CustomerMapper.createCustomer(trimEmail, trimPassword);
-
+//    private static void register(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+//
+//        String email = ctx.formParam("email");
+//        String password = ctx.formParam("password");
+//
+//
+//        if (email == null || password == null ||
+//                email.trim().isEmpty() || password.trim().isEmpty()) {
+//            ctx.attribute("message", "Alle felter skal udfyldes");
+//            ctx.attribute("activeTab", "register");
+//            ctx.render("login");
+//            return;
+//        }
+//
+//        if(CustomerMapper.emailExists(email, connectionPool)){
+//            ctx.attribute("message", "Email findes allerede. Prøv igen");
+//            ctx.attribute("activeTab", "register");
+//            ctx.render("login");
+//            return;
+//        }
+//
+//
+//        String trimEmail = email.trim();
+//        String trimPassword = password.trim();
+//
+//
+//        boolean created = CustomerMapper.createCustomer(trimEmail, trimPassword);
+//
 //        if (created) {
 //            ctx.attribute("message", "Bruger oprettet! Du kan nu logge ind.");
 //            ctx.attribute("activeTab", "login");
@@ -99,5 +101,5 @@ public class UserController {
 //            ctx.attribute("activeTab", "register");
 //            ctx.render("login");
 //        }
-    }
+//    }
 }
