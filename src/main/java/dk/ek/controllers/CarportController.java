@@ -48,6 +48,8 @@ public class CarportController {
 
         ctx.sessionAttribute("carport", carport);
 
+        MailController.sendOrderConfirmation(ctx);
+
         ctx.render("orderConfirmation.html");
     }
 
