@@ -8,63 +8,109 @@ public class Customer {
     private String address;
     private String email;
     private String phone;
-    private int zipcodeId;
+    private int zipcode;
     private String city;
+    private String password;
 
     public Customer(String firstname, String lastname, String address,
-                    String email, String phone, int zipcodeId, String city) {
+                    String email, String phone, int zipcode, String city) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.address = address;
         this.email = email;
         this.phone = phone;
-        this.zipcodeId = zipcodeId;
+        this.zipcode = zipcode;
         this.city = city;
     }
 
-    public Customer(){}
+    public Customer(String firstname, String lastname, String address, String email, String phone, int zipcode, String city, String password) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
+        this.zipcode = zipcode;
+        this.city = city;
+        this.password = password;
+    }
+
+    public Customer(int id, String firstname, String lastname, String address, String email, String phone, int zipcode, String city, String password) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
+        this.zipcode = zipcode;
+        this.city = city;
+        this.password = password;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
 
     public void setFirstname(String firstname) {
         this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
     }
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public void setZipcodeId(int zipcodeId) {
-        this.zipcodeId = zipcodeId;
+    public int getZipcode() {
+        return zipcode;
     }
 
-    public int getId(){
-        return id;
+    public void setZipcode(int zipcode) {
+        this.zipcode = zipcode;
     }
 
-    public void setId(int id){
-        this.id = id;
+    public String getCity() {
+        return city;
     }
 
-    public String getEmail(){
-        return email;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public String getPhone(){
-        return phone;
+    public String getPassword() {
+        return password;
     }
 
-    public int getZipcodeId() {
-        return zipcodeId;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -67,6 +67,7 @@ public class UserController {
 //    private static void register(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
 //
 //        String email = ctx.formParam("email");
+//        String phone = ctx.formParam("phone");
 //        String password = ctx.formParam("password");
 //
 //

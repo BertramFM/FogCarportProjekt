@@ -13,8 +13,8 @@ import java.util.List;
 public class OrderMapper {
 
     public static int createOrder(Order order, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "INSERT INTO orders (customer_id, employee_id, roof_type, width, length, tool_shed, shed_width, shed_length, note)\n" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)\n" +
+        String sql = "INSERT INTO orders (customer_id, roof_type, width, length, tool_shed, shed_width, shed_length, note)\n" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)\n" +
                 "RETURNING id";
 
         try (Connection connection = connectionPool.getConnection();
@@ -22,14 +22,13 @@ public class OrderMapper {
         ) {
 
             ps.setInt(1, order.getCustomerId());
-            ps.setInt(2, order.getEmployeeId());
-            ps.setString(3, order.getRoofType());
-            ps.setInt(4, order.getWidth());
-            ps.setInt(5, order.getLength());
-            ps.setBoolean(6, order.getIsToolShed());
-            ps.setInt(7, order.getShedWidth());
-            ps.setInt(8, order.getShedLength());
-            ps.setString(9, order.getNote());
+            ps.setString(2, order.getRoofType());
+            ps.setInt(3, order.getWidth());
+            ps.setInt(4, order.getLength());
+            ps.setBoolean(5, order.getIsToolShed());
+            ps.setInt(6, order.getShedWidth());
+            ps.setInt(7, order.getShedLength());
+            ps.setString(8, order.getNote());
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {

@@ -1,9 +1,8 @@
 package dk.ek.persistence;
 
-import dk.ek.entities.Customers;
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.entities.Customer;
-import dk.ek.persistence.ConnectionPool;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,18 +22,18 @@ public class CustomerMapper {
 
             ps.setString(1, email);
 
-            try (ResultSet rs = ps.executeQuery()) {
+            ResultSet rs = ps.executeQuery();
                 return rs.next();
-            }
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new DatabaseException(e.getMessage());
         }
     }
 
-    public static void createCustomer(Customers customer, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "INSERT INTO customers (firstname, lastname, address, email, phone, zipcode) VALUES (?, ?, ?, ?, ?, ?)";
+    public static int createCustomer(Customer customer, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "INSERT INTO customers (firstname, lastname, address, email, phone, zip_code, password_hash) \n" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)\n" +
+                "RETURNING id";
 
         try (
                 Connection connection = connectionPool.getConnection();
@@ -47,15 +46,30 @@ public class CustomerMapper {
             ps.setString(5, customer.getPhone());
             ps.setInt(6, customer.getZipcode());
 
-            ps.executeUpdate();
+            if (customer.getPassword() != null) {
+                // When password hashing needs to be implemented,
+                // ps.setString(7, BCrypt.hashpw(customer.getPassword(), BCrypt.gensalt()));
+                ps.setString(7, customer.getPassword());
+            } else {
+                ps.setString(7, null);
+            }
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            } else {
+                throw new DatabaseException("Fejl ved oprettelse af kunde");
+            }
 
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
     }
 
-    public static Customers getCustomerById (int id, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT * FROM customers WHERE id = ?";
+    public static Customer getCustomerById (int id, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT c.*, z.city FROM customers c\n" +
+                "JOIN zip_code z USING (zip_code)\n" +
+                "WHERE c.id = ?";
 
         try (
                 Connection connection = connectionPool.getConnection();
@@ -65,15 +79,7 @@ public class CustomerMapper {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return new Customers(
-                        rs.getInt("id"),
-                        rs.getString("firstname"),
-                        rs.getString("lastname"),
-                        rs.getString("address"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getInt("zipcode")
-                );
+                return customerRow(rs);
             } else {
                 throw new DatabaseException("Kunde ikke fundet");
             }
@@ -82,8 +88,10 @@ public class CustomerMapper {
         }
     }
 
-    public static Customers getCustomerByEmail (String email, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT * FROM customers WHERE email = ?";
+    public static Customer getCustomerByEmail (String email, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT c.*, z.city FROM customers c\n" +
+                "JOIN zip_code z USING (zip_code)\n" +
+                "WHERE c.email = ?";
 
         try (
                 Connection connection = connectionPool.getConnection();
@@ -93,15 +101,7 @@ public class CustomerMapper {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return new Customers(
-                        rs.getInt("id"),
-                        rs.getString("firstname"),
-                        rs.getString("lastname"),
-                        rs.getString("address"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getInt("zipcode")
-                );
+                return customerRow(rs);
             } else {
                 throw new DatabaseException("Kunde ikke fundet");
             }
@@ -110,9 +110,11 @@ public class CustomerMapper {
         }
     }
 
-    public static List<Customers> getAllCustomers(ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT * FROM customers";
-        List<Customers> customers = new ArrayList<>();
+    public static List<Customer> getAllCustomers(ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT c.*, z.city FROM customers c\n" +
+                "JOIN zip_code z USING (zip_code)\n" +
+                "ORDER BY c.lastname";
+        List<Customer> customers = new ArrayList<>();
 
         try(
                 Connection connection = connectionPool.getConnection();
@@ -121,17 +123,10 @@ public class CustomerMapper {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                customers.add(new Customers(
-                        rs.getInt("id"),
-                        rs.getString("firstname"),
-                        rs.getString("lastname"),
-                        rs.getString("address"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getInt("zipcode")
-                ));
+                customers.add(customerRow(rs));
             }
             return customers;
+
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
@@ -156,5 +151,19 @@ public class CustomerMapper {
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
+    }
+
+    private static Customer customerRow(ResultSet rs) throws SQLException {
+        return new Customer(
+                rs.getInt("id"),
+                rs.getString("firstname"),
+                rs.getString("lastname"),
+                rs.getString("address"),
+                rs.getString("email"),
+                rs.getString("phone"),
+                rs.getInt("zip_code"),
+                rs.getString("city"),
+                rs.getString("password_hash")
+        );
     }
 }

@@ -13,7 +13,6 @@
 
 <div class="order-page">
 
-    <!-- Breadcrumb -->
     <div class="order-container breadcrumb">
         Byg selv-produkter / Carporte / Quick-Byg carporte /
         Quick-Byg carport med høj rejsning
@@ -21,7 +20,6 @@
 
     <div class="order-container order-grid">
 
-        <!-- LEFT SIDE TEXT -->
         <section class="order-info">
             <h1>Bestil Quick-Byg tilbud - carport med høj rejsning</h1>
 
@@ -40,28 +38,26 @@
             </p>
         </section>
 
-        <!-- RIGHT SIDE FORM -->
         <section class="order-form-wrapper">
 
             <h2>Carport med høj rejsning</h2>
 
-            <form action="/carport/save" method="post" class="order-form">
+            <form action="/carport/saveHigh" method="post" class="order-form">
 
-                <!-- Roof material -->
                 <div class="form-group">
                     <label>Tagmateriale *</label>
                     <select name="roofMaterialId" required>
                         <option value="" disabled selected hidden>
                             Vælg tagmateriale
                         </option>
-                        <option th:each="rm : ${materials}"
-                                th:value="${rm.id}"
-                                th:text="${rm.name}">
-                        </option>
+                        <option> Betontagsten - Koralrød</option>
+                        <option> Betontagsten - Sort</option>
+                        <option> Eternittag B6 - Grå</option>
+                        <option> Eternittag B6 - Sortblå</option>
+                        <option> Eternittag B7 - Sortblå</option>
                     </select>
                 </div>
 
-                <!-- Roof angle -->
                 <div class="form-group">
                     <label>Taghældning *</label>
                     <select name="roofAngle" required>
@@ -78,7 +74,6 @@
                     </select>
                 </div>
 
-                <!-- Width -->
                 <div class="form-group">
                     <label>Carport bredde *</label>
                     <select name="width" required>
@@ -91,7 +86,6 @@
                     </select>
                 </div>
 
-                <!-- Length -->
                 <div class="form-group">
                     <label>Carport længde *</label>
                     <select name="length" required>
@@ -104,21 +98,6 @@
                     </select>
                 </div>
 
-                <!-- Carport material -->
-                <div class="form-group">
-                    <label>Carport materiale *</label>
-                    <select name="carportMaterialId" required>
-                        <option value="" disabled selected hidden>
-                            Vælg materiale
-                        </option>
-                        <option th:each="m : ${materials}"
-                                th:value="${m.id}"
-                                th:text="${m.name}">
-                        </option>
-                    </select>
-                </div>
-
-                <!-- Tool shed -->
                 <div class="form-group">
                     <label>Redskabsrum *</label>
                     <select name="toolShed" required>
@@ -130,7 +109,6 @@
                     </select>
                 </div>
 
-                <!-- Shed width -->
                 <div class="form-group">
                     <label>Redskabsrum bredde</label>
                     <select name="shedWidth">
@@ -143,7 +121,6 @@
                     </select>
                 </div>
 
-                <!-- Shed length -->
                 <div class="form-group">
                     <label>Redskabsrum længde</label>
                     <select name="shedLength">
@@ -156,13 +133,11 @@
                     </select>
                 </div>
 
-                <!-- Notes -->
                 <div class="form-group">
                     <label>Bemærkning</label>
                     <textarea name="note"></textarea>
                 </div>
 
-                <!-- Contact -->
                 <div class="form-group">
                     <label>Kontaktinformation *</label>
 
@@ -177,7 +152,6 @@
                     </div>
                 </div>
 
-                <!-- Consent -->
                 <div class="form-group consent-group">
                     <label class="consent-label">
                         <input type="checkbox" name="consent" required>

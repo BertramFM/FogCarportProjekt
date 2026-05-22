@@ -14,12 +14,27 @@ public class Order {
     private int shedLength;
     private String note;
     private String status;
+    private int roofSlope;
     private LocalDateTime createdAt;
 
     public Order(int id, int customerId, int employeeId, String roofType, int width, int length, Boolean isToolShed, int shedWidth, int shedLength, String note, String status, LocalDateTime createdAt) {
         this.id = id;
         this.customerId = customerId;
         this.employeeId = employeeId;
+        this.roofType = roofType;
+        this.width = width;
+        this.length = length;
+        this.isToolShed = isToolShed;
+        this.shedWidth = shedWidth;
+        this.shedLength = shedLength;
+        this.note = note;
+        this.status = status;
+        this.createdAt = createdAt;
+    }
+
+    public Order(int id, int customerId, String roofType, int width, int length, Boolean isToolShed, int shedWidth, int shedLength, String note, String status, LocalDateTime createdAt) {
+        this.id = id;
+        this.customerId = customerId;
         this.roofType = roofType;
         this.width = width;
         this.length = length;
