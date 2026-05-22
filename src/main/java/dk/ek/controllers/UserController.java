@@ -1,8 +1,10 @@
 package dk.ek.controllers;
 
+import dk.ek.entities.Customer;
 import dk.ek.entities.Employee;
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.ConnectionPool;
+import dk.ek.persistence.CustomerMapper;
 import dk.ek.persistence.EmployeeMapper;
 import dk.ek.persistence.OrderMapper;
 import io.javalin.Javalin;
@@ -39,16 +41,38 @@ public class UserController {
         ctx.redirect("/");
     }
 
-    private static void login(Context ctx, ConnectionPool connectionPool) {
+    private static void login(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
 
         String email = ctx.formParam("email");
+        String password = ctx.formParam("password");
 
         if (email == null || email.trim().isEmpty()) {
             ctx.attribute("message", "Email skal udfyldes");
             ctx.attribute("activeTab", "login");
-            ctx.render("login");
+            ctx.render("/login");
             return;
         }
+
+        Customer customer = CustomerMapper.getCustomerByEmail(email, connectionPool);
+
+        if (customer.getPassword() == null){
+            ctx.render("/login");
+        } else if (customer.getPassword().matches(password)) {
+            ctx.sessionAttribute("currentUser", customer);
+
+
+        } else {
+            ctx.attribute("message", "Forkert mail eller kodeord");
+            ctx.attribute("activeTab", "login");
+            ctx.render("login");
+        }
+    }
+
+    private static void employeeLogin(Context ctx, ConnectionPool connectionPool) {
+        String email = ctx.formParam("email");
+        String password = ctx.formParam("password");
+
+        ctx.redirect("/seller");
 
         Employee employee = EmployeeMapper.getEmployeeByEmail(email.trim(), connectionPool);
 
@@ -61,7 +85,7 @@ public class UserController {
                 } catch (DatabaseException e) {
                     throw new RuntimeException(e);
                 }
-                ctx.render("seller.html");
+                ctx.redirect("/seller");
             } else {
                 ctx.redirect("/");
             }
@@ -70,10 +94,6 @@ public class UserController {
             ctx.attribute("activeTab", "login");
             ctx.render("login");
         }
-    }
-
-    private static void employeeLogin(Context ctx, ConnectionPool connectionPool) {
-        ctx.redirect("/seller");
     }
 
     private static void showSeller(Context ctx, ConnectionPool connectionPool) {
