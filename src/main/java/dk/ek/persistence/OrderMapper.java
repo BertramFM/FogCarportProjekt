@@ -3,32 +3,39 @@ package dk.ek.persistence;
 import dk.ek.entities.Order;
 import dk.ek.exceptions.DatabaseException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderMapper {
 
     public static int createOrder(Order order, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "INSERT INTO orders (customer_id, roof_type, width, length, tool_shed, shed_width, shed_length, note)\n" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)\n" +
-                "RETURNING id";
+        String sql = """
+        INSERT INTO orders (
+            customer_id, roof_type, width, length, tool_shed, shed_width, shed_length, note, roof_slope
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        RETURNING id
+        """;
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)
         ) {
 
             ps.setInt(1, order.getCustomerId());
-            ps.setString(2, order.getRoofType());
-            ps.setInt(3, order.getWidth());
-            ps.setInt(4, order.getLength());
-            ps.setBoolean(5, order.getIsToolShed());
+            ps.setString(2, order.getRoofMaterial());
+            ps.setInt(3, order.getCarportWidth());
+            ps.setInt(4, order.getCarportLength());
+            ps.setBoolean(5, order.getHasToolShed());
             ps.setInt(6, order.getShedWidth());
             ps.setInt(7, order.getShedLength());
             ps.setString(8, order.getNote());
+
+            if (order.getRoofAngle() == 0) {
+                ps.setNull(9, Types.INTEGER);
+            } else {
+                ps.setInt(9, order.getRoofAngle());
+            }
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {

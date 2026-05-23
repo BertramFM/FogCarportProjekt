@@ -6,8 +6,6 @@ import dk.ek.persistence.*;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,7 +15,7 @@ public class CarportController {
         app.post("/carport", ctx -> createTempCarport(ctx, connectionPool));
 
         app.post("/carport/saveFlat", ctx -> saveCarportFlat(ctx, connectionPool));
-        app.post("/carport/saveHigh", ctx -> saveCarportHigh(ctx));
+        app.post("/carport/saveHigh", ctx -> saveCarportHigh(ctx, connectionPool));
 
         app.get("/carport", ctx -> showCarportPage(ctx, connectionPool));
         app.get("/confirmation", ctx -> confirmation(ctx));
@@ -29,26 +27,29 @@ public class CarportController {
 
     private static void saveCarportFlat(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
 
-        String firstname = ctx.formParam("firstname");
-        String lastname = ctx.formParam("lastname");
-        String address = ctx.formParam("address");
-        String email = ctx.formParam("email");
-        String phone = ctx.formParam("phone");
-        String city = ctx.formParam("city");
-        int zipcode = Integer.parseInt(ctx.formParam("zipcode"));
-
+        // === Carport Variables ===
         String roofMaterial = ctx.formParam("roofMaterial");
-        int width = Integer.parseInt(ctx.formParam("width"));
-        int length = Integer.parseInt(ctx.formParam("length"));
+        int carportWidth = Integer.parseInt(ctx.formParam("carportWidth"));
+        int carportLength = Integer.parseInt(ctx.formParam("carportLength"));
         boolean toolShed = Boolean.parseBoolean(ctx.formParam("toolShed"));
-        String note = ctx.formParam("note");
 
         int shedWidth = 0;
         int shedLength = 0;
+
         if (toolShed) {
             shedWidth = Integer.parseInt(ctx.formParam("shedWidth"));
             shedLength = Integer.parseInt(ctx.formParam("shedLength"));
         }
+        String note = ctx.formParam("note");
+
+        // === Customer Variables ===
+        String firstname = ctx.formParam("firstname");
+        String lastname = ctx.formParam("lastname");
+        String address = ctx.formParam("address");
+        int zipcode = Integer.parseInt(ctx.formParam("zipcode"));
+        String city = ctx.formParam("city");
+        String email = ctx.formParam("email");
+        String phone = ctx.formParam("phone");
 
         int customerId;
         if (CustomerMapper.emailExists(email, connectionPool)) {
@@ -61,35 +62,58 @@ public class CarportController {
 
         ctx.sessionAttribute("customerId", customerId);
 
-        Order order = new Order(0, customerId, roofMaterial, width, length, toolShed, shedWidth, shedLength, note, "unclaimed", null);
+        Order order = new Order(0, customerId, 0, roofMaterial, carportWidth, carportLength, toolShed, shedWidth, shedLength, note, "unclaimed", null);
         int orderId = OrderMapper.createOrder(order, connectionPool);
 
         ctx.sessionAttribute("orderId", orderId);
+
+        MailController.sendOrderConfirmation(ctx);
+
         ctx.redirect("/confirmation");
     }
 
-    private static void saveCarportHigh(Context ctx) {
+    private static void saveCarportHigh(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
 
-        Carport carport = ctx.sessionAttribute("carport");
+        // === Carport Variables ===
+        String roofMaterial = ctx.formParam("roofMaterial");
+        int roofAngle = Integer.parseInt(ctx.formParam("roofAngle"));
+        int carportWidth = Integer.parseInt(ctx.formParam("carportWidth"));
+        int carportLength = Integer.parseInt(ctx.formParam("carportLength"));
+        boolean toolShed = Boolean.parseBoolean(ctx.formParam("toolShed"));
 
-        if (carport == null) {
-            ctx.result("No carport found in session");
-            return;
+        int shedWidth = 0;
+        int shedLength = 0;
+
+        if (toolShed) {
+           shedWidth = Integer.parseInt(ctx.formParam("shedWidth"));
+           shedLength = Integer.parseInt(ctx.formParam("shedLength"));
+        }
+        String note = ctx.formParam("note");
+
+        // === Customer Variables ===
+        String firstname = ctx.formParam("firstname");
+        String lastname = ctx.formParam("lastname");
+        String address = ctx.formParam("address");
+        int zipcode = Integer.parseInt(ctx.formParam("zipcode"));
+        String city = ctx.formParam("city");
+        String email = ctx.formParam("email");
+        String phone = ctx.formParam("phone");
+
+        int customerId;
+        if (CustomerMapper.emailExists(email, connectionPool)) {
+            Customer exist = CustomerMapper.getCustomerByEmail(email, connectionPool);
+            customerId = exist.getId();
+        } else {
+            Customer customer = new Customer(firstname, lastname, address, email, phone, zipcode, city);
+            customerId = CustomerMapper.createCustomer(customer, connectionPool);
         }
 
-        String roofMaterialCategory = (ctx.formParam("roofMaterialId"));
+        ctx.sessionAttribute("customerId", customerId);
 
-        int length =
-                Integer.parseInt(ctx.formParam("length"));
+        Order order = new Order(0, customerId, 0, roofMaterial, roofAngle, carportWidth, carportLength, toolShed, shedWidth, shedLength, note, "unclaimed", null);
+        int orderId = OrderMapper.createOrder(order, connectionPool);
 
-        int width =
-                Integer.parseInt(ctx.formParam("width"));
-
-
-        carport.setLength(length);
-        carport.setWidth(width);
-
-        ctx.sessionAttribute("carport", carport);
+        ctx.sessionAttribute("orderId", orderId);
 
         MailController.sendOrderConfirmation(ctx);
 
