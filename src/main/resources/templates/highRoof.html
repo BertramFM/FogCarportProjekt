@@ -4,9 +4,8 @@
 <head>
     <th:block th:insert="~{fragments/head :: head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/pages/orderPage.css}">
-    <script th:src="@{/js/navbarSearch.js}" defer></script>
 </head>
-
+<script th:src="@{/js/orderPage.js}"></script>
 <body>
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
@@ -46,7 +45,7 @@
 
                 <div class="form-group">
                     <label>Tagmateriale *</label>
-                    <select name="roofMaterialId" required>
+                    <select name="roofMaterial" required>
                         <option value="" disabled selected hidden>
                             Vælg tagmateriale
                         </option>
@@ -76,7 +75,7 @@
 
                 <div class="form-group">
                     <label>Carport bredde *</label>
-                    <select name="width" required>
+                    <select name="carportWidth" required>
                         <option value="" disabled selected hidden>
                             Vælg bredde
                         </option>
@@ -88,7 +87,7 @@
 
                 <div class="form-group">
                     <label>Carport længde *</label>
-                    <select name="length" required>
+                    <select name="carportLength" required>
                         <option value="" disabled selected hidden>
                             Vælg længde
                         </option>
@@ -100,37 +99,36 @@
 
                 <div class="form-group">
                     <label>Redskabsrum *</label>
-                    <select name="toolShed" required>
-                        <option value="" disabled selected hidden>
-                            Vælg redskabsrum
-                        </option>
+                    <select name="toolShed" required onchange="toggleShed(this)">
                         <option value="false">Uden redskabsrum</option>
                         <option value="true">Med redskabsrum</option>
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label>Redskabsrum bredde</label>
-                    <select name="shedWidth">
-                        <option value="" disabled selected hidden>
-                            Vælg bredde
-                        </option>
-                        <option value="240">240 cm</option>
-                        <option value="270">270 cm</option>
-                        <option value="300">300 cm</option>
-                    </select>
-                </div>
+                <div id="shedFields" style="display: none">
+                    <div class="form-group" id="shedWidth">
+                        <label>Redskabsrum bredde *</label>
+                        <select name="shedWidth">
+                            <option value="" disabled selected hidden>
+                                Vælg bredde
+                            </option>
+                            <option value="240">240 cm</option>
+                            <option value="270">270 cm</option>
+                            <option value="300">300 cm</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label>Redskabsrum længde</label>
-                    <select name="shedLength">
-                        <option value="" disabled selected hidden>
-                            Vælg længde
-                        </option>
-                        <option value="240">240 cm</option>
-                        <option value="270">270 cm</option>
-                        <option value="300">300 cm</option>
-                    </select>
+                    <div class="form-group" id="shedLength">
+                        <label>Redskabsrum længde *</label>
+                        <select name="shedLength">
+                            <option value="" disabled selected hidden>
+                                Vælg længde
+                            </option>
+                            <option value="240">240 cm</option>
+                            <option value="270">270 cm</option>
+                            <option value="300">300 cm</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -167,7 +165,7 @@
                 </div>
 
                 <button type="submit" class="submit-btn">
-                    Send forespørgelse
+                    Send forespørgsel ➔
                 </button>
 
             </form>
