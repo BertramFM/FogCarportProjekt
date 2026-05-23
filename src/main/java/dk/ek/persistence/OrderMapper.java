@@ -85,7 +85,7 @@ public class OrderMapper {
     }
 
     public static List<Order> getOrdersByCustomerId(int customerId, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT * FROM order WHERE customer_id = ? ORDER BY created_at DESC";
+        String sql = "SELECT * FROM orders WHERE customer_id = ? ORDER BY created_at DESC";
         List<Order> orders = new ArrayList<>();
 
         try (

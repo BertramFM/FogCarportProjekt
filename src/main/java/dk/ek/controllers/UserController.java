@@ -2,6 +2,7 @@ package dk.ek.controllers;
 
 import dk.ek.entities.Customer;
 import dk.ek.entities.Employee;
+import dk.ek.entities.Order;
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.ConnectionPool;
 import dk.ek.persistence.CustomerMapper;
@@ -16,7 +17,7 @@ public class UserController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
 
         app.get("/login", ctx -> showLogin(ctx));
-        app.post("/login", ctx -> login(ctx, connectionPool ));
+        app.post("/login", ctx -> login(ctx, connectionPool));
         app.get("/logout", ctx -> logout(ctx));
 
         app.post("/employeeLogin", ctx -> employeeLogin(ctx, connectionPool));
@@ -24,6 +25,28 @@ public class UserController {
 
         app.get("/registerUser", ctx -> showRegister(ctx));
 //        app.post("/registerUser", ctx -> register(ctx, connectionPool));
+
+        app.get("/userPanel", ctx -> showUserPanel(ctx, connectionPool));
+    }
+
+    private static void showUserPanel(Context ctx, ConnectionPool connectionPool) {
+        try {
+            Customer customer = ctx.sessionAttribute("currentUser");
+
+            if (customer == null) {
+                ctx.redirect("/login");
+            }
+            int customerId = customer.getId();
+            ctx.attribute("customerId", customerId);
+
+
+            ctx.attribute("customerOrders", OrderMapper.getOrdersByCustomerId(customerId, connectionPool));
+
+            ctx.render("userPage.html");
+
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void showLogin(Context ctx) {
@@ -42,29 +65,35 @@ public class UserController {
     }
 
     private static void login(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        try {
+            String email = ctx.formParam("email");
+            String password = ctx.formParam("password");
 
-        String email = ctx.formParam("email");
-        String password = ctx.formParam("password");
-
-        if (email == null || email.trim().isEmpty()) {
-            ctx.attribute("message", "Email skal udfyldes");
-            ctx.attribute("activeTab", "login");
-            ctx.render("/login");
-            return;
-        }
-
-        Customer customer = CustomerMapper.getCustomerByEmail(email, connectionPool);
-
-        if (customer.getPassword() == null){
-            ctx.render("/login");
-        } else if (customer.getPassword().matches(password)) {
-            ctx.sessionAttribute("currentUser", customer);
+            if (email == null || email.trim().isEmpty()) {
+                ctx.attribute("message", "Email skal udfyldes");
+                ctx.attribute("activeTab", "login");
+                ctx.render("/login");
+                return;
+            }
 
 
-        } else {
-            ctx.attribute("message", "Forkert mail eller kodeord");
-            ctx.attribute("activeTab", "login");
-            ctx.render("login");
+            Customer customer = CustomerMapper.getCustomerByEmail(email, connectionPool);
+
+            if (customer.getPassword() == null) {
+                ctx.render("/login");
+            } else if (customer.getPassword().matches(password)) {
+                ctx.sessionAttribute("currentUser", customer);
+
+
+            } else {
+                ctx.attribute("message", "Forkert mail eller kodeord");
+                ctx.attribute("activeTab", "login");
+                ctx.render("login");
+            }
+
+            ctx.redirect("/userPanel");
+        } catch (DatabaseException e) {
+            e.printStackTrace();
         }
     }
 

@@ -3,7 +3,6 @@ package dk.ek.persistence;
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.entities.Customer;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
