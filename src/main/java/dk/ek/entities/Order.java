@@ -6,25 +6,25 @@ public class Order {
     private int id;
     private int customerId;
     private int employeeId;
-    private String roofType;
-    private int width;
-    private int length;
-    private Boolean isToolShed;
+    private String roofMaterial;
+    private int roofAngle;
+    private int carportWidth;
+    private int carportLength;
+    private boolean hasToolShed;
     private int shedWidth;
     private int shedLength;
     private String note;
     private String status;
-    private int roofSlope;
     private LocalDateTime createdAt;
 
-    public Order(int id, int customerId, int employeeId, String roofType, int width, int length, Boolean isToolShed, int shedWidth, int shedLength, String note, String status, LocalDateTime createdAt) {
+    public Order(int id, int customerId, int employeeId, String roofMaterial, int carportWidth, int carportLength, boolean hasToolShed, int shedWidth, int shedLength, String note, String status, LocalDateTime createdAt) {
         this.id = id;
         this.customerId = customerId;
         this.employeeId = employeeId;
-        this.roofType = roofType;
-        this.width = width;
-        this.length = length;
-        this.isToolShed = isToolShed;
+        this.roofMaterial = roofMaterial;
+        this.carportWidth = carportWidth;
+        this.carportLength = carportLength;
+        this.hasToolShed = hasToolShed;
         this.shedWidth = shedWidth;
         this.shedLength = shedLength;
         this.note = note;
@@ -32,13 +32,15 @@ public class Order {
         this.createdAt = createdAt;
     }
 
-    public Order(int id, int customerId, String roofType, int width, int length, Boolean isToolShed, int shedWidth, int shedLength, String note, String status, LocalDateTime createdAt) {
+    public Order(int id, int customerId, int employeeId, String roofMaterial, int roofAngle, int carportWidth, int carportLength, boolean hasToolShed, int shedWidth, int shedLength, String note, String status, LocalDateTime createdAt) {
         this.id = id;
         this.customerId = customerId;
-        this.roofType = roofType;
-        this.width = width;
-        this.length = length;
-        this.isToolShed = isToolShed;
+        this.employeeId = employeeId;
+        this.roofMaterial = roofMaterial;
+        this.roofAngle = roofAngle;
+        this.carportWidth = carportWidth;
+        this.carportLength = carportLength;
+        this.hasToolShed = hasToolShed;
         this.shedWidth = shedWidth;
         this.shedLength = shedLength;
         this.note = note;
@@ -70,36 +72,44 @@ public class Order {
         this.employeeId = employeeId;
     }
 
-    public String getRoofType() {
-        return roofType;
+    public String getRoofMaterial() {
+        return roofMaterial;
     }
 
-    public void setRoofType(String roofType) {
-        this.roofType = roofType;
+    public void setRoofMaterial(String roofMaterial) {
+        this.roofMaterial = roofMaterial;
     }
 
-    public int getWidth() {
-        return width;
+    public int getRoofAngle() {
+        return roofAngle;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public void setRoofAngle(int roofAngle) {
+        this.roofAngle = roofAngle;
     }
 
-    public int getLength() {
-        return length;
+    public int getCarportWidth() {
+        return carportWidth;
     }
 
-    public void setLength(int length) {
-        this.length = length;
+    public void setCarportWidth(int carportWidth) {
+        this.carportWidth = carportWidth;
     }
 
-    public Boolean getIsToolShed() {
-        return isToolShed;
+    public int getCarportLength() {
+        return carportLength;
     }
 
-    public void setIsToolShed(Boolean toolShed) {
-        this.isToolShed = toolShed;
+    public void setCarportLength(int carportLength) {
+        this.carportLength = carportLength;
+    }
+
+    public boolean getHasToolShed() {
+        return hasToolShed;
+    }
+
+    public void setHasToolShed(boolean toolShed) {
+        this.hasToolShed = toolShed;
     }
 
     public int getShedWidth() {
