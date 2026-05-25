@@ -104,32 +104,62 @@ public class UserController {
         ctx.redirect("/userPanel");
     }
 
-    private static void employeeLogin(Context ctx, ConnectionPool connectionPool) {
+    private static void employeeLogin(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         String email = ctx.formParam("email");
         String password = ctx.formParam("password");
 
-        ctx.redirect("/seller");
+        if (email == null || email.trim().isEmpty()) {
+            ctx.attribute("msg", "Email skal udfyldes");
+            ctx.attribute("activeTab", "employee");
+            ctx.render("login");
+            return;
+        }
+
+        if (!EmployeeMapper.emailExists(email.trim(), connectionPool)) {
+            ctx.attribute("msg", "Email eller adgangskode er forkert");
+            ctx.attribute("activeTab", "employee");
+            ctx.render("login");
+            return;
+        }
 
         Employee employee = EmployeeMapper.getEmployeeByEmail(email.trim(), connectionPool);
 
-        if (employee != null) {
-            ctx.sessionAttribute("currentUser", employee);
-
-            if ("sales".equals(employee.getRole())) {
-                try {
-                    ctx.attribute("orders", OrderMapper.getAllOrders(connectionPool));
-                } catch (DatabaseException e) {
-                    throw new RuntimeException(e);
-                }
-                ctx.redirect("/seller");
-            } else {
-                ctx.redirect("/");
-            }
-        } else {
-            ctx.attribute("msg", "Forkert mail, brugernavn eller kodeord");
-            ctx.attribute("activeTab", "login");
+        if (employee.getPassword() == null) {
+            ctx.attribute("msg", "Email eller adgangskode er forkert");
+            ctx.attribute("activeTab", "employee");
             ctx.render("login");
+            return;
         }
+
+        if (!password.matches(employee.getPassword())) {
+            ctx.attribute("msg", "Forkert email eller adgangskode");
+            ctx.attribute("activeTab", "employee");
+            ctx.render("login");
+            return;
+        }
+
+        ctx.sessionAttribute("currentUser", employee);
+        ctx.redirect("/seller");
+
+
+//        if (employee != null) {
+//            ctx.sessionAttribute("currentUser", employee);
+//
+//            if ("sales".equals(employee.getRole())) {
+//                try {
+//                    ctx.attribute("orders", OrderMapper.getAllOrders(connectionPool));
+//                } catch (DatabaseException e) {
+//                    throw new RuntimeException(e);
+//                }
+//                ctx.redirect("/seller");
+//            } else {
+//                ctx.redirect("/");
+//            }
+//        } else {
+//            ctx.attribute("msg", "Forkert mail, brugernavn eller kodeord");
+//            ctx.attribute("activeTab", "login");
+//            ctx.render("login");
+//        }
     }
 
     private static void showSeller(Context ctx, ConnectionPool connectionPool) {
