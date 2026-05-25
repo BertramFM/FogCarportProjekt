@@ -140,26 +140,6 @@ public class UserController {
 
         ctx.sessionAttribute("currentUser", employee);
         ctx.redirect("/seller");
-
-
-//        if (employee != null) {
-//            ctx.sessionAttribute("currentUser", employee);
-//
-//            if ("sales".equals(employee.getRole())) {
-//                try {
-//                    ctx.attribute("orders", OrderMapper.getAllOrders(connectionPool));
-//                } catch (DatabaseException e) {
-//                    throw new RuntimeException(e);
-//                }
-//                ctx.redirect("/seller");
-//            } else {
-//                ctx.redirect("/");
-//            }
-//        } else {
-//            ctx.attribute("msg", "Forkert mail, brugernavn eller kodeord");
-//            ctx.attribute("activeTab", "login");
-//            ctx.render("login");
-//        }
     }
 
     private static void showSeller(Context ctx, ConnectionPool connectionPool) {
