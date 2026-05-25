@@ -35,7 +35,7 @@ public class SellerController {
         ctx.render("seller.html");
     }
 
-    private static void login(Context ctx, ConnectionPool connectionPool) {
+    private static void login(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         String email = ctx.formParam("email");
 
         Employee employee = EmployeeMapper.getEmployeeByEmail(email, connectionPool);
