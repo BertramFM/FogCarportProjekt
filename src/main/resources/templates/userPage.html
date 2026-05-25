@@ -27,10 +27,10 @@
                 <td th:text="${order.id}"></td>
                 <td th:text="${order.customerId}"></td>
                 <td th:text="${order.employeeId}"></td>
-                <td th:text="${order.roofType}"></td>
-                <td th:text="${order.width}"></td>
-                <td th:text="${order.length}"></td>
-                <td th:text="${order.isToolShed ? 'Ja' : 'Nej'}"></td>
+                <td th:text="${order.roofMaterial}"></td>
+                <td th:text="${order.carportWidth}"></td>
+                <td th:text="${order.carportLength}"></td>
+                <td th:text="${order.hasToolShed ? 'Ja' : 'Nej'}"></td>
                 <td th:text="${order.status}"></td>
                 <td th:text="${order.createdAt}"></td>
             </tr>
