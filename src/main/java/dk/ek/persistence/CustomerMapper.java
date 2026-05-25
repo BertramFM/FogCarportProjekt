@@ -21,8 +21,9 @@ public class CustomerMapper {
 
             ps.setString(1, email);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery()) {
                 return rs.next();
+            }
 
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
@@ -46,16 +47,17 @@ public class CustomerMapper {
             ps.setInt(6, customer.getZipcode());
 
             if (customer.getPassword() != null) {
-                 ps.setString(7, BCrypt.hashpw(customer.getPassword(), BCrypt.gensalt()));
+                ps.setString(7, BCrypt.hashpw(customer.getPassword(), BCrypt.gensalt()));
             } else {
                 ps.setString(7, null);
             }
 
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("id");
-            } else {
-                throw new DatabaseException("Fejl ved oprettelse af kunde");
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
+                } else {
+                    throw new DatabaseException("Fejl ved oprettelse af kunde");
+                }
             }
 
         } catch (SQLException e) {
@@ -79,7 +81,7 @@ public class CustomerMapper {
         }
     }
 
-    public static Customer getCustomerById (int id, ConnectionPool connectionPool) throws DatabaseException {
+    public static Customer getCustomerById(int id, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT c.*, z.city FROM customers c\n" +
                 "JOIN zip_code z USING (zip_code)\n" +
                 "WHERE c.id = ?";
@@ -89,19 +91,21 @@ public class CustomerMapper {
                 PreparedStatement ps = connection.prepareStatement(sql)
         ) {
             ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-                return customerRow(rs);
-            } else {
-                throw new DatabaseException("Kunde ikke fundet");
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return customerRow(rs);
+                } else {
+                    throw new DatabaseException("Kunde ikke fundet");
+                }
             }
+
         } catch (SQLException e) {
             throw new DatabaseException("DB fejl", e.getMessage());
         }
     }
 
-    public static Customer getCustomerByEmail (String email, ConnectionPool connectionPool) throws DatabaseException {
+    public static Customer getCustomerByEmail(String email, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT c.*, z.city FROM customers c\n" +
                 "JOIN zip_code z USING (zip_code)\n" +
                 "WHERE c.email = ?";
@@ -111,13 +115,15 @@ public class CustomerMapper {
                 PreparedStatement ps = connection.prepareStatement(sql)
         ) {
             ps.setString(1, email);
-            ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-                return customerRow(rs);
-            } else {
-                throw new DatabaseException("Kunde ikke fundet");
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return customerRow(rs);
+                } else {
+                    throw new DatabaseException("Kunde ikke fundet");
+                }
             }
+
         } catch (SQLException e) {
             throw new DatabaseException("DB fejl", e.getMessage());
         }
@@ -129,36 +135,63 @@ public class CustomerMapper {
                 "ORDER BY c.lastname";
         List<Customer> customers = new ArrayList<>();
 
-        try(
+        try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)
         ) {
-            ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
-                customers.add(customerRow(rs));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    customers.add(customerRow(rs));
+                }
+                return customers;
             }
-            return customers;
 
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
     }
 
-    public static String getCityByZipcode (int zipcode, ConnectionPool connectionPool) throws DatabaseException {
+    public static String getCityByZipcode(int zipcode, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT city FROM zip_code WHERE zip_code = ?";
 
-        try(
+        try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)
         ) {
             ps.setInt(1, zipcode);
-            ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-                return rs.getString("city");
-            } else {
-                throw new DatabaseException("Postnummer ikke fundet");
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("city");
+                } else {
+                    throw new DatabaseException("Postnummer ikke fundet");
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    public static Customer getCustomerFromEmailAndPhone(String email, String phone, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT c.*, z.city FROM customers c\n" +
+                "JOIN zip_code z USING (zip_code)\n" +
+                "WHERE c.email = ? AND c.phone = ?";
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setString(1, email);
+            ps.setString(2, phone);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return customerRow(rs);
+                } else {
+                    return null;
+                }
             }
 
         } catch (SQLException e) {
@@ -178,29 +211,5 @@ public class CustomerMapper {
                 rs.getString("city"),
                 rs.getString("password_hash")
         );
-    }
-
-    public static Customer getCustomerFromEmailAndPhone(String email, String phone, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "SELECT c.*, z.city FROM customers c\n" +
-                "JOIN zip_code z USING (zip_code)\n" +
-                "WHERE c.email = ? AND c.phone = ?";
-
-        try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql)
-        ) {
-            ps.setString(1, email);
-            ps.setString(2, phone);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                return customerRow(rs);
-            } else {
-                return null;
-            }
-
-        } catch (SQLException e) {
-            throw new DatabaseException(e.getMessage());
-        }
     }
 }
