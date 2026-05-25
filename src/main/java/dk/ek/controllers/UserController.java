@@ -2,7 +2,6 @@ package dk.ek.controllers;
 
 import dk.ek.entities.Customer;
 import dk.ek.entities.Employee;
-import dk.ek.entities.Order;
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.ConnectionPool;
 import dk.ek.persistence.CustomerMapper;
