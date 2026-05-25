@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bruger panel</title>
+</head>
+<body>
+<section class="dashboard-card">
+    <h2>Alle ordrer</h2>
+
+    <div class="table-wrapper">
+        <table>
+            <tr>
+                <th>Ordre ID</th>
+                <th>Kunde</th>
+                <th>Sælger</th>
+                <th>Tagtype</th>
+                <th>Bredde</th>
+                <th>Længde</th>
+                <th>Skur</th>
+                <th>Status</th>
+                <th>Oprettet</th>
+                <th>Tegning</th>
+            </tr>
+
+            <tr th:each="order : ${customerOrders}">
+                <td th:text="${order.id}"></td>
+                <td th:text="${order.customerId}"></td>
+                <td th:text="${order.employeeId}"></td>
+                <td th:text="${order.roofType}"></td>
+                <td th:text="${order.width}"></td>
+                <td th:text="${order.length}"></td>
+                <td th:text="${order.isToolShed ? 'Ja' : 'Nej'}"></td>
+                <td th:text="${order.status}"></td>
+                <td th:text="${order.createdAt}"></td>
+            </tr>
+        </table>
+    </div>
+</section>
+</body>
+</html>

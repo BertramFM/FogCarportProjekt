@@ -2,6 +2,7 @@ package dk.ek.controllers;
 
 import dk.ek.entities.Customer;
 import dk.ek.entities.Employee;
+import dk.ek.entities.Order;
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.ConnectionPool;
 import dk.ek.persistence.CustomerMapper;
@@ -25,6 +26,28 @@ public class UserController {
 
         app.get("/registerUser", ctx -> showRegister(ctx));
         app.post("/registerUser", ctx -> register(ctx, connectionPool));
+
+        app.get("/userPanel", ctx -> showUserPanel(ctx, connectionPool));
+    }
+
+    private static void showUserPanel(Context ctx, ConnectionPool connectionPool) {
+        try {
+            Customer customer = ctx.sessionAttribute("currentUser");
+
+            if (customer == null) {
+                ctx.redirect("/login");
+            }
+            int customerId = customer.getId();
+            ctx.attribute("customerId", customerId);
+
+
+            ctx.attribute("customerOrders", OrderMapper.getOrdersByCustomerId(customerId, connectionPool));
+
+            ctx.render("userPage.html");
+
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void showLogin(Context ctx) {
