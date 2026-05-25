@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" th:href="@{/css/pages/login.css}">
 </head>
+<script th:src="@{/js/loginTab.js}"></script>
 
 <body>
 
@@ -65,7 +66,7 @@
                        name="password"
                        required>
 
-                <p th:if="${msg != null}" th:text="${msg}"></p>
+                <p class="error-msg" th:if="${msg != null}" th:text="${msg}"></p>
 
                 <button type="submit">
                     Login
@@ -105,7 +106,7 @@
                        placeholder="Mindst 8 tegn, 1 tal og 1 special tegn eg. @!#€"
                        required>
 
-                <p th:if="${msg != null}" th:text="${msg}"></p>
+                <p class="error-msg" th:if="${msg != null}" th:text="${msg}"></p>
 
                 <button type="submit">
                     Opret bruger
@@ -137,7 +138,7 @@
                        name="password"
                        required>
 
-                <p th:if="${msg != null}" th:text="${msg}"></p>
+                <p class="error-msg" th:if="${msg != null}" th:text="${msg}"></p>
 
                 <button type="submit">
                     Login som medarbejder
@@ -150,56 +151,5 @@
     </section>
 
 </main>
-
-
-<script>
-
-    function showForm(type){
-
-        document.getElementById("loginForm").classList.remove("active");
-        document.getElementById("registerForm").classList.remove("active");
-        document.getElementById("employeeForm").classList.remove("active");
-
-        document.getElementById("loginTab").classList.remove("active");
-        document.getElementById("registerTab").classList.remove("active");
-        document.getElementById("employeeTab").classList.remove("active");
-
-
-        if(type==="login"){
-
-            document.getElementById("loginForm")
-                .classList.add("active");
-
-            document.getElementById("loginTab")
-                .classList.add("active");
-
-        }
-
-
-        if(type==="register"){
-
-            document.getElementById("registerForm")
-                .classList.add("active");
-
-            document.getElementById("registerTab")
-                .classList.add("active");
-
-        }
-
-
-        if(type==="employee"){
-
-            document.getElementById("employeeForm")
-                .classList.add("active");
-
-            document.getElementById("employeeTab")
-                .classList.add("active");
-
-        }
-
-    }
-
-</script>
-
 </body>
 </html>
