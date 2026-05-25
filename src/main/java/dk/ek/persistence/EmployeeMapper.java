@@ -1,6 +1,7 @@
 package dk.ek.persistence;
 
 import dk.ek.entities.Employee;
+import dk.ek.exceptions.DatabaseException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,39 +9,7 @@ import java.util.List;
 
 public class EmployeeMapper {
 
-    public static Employee getEmployeeByEmail(String email, ConnectionPool connectionPool) {
-
-        String sql = "select * from employees where email = ?";
-
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)
-        ) {
-
-            ps.setString(1, email);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-
-                    Employee employee = new Employee();
-
-                    employee.setId(rs.getInt("id"));
-                    employee.setFirstname(rs.getString("firstname"));
-                    employee.setLastname(rs.getString("lastname"));
-                    employee.setEmail(rs.getString("email"));
-                    employee.setRole(rs.getString("role"));
-
-                    return employee;
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public boolean emailExists(String email, ConnectionPool connectionPool) {
+    public static boolean emailExists(String email, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "select 1 from employees where email = ?";
 
         try (Connection connection = connectionPool.getConnection();
@@ -54,39 +23,34 @@ public class EmployeeMapper {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new DatabaseException(e.getMessage());
         }
     }
 
-    public boolean createEmployee(String firstname, String lastname, String email, String role, ConnectionPool connectionPool) {
+    public static Employee getEmployeeByEmail(String email, ConnectionPool connectionPool) throws DatabaseException {
 
-        String sql = """
-            insert into employees (firstname, lastname, email, role)
-            values (?, ?, ?, ?)
-        """;
+        String sql = "select * from employees where email = ?";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)
-            ) {
+        ) {
 
-            if (emailExists(email, connectionPool)) return false;
+            ps.setString(1, email);
 
-            ps.setString(1, firstname);
-            ps.setString(2, lastname);
-            ps.setString(3, email);
-            ps.setString(4, role);
-
-            ps.executeUpdate();
-            return true;
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return employeeRow(rs);
+                } else {
+                    throw new DatabaseException("Ansat ikke fundet");
+                }
+            }
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new DatabaseException("DB fejl: " + e.getMessage());
         }
     }
 
-    public Employee getEmployeeById(int id, ConnectionPool connectionPool) {
+    public static Employee getEmployeeById(int id, ConnectionPool connectionPool) throws DatabaseException {
 
         String sql = "select * from employees where id = ?";
 
@@ -98,56 +62,50 @@ public class EmployeeMapper {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-
-                    Employee employee = new Employee();
-
-                    employee.setId(rs.getInt("id"));
-                    employee.setFirstname(rs.getString("firstname"));
-                    employee.setLastname(rs.getString("lastname"));
-                    employee.setEmail(rs.getString("email"));
-                    employee.setRole(rs.getString("role"));
-
-                    return employee;
+                    return employeeRow(rs);
+                } else {
+                    throw new DatabaseException("Ansat ikke fundet");
                 }
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("DB fejl: " + e.getMessage());
         }
-
-        return null;
     }
 
-    public static List<Employee> getAllEmployees(ConnectionPool connectionPool) {
+    public static List<Employee> getAllEmployees(ConnectionPool connectionPool) throws DatabaseException {
 
-        List<Employee> EmployeeList = new ArrayList<>();
+        List<Employee> employeeList = new ArrayList<>();
 
         String sql = "select * from employees";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);
-             ) {
+        ) {
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Employee employee = employeeRow(rs);
 
-
-            while (rs.next()) {
-
-                Employee employee = new Employee();
-
-                employee.setId(rs.getInt("id"));
-                employee.setFirstname(rs.getString("firstname"));
-                employee.setLastname(rs.getString("lastname"));
-                employee.setEmail(rs.getString("email"));
-                employee.setRole(rs.getString("role"));
-
-                EmployeeList.add(employee);
+                    employeeList.add(employee);
+                }
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("DB fejl: " + e.getMessage());
         }
+        return employeeList;
+    }
 
-        return EmployeeList;
+
+    private static Employee employeeRow(ResultSet rs) throws SQLException {
+        return new Employee(
+                rs.getInt("id"),
+                rs.getString("firstname"),
+                rs.getString("lastname"),
+                rs.getString("email"),
+                rs.getString("role"),
+                rs.getString("password_hash")
+        );
     }
 }
