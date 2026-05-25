@@ -10,6 +10,7 @@ import dk.ek.persistence.OrderMapper;
 import dk.ek.services.Validator;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import org.mindrot.jbcrypt.BCrypt;
 
 
 public class UserController {
@@ -85,37 +86,22 @@ public class UserController {
 
         Customer customer = CustomerMapper.getCustomerByEmail(email.trim(), connectionPool);
 
-        // === Skal fjernes når Bcrypt er implementeret ===
         if (customer.getPassword() == null) {
             ctx.attribute("msg", "Du har ikke oprettet en konto. Gå til 'Registrer' og opret en konto");
             ctx.attribute("activeTab", "login");
             ctx.render("login");
             return;
-        } else if (customer.getPassword().matches(password)) {
-            ctx.sessionAttribute("currentUser", customer);
-            ctx.redirect("/loginPage");
-        } else {
-            ctx.attribute("msg", "Email eller adgangskode er forkert");
-            ctx.render("login");
         }
 
-        // === Tilføj når BCrypt bliver implementeret
-//        if (customer.getPassword() == null) {
-//            ctx.attribute("msg", "Du har ikke oprettet en konto. Gå til 'Registrer' og opret en konto");
-//            ctx.attribute("activeTab", "login");
-//            ctx.render("login");
-//            return;
-//        }
-//
-//        if (!BCrypt.checkpw(password, customer.getPassword())) {
-//            ctx.attribute("msg", "Forkert email eller adgangskode");
-//            ctx.attribute("activeTab", "login");
-//            ctx.render("login");
-//            return;
-//        }
-//
-//        ctx.sessionAttribute("currentUser", customer);
-//        ctx.redirect("/login");
+        if (!BCrypt.checkpw(password, customer.getPassword())) {
+            ctx.attribute("msg", "Forkert email eller adgangskode");
+            ctx.attribute("activeTab", "login");
+            ctx.render("login");
+            return;
+        }
+
+        ctx.sessionAttribute("currentUser", customer);
+        ctx.redirect("/userPanel");
     }
 
     private static void employeeLogin(Context ctx, ConnectionPool connectionPool) {
@@ -140,7 +126,7 @@ public class UserController {
                 ctx.redirect("/");
             }
         } else {
-            ctx.attribute("message", "Forkert mail, brugernavn eller kodeord");
+            ctx.attribute("msg", "Forkert mail, brugernavn eller kodeord");
             ctx.attribute("activeTab", "login");
             ctx.render("login");
         }
@@ -157,7 +143,7 @@ public class UserController {
         String password = ctx.formParam("password");
 
         if (!CustomerMapper.emailExists(email, connectionPool)) {
-            ctx.attribute("message", "Email eller telefonnummer findes ikke");
+            ctx.attribute("msg", "Email eller telefonnummer findes ikke");
             ctx.attribute("activeTab", "register");
             ctx.render("login");
             return;
@@ -166,7 +152,7 @@ public class UserController {
         Customer customer = CustomerMapper.getCustomerFromEmailAndPhone(email, phone, connectionPool);
 
         if (customer == null) {
-            ctx.attribute("message", "Email eller telefonnummer findes ikke");
+            ctx.attribute("msg", "Email eller telefonnummer findes ikke");
             ctx.attribute("activeTab", "register");
             ctx.render("login");
             return;
@@ -182,6 +168,6 @@ public class UserController {
 
         CustomerMapper.updatePassword(email, password, connectionPool);
         ctx.sessionAttribute("currentUser", customer);
-        ctx.redirect("/loginPage");
+        ctx.redirect("/userPanel");
     }
 }

@@ -2,6 +2,7 @@ package dk.ek.persistence;
 
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.entities.Customer;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -45,9 +46,7 @@ public class CustomerMapper {
             ps.setInt(6, customer.getZipcode());
 
             if (customer.getPassword() != null) {
-                // When password hashing needs to be implemented,
-                // ps.setString(7, BCrypt.hashpw(customer.getPassword(), BCrypt.gensalt()));
-                ps.setString(7, customer.getPassword());
+                 ps.setString(7, BCrypt.hashpw(customer.getPassword(), BCrypt.gensalt()));
             } else {
                 ps.setString(7, null);
             }
@@ -71,9 +70,7 @@ public class CustomerMapper {
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)
         ) {
-            // === When Bcrypt is implemented add this
-            // ps.setString(1, BCrypt.hashpw(password, BCrypt.gensalt()));
-            ps.setString(1, password);
+            ps.setString(1, BCrypt.hashpw(password, BCrypt.gensalt()));
             ps.setString(2, email);
             ps.executeUpdate();
 
