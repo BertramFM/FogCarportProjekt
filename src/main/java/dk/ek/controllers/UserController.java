@@ -158,6 +158,13 @@ public class UserController {
             return;
         }
 
+        if (customer.getPassword() != null) {
+            ctx.attribute("msg", "Konto med denne email findes allerede");
+            ctx.attribute("activeTab", "register");
+            ctx.render("login");
+            return;
+        }
+
         String message = Validator.validatePassword(password);
         if (message != null){
             ctx.attribute("msg", message);
