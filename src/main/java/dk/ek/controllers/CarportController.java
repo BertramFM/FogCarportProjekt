@@ -3,6 +3,7 @@ package dk.ek.controllers;
 import dk.ek.entities.*;
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.*;
+import dk.ek.services.MaterialCalculatorService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +33,7 @@ public class CarportController {
         int carportWidth = Integer.parseInt(ctx.formParam("carportWidth"));
         int carportLength = Integer.parseInt(ctx.formParam("carportLength"));
         boolean toolShed = Boolean.parseBoolean(ctx.formParam("toolShed"));
+        int roofAngle = 0;
 
         int shedWidth = 0;
         int shedLength = 0;
@@ -62,12 +64,16 @@ public class CarportController {
 
         ctx.sessionAttribute("customerId", customerId);
 
-        Order order = new Order(0, customerId, 0, roofMaterial, carportWidth, carportLength, toolShed, shedWidth, shedLength, note, "unclaimed", null);
+        Order order = new Order(0, customerId, 0, roofMaterial, roofAngle, carportWidth, carportLength, toolShed, shedWidth, shedLength, note, "unclaimed", null);
         int orderId = OrderMapper.createOrder(order, connectionPool);
+
+        // Get bill of materials
+        MaterialCalculatorService.calculateFlatCarportMaterialList(order, connectionPool);
 
         ctx.sessionAttribute("orderId", orderId);
 
-        MailController.sendOrderConfirmation(ctx);
+        // Send mail to customer
+        //MailController.sendOrderConfirmation(ctx, order);
 
         ctx.redirect("/confirmation");
     }
@@ -115,7 +121,7 @@ public class CarportController {
 
         ctx.sessionAttribute("orderId", orderId);
 
-        MailController.sendOrderConfirmation(ctx);
+        MailController.sendOrderConfirmation(ctx, order);
 
         ctx.render("orderConfirmation.html");
     }
