@@ -16,8 +16,8 @@ public class MaterialMapper {
         String sql = "SELECT * FROM materials WHERE id = ?";
 
         try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql)
+            Connection connection = connectionPool.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)
         ) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -38,8 +38,8 @@ public class MaterialMapper {
         List<Materials> materials = new ArrayList<>();
 
         try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql)
+            Connection connection = connectionPool.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)
         ) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -57,8 +57,8 @@ public class MaterialMapper {
         List<Materials> materials = new ArrayList<>();
 
         try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql)
+            Connection connection = connectionPool.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)
         ) {
             ps.setString(1, category);
             ResultSet rs = ps.executeQuery();
@@ -72,17 +72,17 @@ public class MaterialMapper {
         }
     }
 
-    public static List<Materials> getMaterialsById (int orderId, ConnectionPool connectionPool) throws DatabaseException {
+    public static List<Materials> getMaterialsById(int orderId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT m.*, om.amount FROM materials m\n" +
-                "JOIN order_materials om ON om.material_id = m.id\n" +
-                "WHERE om.order_id = ?\n" +
-                "ORDER BY m.category, m.name";
+            "JOIN order_materials om ON om.material_id = m.id\n" +
+            "WHERE om.order_id = ?\n" +
+            "ORDER BY m.category, m.name";
         List<Materials> materials = new ArrayList<>();
 
         try (
             Connection connection = connectionPool.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql)
-            ) {
+        ) {
             ps.setInt(1, orderId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -97,11 +97,13 @@ public class MaterialMapper {
 
     private static Materials materialsMap(ResultSet rs) throws SQLException {
         return new Materials(
-                rs.getInt("id"),
-                rs.getString("name"),
-                rs.getString("unit"),
-                rs.getDouble("price_per_unit"),
-                rs.getString("category")
+            rs.getInt("id"),
+            rs.getString("name"),
+            rs.getString("unit_of_measurement"),
+            rs.getDouble("price_per_unit"),
+            rs.getString("category"),
+            rs.getDouble("material_width"),
+            rs.getDouble("material_height")
         );
     }
 }
