@@ -3,6 +3,8 @@ package dk.ek.controllers;
 import dk.ek.entities.*;
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.*;
+import dk.ek.services.CalcService;
+import dk.ek.services.CarportSvg;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +21,7 @@ public class CarportController {
 
         app.get("/carport", ctx -> showCarportPage(ctx, connectionPool));
         app.get("/confirmation", ctx -> confirmation(ctx));
+        app.get("/drawing", ctx -> showDrawing(ctx, connectionPool));
     }
 
     private static void confirmation(@NotNull Context ctx) {
@@ -158,5 +161,19 @@ public class CarportController {
         }
 
         return "highRoof.html";
+    }
+
+    private static void showDrawing(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+//        int orderId = ctx.sessionAttribute("orderId");
+        int orderId = 1;
+        Order order = OrderMapper.getOrderById(orderId, connectionPool);
+
+        String svg = CarportSvg.generateCarportSvg(order.getCarportWidth(), order.getCarportLength());
+//        List<BOMLine> bom = CalcService.calcMaterials(order.getCarportWidth(), order.getCarportLength());
+
+
+        ctx.attribute("svg", svg);
+//        ctx.attribute("bom", bom);
+        ctx.render("showDrawing.html");
     }
 }
