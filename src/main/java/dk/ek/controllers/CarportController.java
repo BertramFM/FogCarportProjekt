@@ -3,7 +3,7 @@ package dk.ek.controllers;
 import dk.ek.entities.*;
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.*;
-import dk.ek.services.MaterialCalculatorService;
+import dk.ek.services.BillOfMaterialsService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
@@ -70,7 +70,7 @@ public class CarportController {
         int orderId = OrderMapper.createOrder(order, connectionPool);
 
         // Get bill of materials
-        MaterialCalculatorService.calculateFlatCarportMaterialList(order, connectionPool);
+        BillOfMaterialsService.calculateFlatCarportMaterialList(order, connectionPool);
 
         ctx.sessionAttribute("orderId", orderId);
 
