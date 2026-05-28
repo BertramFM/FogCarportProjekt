@@ -9,31 +9,26 @@ import java.util.List;
 
 public class OrderMapper {
 
-    public static void updateOrderFields(
-            int id,
-            String roofMaterial,
-            int carportWidth,
-            int carportLength,
-            boolean hasToolShed,
-            int shedWidth,
-            int shedLength,
-            String note,
-            int roofAngle,
-            ConnectionPool connectionPool
+    public static void updateOrderFields(int id, String roofMaterial, int carportWidth, int carportLength, boolean hasToolShed,
+                                         int shedWidth,
+                                         int shedLength,
+                                         String note,
+                                         int roofAngle,
+                                         ConnectionPool connectionPool
     ) throws DatabaseException {
 
         String sql = """
-        UPDATE orders
-        SET roof_type = ?,
-            width = ?,
-            length = ?,
-            tool_shed = ?,
-            shed_width = ?,
-            shed_length = ?,
-            note = ?,
-            roof_slope = ?
-        WHERE id = ?
-        """;
+                UPDATE orders
+                SET roof_type = ?,
+                    width = ?,
+                    length = ?,
+                    tool_shed = ?,
+                    shed_width = ?,
+                    shed_length = ?,
+                    note = ?,
+                    roof_slope = ?
+                WHERE id = ?
+                """;
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -57,12 +52,12 @@ public class OrderMapper {
 
     public static int createOrder(Order order, ConnectionPool connectionPool) throws DatabaseException {
         String sql = """
-        INSERT INTO orders (
-            customer_id, roof_type, width, length, tool_shed, shed_width, shed_length, note, roof_slope
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        RETURNING id
-        """;
+                INSERT INTO orders (
+                    customer_id, roof_type, width, length, tool_shed, shed_width, shed_length, note, roof_slope
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                RETURNING id
+                """;
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)
