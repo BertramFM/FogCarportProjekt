@@ -5,7 +5,9 @@
     <th:block th:insert="~{fragments/head :: head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/pages/orderPage.css}">
 </head>
+
 <script th:src="@{/js/orderPage.js}"></script>
+
 <body>
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
@@ -34,7 +36,7 @@
             </p>
 
             <p>
-                Udfyld formularen omhyggeligt og klik på "Bestil tilbud".
+                Udfyld formularen omhyggeligt og klik på "Send forespørgsel".
                 Felter markeret med * SKAL udfyldes!
             </p>
         </section>
@@ -74,7 +76,7 @@
                     </select>
                 </div>
 
-                <div class="form-group" >
+                <div class="form-group">
                     <label>Redskabsrum *</label>
                     <select name="toolShed" required onchange="toggleShed(this)">
                         <option value="false">Uden redskabsrum</option>
@@ -83,6 +85,7 @@
                 </div>
 
                 <div id="shedFields" style="display: none">
+
                     <div class="form-group" id="shedWidth">
                         <label>Redskabsrum bredde *</label>
                         <select name="shedWidth">
@@ -106,6 +109,7 @@
                             <option value="300">300 cm</option>
                         </select>
                     </div>
+
                 </div>
 
                 <div class="form-group">
@@ -115,25 +119,79 @@
 
                 <div class="form-group">
                     <label>Kontakt information *</label>
+
                     <div class="input-grid">
                         <input type="text" name="firstname" placeholder="Fornavn" required>
+
                         <input type="text" name="lastname" placeholder="Efternavn" required>
+
                         <input type="text" name="address" placeholder="Adresse" required>
+
                         <input type="text" name="zipcode" placeholder="Postnummer" required>
+
                         <input type="text" name="city" placeholder="By" required>
+
                         <input type="email" name="email" placeholder="Email" required>
+
                         <input type="text" name="phone" placeholder="Telefon" required>
                     </div>
                 </div>
 
+                <div class="form-group">
+
+                    <button
+                            type="button"
+                            class="submit-btn"
+                            onclick="togglePasswordField()">
+
+                        Opret bruger
+
+                    </button>
+
+                    <div
+                            id="passwordContainer"
+                            style="display: none; margin-top: 15px;">
+
+                        <label for="password">
+                            Password *
+                        </label>
+
+                        <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Indtast password">
+
+                    </div>
+
+                </div>
+
                 <div class="form-group consent-group">
+
                     <label class="consent-label">
-                        <input type="checkbox" name="consent" required>
+
+                        <input
+                                type="checkbox"
+                                name="consent"
+                                class="checkbox"
+                                required>
+
                         <span>
-                            Jeg giver samtykke til, at Johannes Fog A/S må kontakte mig
-                            via telefon og/eller e-mail i forbindelse med tilbud.
+                            Jeg giver samtykke til, at Johannes Fog A/S må kontakte mig via telefon og/eller e-email
+                            i forbindelse med tilbud på QuickByg carport og at de afgivne oplysninger opbevares og behandles
+                            jf. Fogs persondatapolitik.
                         </span>
+
                     </label>
+
+                    <a
+                            href="https://www.johannesfog.dk/om-fog/betingelser-og-vilkaar/persondatapolitik"
+                            class="privacy-link">
+
+                        Læs mere om persondatapolitik her
+
+                    </a>
+
                 </div>
 
                 <button type="submit" class="submit-btn">
@@ -148,5 +206,35 @@
 
 </div>
 
+<script>
+
+    function togglePasswordField() {
+
+        const passwordContainer =
+            document.getElementById("passwordContainer");
+
+        const passwordInput =
+            document.getElementById("password");
+
+        if (passwordContainer.style.display === "none") {
+
+            passwordContainer.style.display = "block";
+
+            passwordInput.required = true;
+
+        } else {
+
+            passwordContainer.style.display = "none";
+
+            passwordInput.required = false;
+
+            passwordInput.value = "";
+
+        }
+    }
+
+</script>
+
 </body>
+
 </html>

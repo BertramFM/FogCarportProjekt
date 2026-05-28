@@ -117,6 +117,7 @@
 ================================ */
 
 .consent-group input[type="checkbox"] {
+    width: auto;
     margin-right: 10px;
     accent-color: var(--fog-blue);
 }
@@ -126,6 +127,11 @@
     align-items: flex-start;
     gap: 10px;
     font-size: 14px;
+}
+
+.privacy-link {
+    text-decoration: none ;
+    color: var(--fog-blue);
 }
 
 /* ===============================

@@ -9,7 +9,6 @@ import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
-
 public class CarportController {
 
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -42,6 +41,7 @@ public class CarportController {
             shedWidth = Integer.parseInt(ctx.formParam("shedWidth"));
             shedLength = Integer.parseInt(ctx.formParam("shedLength"));
         }
+
         String note = ctx.formParam("note");
 
         // === Customer Variables ===
@@ -52,13 +52,15 @@ public class CarportController {
         String city = ctx.formParam("city");
         String email = ctx.formParam("email");
         String phone = ctx.formParam("phone");
+        String password = ctx.formParam("password");
 
         int customerId;
+
         if (CustomerMapper.emailExists(email, connectionPool)) {
             Customer exist = CustomerMapper.getCustomerByEmail(email, connectionPool);
             customerId = exist.getId();
         } else {
-            Customer customer = new Customer(firstname, lastname, address, email, phone, zipcode, city);
+            Customer customer = new Customer(firstname, lastname, address, email, phone, zipcode, city, password);
             customerId = CustomerMapper.createCustomer(customer, connectionPool);
         }
 
@@ -94,6 +96,7 @@ public class CarportController {
            shedWidth = Integer.parseInt(ctx.formParam("shedWidth"));
            shedLength = Integer.parseInt(ctx.formParam("shedLength"));
         }
+
         String note = ctx.formParam("note");
 
         // === Customer Variables ===
@@ -104,13 +107,15 @@ public class CarportController {
         String city = ctx.formParam("city");
         String email = ctx.formParam("email");
         String phone = ctx.formParam("phone");
+        String password = ctx.formParam("password");
 
         int customerId;
+
         if (CustomerMapper.emailExists(email, connectionPool)) {
             Customer exist = CustomerMapper.getCustomerByEmail(email, connectionPool);
             customerId = exist.getId();
         } else {
-            Customer customer = new Customer(firstname, lastname, address, email, phone, zipcode, city);
+            Customer customer = new Customer(firstname, lastname, address, email, phone, zipcode, city, password);
             customerId = CustomerMapper.createCustomer(customer, connectionPool);
         }
 
@@ -123,21 +128,22 @@ public class CarportController {
 
         MailController.sendOrderConfirmation(ctx, order);
 
-        ctx.render("orderConfirmation.html");
+        ctx.redirect("/confirmation");
     }
-
 
     private static void createTempCarport(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         String roofTypeName = ctx.formParam("roofType");
+
         Carport carport = new Carport();
         RoofType roofType = new RoofType(0, roofTypeName);
         carport.setRoofType(roofType);
+
         List<Materials> allMaterials = MaterialMapper.getAllMaterials(connectionPool);
 
         ctx.sessionAttribute("carport", carport);
         ctx.attribute("materials", allMaterials);
-        ctx.render(getCarportTemplate(carport));
 
+        ctx.render(getCarportTemplate(carport));
     }
 
     private static void showCarportPage(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
@@ -150,7 +156,6 @@ public class CarportController {
         }
 
         ctx.attribute("carport", carport);
-
         ctx.attribute("materials", allMaterials);
 
         ctx.render(getCarportTemplate(carport));
