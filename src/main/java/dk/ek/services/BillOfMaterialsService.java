@@ -6,6 +6,7 @@ import dk.ek.entities.OrderMaterials;
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.ConnectionPool;
 import dk.ek.persistence.MaterialMapper;
+import dk.ek.persistence.OrderMaterialMapper;
 
 import java.util.List;
 import java.util.Objects;
@@ -97,8 +98,11 @@ public class BillOfMaterialsService {
         billOfMaterials.add(new OrderMaterials("Vinkelbeslag", angleBracket.getCategory(), 0, amountOfBrackets, angleBracket.getUnitOfMeasurement(), "Til montering af rem på stolper og spær på rem"));
 
 
+
         for (OrderMaterials orderMaterial : billOfMaterials) {
-            System.out.println(orderMaterial.getName() + " | " + orderMaterial.getMaterialDescription() + " | "+ orderMaterial.getLengthMeasurement() + " | " + orderMaterial.getAmount() + " | " + orderMaterial.getUnitOfAmount() + " | " + orderMaterial.getDescription());
+            OrderMaterialMapper.createOrderMaterial(order.getId(), orderMaterial, connectionPool);
+
+            //System.out.println(orderMaterial.getName() + " | " + orderMaterial.getMaterialDescription() + " | "+ orderMaterial.getLengthMeasurement() + " | " + orderMaterial.getAmount() + " | " + orderMaterial.getUnitOfAmount() + " | " + orderMaterial.getUsageDescription());
         }
     }
 }
