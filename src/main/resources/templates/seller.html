@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="da" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Sælger dashboard</title>
+
     <link rel="stylesheet" th:href="@{/css/pages/seller.css}">
 </head>
+
 <body>
 
 <main class="seller-page">
@@ -12,19 +15,29 @@
     <section class="seller-container">
 
         <div class="seller-header">
+
             <div>
                 <h1>Sælger dashboard</h1>
                 <p>Overblik over kunder og ordrer</p>
             </div>
 
-            <a href="/" class="back-button">← Tilbage til forsiden</a>
+            <a href="/" class="back-button">
+                ← Tilbage til forsiden
+            </a>
+
         </div>
 
+        <!-- CUSTOMERS -->
+
         <section class="dashboard-card">
+
             <h2>Alle kunder</h2>
 
             <div class="table-wrapper">
+
                 <table>
+
+                    <thead>
                     <tr>
                         <th>ID</th>
                         <th>Navn</th>
@@ -34,25 +47,47 @@
                         <th>Postnummer</th>
                         <th>By</th>
                     </tr>
+                    </thead>
+
+                    <tbody>
 
                     <tr th:each="customer : ${customers}">
+
                         <td th:text="${customer.id}"></td>
+
                         <td th:text="${customer.firstname + ' ' + customer.lastname}"></td>
+
                         <td th:text="${customer.address}"></td>
+
                         <td th:text="${customer.email}"></td>
+
                         <td th:text="${customer.phone}"></td>
+
                         <td th:text="${customer.zipcode}"></td>
+
                         <td th:text="${customer.city}"></td>
+
                     </tr>
+
+                    </tbody>
+
                 </table>
+
             </div>
+
         </section>
 
+        <!-- ORDERS -->
+
         <section class="dashboard-card">
+
             <h2>Alle ordrer</h2>
 
             <div class="table-wrapper">
+
                 <table>
+
+                    <thead>
                     <tr>
                         <th>Ordre ID</th>
                         <th>Kunde</th>
@@ -65,56 +100,78 @@
                         <th>Oprettet</th>
                         <th>Tegning</th>
                     </tr>
+                    </thead>
+
+                    <tbody>
 
                     <tr th:each="order : ${orders}">
+
                         <td th:text="${order.id}"></td>
+
                         <td th:text="${order.customerId}"></td>
+
                         <td th:text="${order.employeeId}"></td>
-                        <td th:text="${order.roofType}"></td>
-                        <td th:text="${order.width}"></td>
-                        <td th:text="${order.length}"></td>
-                        <td th:text="${order.isToolShed ? 'Ja' : 'Nej'}"></td>
+
+                        <td th:text="${order.roofMaterial}"></td>
+
+                        <td th:text="${order.carportWidth}"></td>
+
+                        <td th:text="${order.carportLength}"></td>
+
+                        <td th:text="${order.hasToolShed ? 'Ja' : 'Nej'}"></td>
+
                         <td th:text="${order.status}"></td>
+
                         <td th:text="${order.createdAt}"></td>
+
                         <td>
-                            <a class="table-link" th:href="@{'/seller/draw/' + ${order.id}}">
+
+                            <a class="table-link"
+                               th:href="@{'/seller/draw/' + ${order.id}}">
+
                                 View drawing
+
                             </a>
+
                         </td>
+
                     </tr>
+
+                    </tbody>
+
                 </table>
+
             </div>
+
         </section>
 
-        <section class="dashboard-card">
-            <div class="drawing-header">
-                <h2>Tegninger</h2>
-    <tr th:each="order : ${orders}">
-        <td th:text="${order.id}"></td>
-        <td th:text="${order.customerId}"></td>
-        <td th:text="${order.employeeId}"></td>
-        <td th:text="${order.roofType}"></td>
-        <td th:text="${order.width}"></td>
-        <td th:text="${order.length}"></td>
-        <td th:text="${order.isToolShed ? 'Ja' : 'Nej'}"></td>
-        <td th:text="${order.status}"></td>
-        <td th:text="${order.createdAt}"></td>
-        <td>
-            <a th:href="@{'/seller/draw/' + ${order.id}}">
-                View drawing
-            </a>
-        </td>
-    </tr>
-</table>
+        <!-- DRAWINGS -->
 
-                <button class="draw-button" onclick="drawOrders()">
+        <section class="dashboard-card">
+
+            <div class="drawing-header">
+
+                <h2>Tegninger</h2>
+
+                <button class="draw-button"
+                        onclick="drawOrders()">
+
                     Draw all orders
+
                 </button>
+
             </div>
 
             <div class="svg-wrapper">
-                <svg id="svg" width="1200" height="800"></svg>
+
+                <svg id="svg"
+                     width="1200"
+                     height="800">
+
+                </svg>
+
             </div>
+
         </section>
 
     </section>
@@ -130,4 +187,5 @@
 <script src="/js/drawing.js"></script>
 
 </body>
+
 </html>

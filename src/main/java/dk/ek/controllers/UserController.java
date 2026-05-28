@@ -138,11 +138,21 @@ public class UserController {
             return;
         }
 
+
+
         ctx.sessionAttribute("currentUser", employee);
         ctx.redirect("/seller");
     }
 
     private static void showSeller(Context ctx, ConnectionPool connectionPool) {
+
+        try {
+            ctx.attribute("employees", EmployeeMapper.getAllEmployees(connectionPool));
+            ctx.attribute("orders", OrderMapper.getAllOrders(connectionPool));
+        } catch (DatabaseException e) {
+            e.getMessage();
+        }
+
         ctx.render("seller.html");
     }
 
