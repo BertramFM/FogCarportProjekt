@@ -17,6 +17,7 @@ public class Order {
     private String status;
     private LocalDateTime createdAt;
 
+    // === FLAT ROOF ===
     public Order(int id, int customerId, int employeeId, String roofMaterial, int carportWidth, int carportLength, boolean hasToolShed, int shedWidth, int shedLength, String note, String status, LocalDateTime createdAt) {
         this.id = id;
         this.customerId = customerId;
@@ -32,6 +33,7 @@ public class Order {
         this.createdAt = createdAt;
     }
 
+    // === HIGH ROOF ===
     public Order(int id, int customerId, int employeeId, String roofMaterial, int roofAngle, int carportWidth, int carportLength, boolean hasToolShed, int shedWidth, int shedLength, String note, String status, LocalDateTime createdAt) {
         this.id = id;
         this.customerId = customerId;
