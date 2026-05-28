@@ -4,16 +4,20 @@ public class Materials {
 
     private int id;
     private String name;
-    private String unit;
+    private String unitOfMeasurement;
     private double pricePerUnit;
     private String category;
+    private final double materialWidth;
+    private final double materialHeight;
 
-    public Materials(int id, String name, String unit, double pricePerUnit, String category) {
+    public Materials(int id, String name,String unitOfMeasurement, double pricePerUnit, String category, double materialWidth, double materialHeight) {
         this.id = id;
         this.name = name;
-        this.unit = unit;
+        this.unitOfMeasurement = unitOfMeasurement;
         this.pricePerUnit = pricePerUnit;
         this.category = category;
+        this.materialWidth = materialWidth;
+        this.materialHeight = materialHeight;
     }
 
     public int getId() {
@@ -28,16 +32,24 @@ public class Materials {
         return name;
     }
 
+    public double getMaterialWidth() {
+        return materialWidth;
+    }
+
+    public double getMaterialHeight() {
+        return materialHeight;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getUnit() {
-        return unit;
+    public String getUnitOfMeasurement() {
+        return unitOfMeasurement;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setUnitOfMeasurement(String unitOfMeasurement) {
+        this.unitOfMeasurement = unitOfMeasurement;
     }
 
     public double getPricePerUnit() {

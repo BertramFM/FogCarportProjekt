@@ -3,13 +3,13 @@ package dk.ek.controllers;
 import dk.ek.entities.*;
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.*;
+import dk.ek.services.MaterialCalculatorService;
 import dk.ek.services.CalcService;
 import dk.ek.services.CarportSvg;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
-
 
 public class CarportController {
 
@@ -35,6 +35,7 @@ public class CarportController {
         int carportWidth = Integer.parseInt(ctx.formParam("carportWidth"));
         int carportLength = Integer.parseInt(ctx.formParam("carportLength"));
         boolean toolShed = Boolean.parseBoolean(ctx.formParam("toolShed"));
+        int roofAngle = 0;
 
         int shedWidth = 0;
         int shedLength = 0;
@@ -43,6 +44,7 @@ public class CarportController {
             shedWidth = Integer.parseInt(ctx.formParam("shedWidth"));
             shedLength = Integer.parseInt(ctx.formParam("shedLength"));
         }
+
         String note = ctx.formParam("note");
 
         // === Customer Variables ===
@@ -53,24 +55,30 @@ public class CarportController {
         String city = ctx.formParam("city");
         String email = ctx.formParam("email");
         String phone = ctx.formParam("phone");
+        String password = ctx.formParam("password");
 
         int customerId;
+
         if (CustomerMapper.emailExists(email, connectionPool)) {
             Customer exist = CustomerMapper.getCustomerByEmail(email, connectionPool);
             customerId = exist.getId();
         } else {
-            Customer customer = new Customer(firstname, lastname, address, email, phone, zipcode, city);
+            Customer customer = new Customer(firstname, lastname, address, email, phone, zipcode, city, password);
             customerId = CustomerMapper.createCustomer(customer, connectionPool);
         }
 
         ctx.sessionAttribute("customerId", customerId);
 
-        Order order = new Order(0, customerId, 0, roofMaterial, carportWidth, carportLength, toolShed, shedWidth, shedLength, note, "unclaimed", null);
+        Order order = new Order(0, customerId, 0, roofMaterial, roofAngle, carportWidth, carportLength, toolShed, shedWidth, shedLength, note, "unclaimed", null);
         int orderId = OrderMapper.createOrder(order, connectionPool);
+
+        // Get bill of materials
+        MaterialCalculatorService.calculateFlatCarportMaterialList(order, connectionPool);
 
         ctx.sessionAttribute("orderId", orderId);
 
-        MailController.sendOrderConfirmation(ctx);
+        // Send mail to customer
+        //MailController.sendOrderConfirmation(ctx, order);
 
         ctx.redirect("/confirmation");
     }
@@ -91,6 +99,7 @@ public class CarportController {
            shedWidth = Integer.parseInt(ctx.formParam("shedWidth"));
            shedLength = Integer.parseInt(ctx.formParam("shedLength"));
         }
+
         String note = ctx.formParam("note");
 
         // === Customer Variables ===
@@ -101,13 +110,15 @@ public class CarportController {
         String city = ctx.formParam("city");
         String email = ctx.formParam("email");
         String phone = ctx.formParam("phone");
+        String password = ctx.formParam("password");
 
         int customerId;
+
         if (CustomerMapper.emailExists(email, connectionPool)) {
             Customer exist = CustomerMapper.getCustomerByEmail(email, connectionPool);
             customerId = exist.getId();
         } else {
-            Customer customer = new Customer(firstname, lastname, address, email, phone, zipcode, city);
+            Customer customer = new Customer(firstname, lastname, address, email, phone, zipcode, city, password);
             customerId = CustomerMapper.createCustomer(customer, connectionPool);
         }
 
@@ -118,23 +129,25 @@ public class CarportController {
 
         ctx.sessionAttribute("orderId", orderId);
 
-        MailController.sendOrderConfirmation(ctx);
+        MailController.sendOrderConfirmation(ctx, order);
 
-        ctx.render("orderConfirmation.html");
+        ctx.redirect("/confirmation");
     }
 
 
     private static void createTempCarport(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         String roofTypeName = ctx.formParam("roofType");
+
         Carport carport = new Carport();
         RoofType roofType = new RoofType(0, roofTypeName);
         carport.setRoofType(roofType);
+
         List<Materials> allMaterials = MaterialMapper.getAllMaterials(connectionPool);
 
         ctx.sessionAttribute("carport", carport);
         ctx.attribute("materials", allMaterials);
-        ctx.render(getCarportTemplate(carport));
 
+        ctx.render(getCarportTemplate(carport));
     }
 
     private static void showCarportPage(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
@@ -147,7 +160,6 @@ public class CarportController {
         }
 
         ctx.attribute("carport", carport);
-
         ctx.attribute("materials", allMaterials);
 
         ctx.render(getCarportTemplate(carport));

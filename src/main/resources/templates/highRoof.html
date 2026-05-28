@@ -5,7 +5,9 @@
     <th:block th:insert="~{fragments/head :: head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/pages/orderPage.css}">
 </head>
+
 <script th:src="@{/js/orderPage.js}"></script>
+
 <body>
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
@@ -20,6 +22,7 @@
     <div class="order-container order-grid">
 
         <section class="order-info">
+
             <h1>Bestil Quick-Byg tilbud - carport med høj rejsning</h1>
 
             <p>
@@ -37,6 +40,7 @@
                 Udfyld formularen omhyggeligt og klik på "Send forespørgelse".
                 Felter markeret med * SKAL udfyldes!
             </p>
+
         </section>
 
         <section class="order-form-wrapper">
@@ -46,25 +50,35 @@
             <form action="/carport/saveHigh" method="post" class="order-form">
 
                 <div class="form-group">
+
                     <label>Tagmateriale *</label>
+
                     <select name="roofMaterial" required>
+
                         <option value="" disabled selected hidden>
                             Vælg tagmateriale
                         </option>
-                        <option> Betontagsten - Koralrød</option>
-                        <option> Betontagsten - Sort</option>
-                        <option> Eternittag B6 - Grå</option>
-                        <option> Eternittag B6 - Sortblå</option>
-                        <option> Eternittag B7 - Sortblå</option>
+
+                        <option>Betontagsten - Koralrød</option>
+                        <option>Betontagsten - Sort</option>
+                        <option>Eternittag B6 - Grå</option>
+                        <option>Eternittag B6 - Sortblå</option>
+                        <option>Eternittag B7 - Sortblå</option>
+
                     </select>
+
                 </div>
 
                 <div class="form-group">
+
                     <label>Taghældning *</label>
+
                     <select name="roofAngle" required>
+
                         <option value="" disabled selected hidden>
                             Vælg hældning
                         </option>
+
                         <option value="15">15 grader</option>
                         <option value="20">20 grader</option>
                         <option value="25">25 grader</option>
@@ -72,99 +86,222 @@
                         <option value="35">35 grader</option>
                         <option value="40">40 grader</option>
                         <option value="45">45 grader</option>
+
                     </select>
+
                 </div>
 
                 <div class="form-group">
+
                     <label>Carport bredde *</label>
+
                     <select name="carportWidth" required>
+
                         <option value="" disabled selected hidden>
                             Vælg bredde
                         </option>
+
                         <option value="240">240 cm</option>
                         <option value="270">270 cm</option>
                         <option value="300">300 cm</option>
+
                     </select>
+
                 </div>
 
                 <div class="form-group">
+
                     <label>Carport længde *</label>
+
                     <select name="carportLength" required>
+
                         <option value="" disabled selected hidden>
                             Vælg længde
                         </option>
+
                         <option value="240">240 cm</option>
                         <option value="270">270 cm</option>
                         <option value="300">300 cm</option>
+
                     </select>
+
                 </div>
 
                 <div class="form-group">
+
                     <label>Redskabsrum *</label>
-                    <select name="toolShed" required onchange="toggleShed(this)">
-                        <option value="false">Uden redskabsrum</option>
-                        <option value="true">Med redskabsrum</option>
+
+                    <select
+                            name="toolShed"
+                            required
+                            onchange="toggleShed(this)">
+
+                        <option value="false">
+                            Uden redskabsrum
+                        </option>
+
+                        <option value="true">
+                            Med redskabsrum
+                        </option>
+
                     </select>
+
                 </div>
 
                 <div id="shedFields" style="display: none">
+
                     <div class="form-group" id="shedWidth">
+
                         <label>Redskabsrum bredde *</label>
+
                         <select name="shedWidth">
+
                             <option value="" disabled selected hidden>
                                 Vælg bredde
                             </option>
+
                             <option value="240">240 cm</option>
                             <option value="270">270 cm</option>
                             <option value="300">300 cm</option>
+
                         </select>
+
                     </div>
 
                     <div class="form-group" id="shedLength">
+
                         <label>Redskabsrum længde *</label>
+
                         <select name="shedLength">
+
                             <option value="" disabled selected hidden>
                                 Vælg længde
                             </option>
+
                             <option value="240">240 cm</option>
                             <option value="270">270 cm</option>
                             <option value="300">300 cm</option>
+
                         </select>
+
                     </div>
+
                 </div>
 
                 <div class="form-group">
+
                     <label>Bemærkning</label>
+
                     <textarea name="note"></textarea>
+
                 </div>
 
                 <div class="form-group">
+
                     <label>Kontaktinformation *</label>
 
                     <div class="input-grid">
-                        <input type="text" name="firstname" placeholder="Fornavn" required>
-                        <input type="text" name="lastname" placeholder="Efternavn" required>
-                        <input type="text" name="address" placeholder="Adresse" required>
-                        <input type="text" name="zipcode" placeholder="Postnummer" required>
-                        <input type="text" name="city" placeholder="By" required>
-                        <input type="email" name="email" placeholder="Email" required>
-                        <input type="text" name="phone" placeholder="Telefon" required>
+
+                        <input
+                                type="text"
+                                name="firstname"
+                                placeholder="Fornavn"
+                                required>
+
+                        <input
+                                type="text"
+                                name="lastname"
+                                placeholder="Efternavn"
+                                required>
+
+                        <input
+                                type="text"
+                                name="address"
+                                placeholder="Adresse"
+                                required>
+
+                        <input
+                                type="text"
+                                name="zipcode"
+                                placeholder="Postnummer"
+                                required>
+
+                        <input
+                                type="text"
+                                name="city"
+                                placeholder="By"
+                                required>
+
+                        <input
+                                type="email"
+                                name="email"
+                                placeholder="Email"
+                                required>
+
+                        <input
+                                type="text"
+                                name="phone"
+                                placeholder="Telefon"
+                                required>
+
                     </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <button
+                            type="button"
+                            class="submit-btn"
+                            onclick="togglePasswordField()">
+
+                        Opret bruger
+
+                    </button>
+
+                    <div
+                            id="passwordContainer"
+                            style="display: none; margin-top: 15px;">
+
+                        <label for="password">
+                            Password *
+                        </label>
+
+                        <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Indtast password">
+
+                    </div>
+
                 </div>
 
                 <div class="form-group consent-group">
+
                     <label class="consent-label">
-                        <input type="checkbox" name="consent" required>
+
+                        <input
+                                type="checkbox"
+                                name="consent"
+                                required>
+
                         <span>
                             Jeg giver samtykke til, at Johannes Fog A/S må kontakte mig via telefon og/eller e-email
                             i forbindelse med tilbud på QuickByg carport og at de afgivne oplysninger opbevares og behandles
                             jf. Fogs persondatapolitik.
                         </span>
+
                     </label>
 
-                    <a href="https://www.johannesfog.dk/om-fog/betingelser-og-vilkaar/persondatapolitik" class="privacy-link">
+                    <a
+                            href="https://www.johannesfog.dk/om-fog/betingelser-og-vilkaar/persondatapolitik"
+                            class="privacy-link">
+
                         Læs mere om persondatapolitik her
+
                     </a>
+
                 </div>
 
                 <button type="submit" class="submit-btn">
@@ -179,5 +316,35 @@
 
 </div>
 
+<script>
+
+    function togglePasswordField() {
+
+        const passwordContainer =
+            document.getElementById("passwordContainer");
+
+        const passwordInput =
+            document.getElementById("password");
+
+        if (passwordContainer.style.display === "none") {
+
+            passwordContainer.style.display = "block";
+
+            passwordInput.required = true;
+
+        } else {
+
+            passwordContainer.style.display = "none";
+
+            passwordInput.required = false;
+
+            passwordInput.value = "";
+
+        }
+    }
+
+</script>
+
 </body>
+
 </html>

@@ -13,7 +13,7 @@
 <ul>
     <li>Bredde af Carport: <span th:text="${carportWidth}"></span>cm</li>
     <li>Længde af Carport: <span th:text="${carportLength}"></span>cm</li>
-    <li>Taghældning: <span th:text="${roofAngle}"></span></li>
+    <li>Taghældning: <span th:text="${roofAngle == 0 ? 'Flat' : roofAngle + '°'}"></span></li>
     <li>
         Redskabsrum:
         <span th:text="${toolShed ? 'Ja - ' + shedWidth + 'cm x ' + shedLength + 'cm' : 'Nej'}"></span>
