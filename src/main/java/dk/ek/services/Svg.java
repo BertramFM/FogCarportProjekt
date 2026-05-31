@@ -14,11 +14,6 @@ public class Svg {
         """;
 
     private StringBuilder svg = new StringBuilder();
-    private int x;
-    private int y;
-    private String width;
-    private String height;
-    private String viewBox;
 
     public Svg(int x, int y, String viewBox, String width, String height, boolean arrowDefs) {
         svg.append(String.format(
