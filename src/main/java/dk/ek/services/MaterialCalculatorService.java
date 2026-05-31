@@ -136,7 +136,7 @@ public class MaterialCalculatorService {
         return totalAmountOfPosts;
     }
 
-    private static int calculateAmountOfRafters(int carportLength, Materials rafter) {
+    protected static int calculateAmountOfRafters(int carportLength, Materials rafter) {
         int spaceBetweenRafters = 55;
         return (int) (carportLength / (spaceBetweenRafters + rafter.getMaterialWidth()));
     }
@@ -159,6 +159,17 @@ public class MaterialCalculatorService {
 
     private static int calculateAmountOfBrackets(int amountOfPosts, int amountOfRafters) {
         return (amountOfPosts * 2) + (amountOfRafters * 4);
+    }
+
+    public static int getRafterAmount(Order order, ConnectionPool connectionPool) throws DatabaseException {
+        List<Materials> materialsList = MaterialMapper.getAllMaterials(connectionPool);
+
+        Materials rafter = materialsList.stream()
+                .filter(material -> material.getName().equalsIgnoreCase("Spær"))
+                .findFirst()
+                .orElseThrow();
+
+        return calculateAmountOfRafters(order.getCarportLength(), rafter);
     }
 
 }
