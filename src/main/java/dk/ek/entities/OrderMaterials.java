@@ -17,6 +17,14 @@ public class OrderMaterials {
         this.usageDescription = description;
     }
 
+    public OrderMaterials(String name, int amount, String unitOfAmount, int lengthMeasurement, String usageDescription) {
+        this.name = name;
+        this.amount = amount;
+        this.unitOfAmount = unitOfAmount;
+        this.lengthMeasurement = lengthMeasurement;
+        this.usageDescription = usageDescription;
+    }
+
     public String getName() {
         return name;
     }
