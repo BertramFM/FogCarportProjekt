@@ -180,7 +180,7 @@ public class CarportController {
         int orderId = 1;
         Order order = OrderMapper.getOrderById(orderId, connectionPool);
 
-        String svg = CarportSvg.generateCarportSvg(order.getCarportWidth(), order.getCarportLength());
+        String svg = CarportSvg.generateCarportSvg(order, connectionPool);
 //        List<BOMLine> bom = CalcService.calcMaterials(order.getCarportWidth(), order.getCarportLength());
 
 
