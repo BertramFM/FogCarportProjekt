@@ -4,7 +4,6 @@ import dk.ek.entities.*;
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.*;
 import dk.ek.services.MaterialCalculatorService;
-import dk.ek.services.CalcService;
 import dk.ek.services.CarportSvg;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
