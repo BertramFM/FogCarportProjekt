@@ -1,17 +1,11 @@
 package dk.ek.controllers;
 
-import dk.ek.entities.Carport;
-import dk.ek.entities.Employee;
 import dk.ek.entities.Order;
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.*;
-import dk.ek.persistence.CarportMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class SellerController {
 
@@ -62,10 +56,10 @@ public class SellerController {
     }
 
 
-    private static void showDrawing(Context ctx, ConnectionPool connectionPool) {
+    private static void showDrawing(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         int orderId = Integer.parseInt(ctx.pathParam("id"));
 
-        Carport order = CarportMapper.getCarportById(orderId, connectionPool);
+        Order order = OrderMapper.getOrderById(orderId, connectionPool);
 
         ctx.attribute("order", order);
         ctx.render("drawing.html");
