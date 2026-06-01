@@ -1,6 +1,12 @@
 package dk.ek.services;
 
 import dk.ek.entities.Materials;
+import dk.ek.entities.Order;
+import dk.ek.exceptions.DatabaseException;
+import dk.ek.persistence.ConnectionPool;
+import dk.ek.persistence.MaterialMapper;
+
+import java.util.List;
 
 public class CalculatorService {
     public static int calculateLengthwiseCladding(int carportLength) {
@@ -58,5 +64,16 @@ public class CalculatorService {
 
     public static int calculateAmountOfBrackets(int amountOfPosts, int amountOfRafters) {
         return (amountOfPosts * 2) + (amountOfRafters * 4);
+    }
+
+    public static int getRafterAmount(Order order, ConnectionPool connectionPool) throws DatabaseException {
+        List<Materials> materialsList = MaterialMapper.getAllMaterials(connectionPool);
+
+        Materials rafter = materialsList.stream()
+                .filter(material -> material.getName().equalsIgnoreCase("Spær"))
+                .findFirst()
+                .orElseThrow();
+
+        return calculateAmountOfRafters(order.getCarportLength(), rafter);
     }
 }
