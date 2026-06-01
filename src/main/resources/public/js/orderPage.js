@@ -14,3 +14,28 @@ function toggleShed(select) {
         shedLength.required = false
     }
 }
+
+function togglePasswordField() {
+
+    const passwordContainer =
+        document.getElementById("passwordContainer");
+
+    const passwordInput =
+        document.getElementById("password");
+
+    if (passwordContainer.style.display === "none") {
+
+        passwordContainer.style.display = "block";
+
+        passwordInput.required = true;
+
+    } else {
+
+        passwordContainer.style.display = "none";
+
+        passwordInput.required = false;
+
+        passwordInput.value = "";
+
+    }
+}

@@ -165,13 +165,8 @@
 
                 <div class="form-group">
 
-                    <button
-                            type="button"
-                            class="submit-btn"
-                            onclick="togglePasswordField()">
-
+                    <button type="button" class="submit-btn" onclick="togglePasswordField()">
                         Opret bruger
-
                     </button>
 
                     <div
@@ -181,6 +176,7 @@
                         <label for="password">
                             Password *
                         </label>
+                        <p style="opacity: 50%; font-size: 14px">Mindst 8 tegn, 1 tal og 1 special tegn eg. @!#€</p>
 
                         <input
                                 type="password"
@@ -231,36 +227,6 @@
     </div>
 
 </div>
-
-<script>
-
-    function togglePasswordField() {
-
-        const passwordContainer =
-            document.getElementById("passwordContainer");
-
-        const passwordInput =
-            document.getElementById("password");
-
-        if (passwordContainer.style.display === "none") {
-
-            passwordContainer.style.display = "block";
-
-            passwordInput.required = true;
-
-        } else {
-
-            passwordContainer.style.display = "none";
-
-            passwordInput.required = false;
-
-            passwordInput.value = "";
-
-        }
-    }
-
-</script>
-
 </body>
 
 </html>
