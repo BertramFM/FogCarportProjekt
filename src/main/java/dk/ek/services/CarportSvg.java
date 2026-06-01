@@ -21,7 +21,7 @@ public class CarportSvg {
         int offSetY = 35;
         int arrowOffsetY = 30;
 
-        int rafterAmount = MaterialCalculatorService.getRafterAmount(order, connectionPool);
+        int rafterAmount = CalculatorService.getRafterAmount(order, connectionPool);
         int amountOfGaps = rafterAmount + 1;
         double gap = (length - rafterAmount * rafterWidth) / amountOfGaps;
 
@@ -40,10 +40,10 @@ public class CarportSvg {
 
         // Width arrow (y-akse)
         arrowSvg.addArrow(25, margin + arrowOffsetY, 25, margin + width + arrowOffsetY, "stroke:#000000");
-        arrowSvg.addText(20, outerHeight /2, 270, width + " cm");
+        arrowSvg.addText(20, outerHeight / 2, 270, width + " cm");
 
         // rem spacing
-        int innerWidth = width - (offSetY*2);
+        int innerWidth = width - (offSetY * 2);
         int remArrowX = leftMargin - 10;
         arrowSvg.addArrow(remArrowX, margin + arrowOffsetY + offSetY, remArrowX, margin + arrowOffsetY + offSetY + innerWidth, "stroke:#000000");
         arrowSvg.addText(remArrowX - 5, margin + arrowOffsetY + offSetY + innerWidth / 2, -90, innerWidth + " cm");
@@ -51,12 +51,12 @@ public class CarportSvg {
         // top arrow (spacing)
         int arrowY = 30;
         arrowSvg.addArrow(leftMargin, arrowY, (int) Math.round(gap) + leftMargin, arrowY, "stroke:#000000");
-        arrowSvg.addText((int) Math.round(gap / 2) + leftMargin, arrowY - 5, 0, (int) gap + " cm");
+        arrowSvg.addText((int) Math.round(gap / 2) + leftMargin, arrowY - 10, 0, (int) gap + " cm");
         for (int i = 0; i < rafterAmount; i++) {
             int x1 = (int) Math.round((i + 1) * gap + i * rafterWidth + rafterWidth) + leftMargin;
             int x2 = (int) Math.round((i + 2) * gap + (i + 1) * rafterWidth) + leftMargin;
             arrowSvg.addArrow(x1, arrowY, x2, arrowY, "stroke:#000000");
-            arrowSvg.addText((x1 + x2) / 2, arrowY - 5, 0, (int) gap + " cm");
+            arrowSvg.addText((x1 + x2) / 2, arrowY - 10, 0, (int) gap + " cm");
         }
 
         // Inner SVG
@@ -93,6 +93,13 @@ public class CarportSvg {
         mainSvg.addRectangle(length - (int) gap - 7, width - offSetY - 6, postSize, postSize, "stroke:#000000; fill:#000000; stroke-width:1");
         // Top right
         mainSvg.addRectangle(length - (int) gap - 7, offSetY - 2, postSize, postSize, "stroke:#000000; fill:#000000; stroke-width:1");
+
+        if (4 < CalculatorService.calculateAmountOfPosts(length, order.getHasToolShed())){
+            // Bottom middle
+            mainSvg.addRectangle(length / 2, width - offSetY - 6, postSize, postSize, "stroke:#000000; fill:#000000; stroke-width:1");
+            // Top middle
+            mainSvg.addRectangle(length / 2, offSetY - 2, postSize, postSize, "stroke:#000000; fill:#000000; stroke-width:1");
+        }
 
         mainSvg.close();
         arrowSvg.addSvg(mainSvg);
