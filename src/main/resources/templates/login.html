@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/pages/login.css}">
+</head>
+<script th:src="@{/js/loginTab.js}"></script>
+
+<body>
+
+<main class="form-page">
+
+    <section class="form-card">
+
+        <button class="back-button"
+                onclick="window.location.href='/'">
+            ← Tilbage til forsiden
+        </button>
+
+        <div class="auth-tabs">
+
+            <button id="loginTab"
+                    class="auth-tab"
+                    th:classappend="${activeTab == 'login'} ? 'active'"
+                    onclick="showForm('login')">
+                Login
+            </button>
+
+            <button id="registerTab"
+                    class="auth-tab"
+                    th:classappend="${activeTab == 'register'} ? 'active'"
+                    onclick="showForm('register')">
+                Registrer
+            </button>
+
+            <button id="employeeTab"
+                    class="auth-tab"
+                    th:classappend="${activeTab == 'employee'} ? 'active'"
+                    onclick="showForm('employee')">
+                Medarbejder
+            </button>
+
+        </div>
+
+
+        <!-- LOGIN -->
+
+        <div id="loginForm" class="auth-form"
+             th:classappend="${activeTab == 'login' or activeTab == null} ? 'active'">
+
+            <h1>Login</h1>
+
+            <form method="post"
+                  action="/login">
+
+                <label>Email</label>
+                <input type="email"
+                       name="email"
+                       required>
+
+                <label>Adgangskode</label>
+                <input type="password"
+                       name="password"
+                       required>
+
+                <p class="error-msg" th:if="${msg != null}" th:text="${msg}"></p>
+
+                <button type="submit">
+                    Login
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- REGISTER -->
+
+        <div id="registerForm"
+             class="auth-form"
+             th:classappend="${activeTab == 'register'} ? 'active'">
+
+            <h1 style="margin-bottom: 5px">Register</h1>
+            <p style="opacity: 50%">Kan først gøres efter carport ordre</p>
+
+            <form method="post"
+                  action="/registerUser">
+
+                <label>Email</label>
+                <input type="email"
+                       name="email"
+                       required>
+
+                <label>Telefon</label>
+                <input type="tel"
+                       name="phone"
+                       required>
+
+
+                <label>Adgangskode</label>
+                <input type="password"
+                       name="password"
+                       placeholder="Mindst 8 tegn, 1 tal og 1 special tegn eg. @!#€"
+                       required>
+
+                <p class="error-msg" th:if="${msg != null}" th:text="${msg}"></p>
+
+                <button type="submit">
+                    Opret bruger
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- MEDARBEJDER -->
+
+        <div id="employeeForm"
+             class="auth-form"
+             th:classappend="${activeTab == 'employee'} ? 'active'">
+
+            <h1>Medarbejder Login</h1>
+
+            <form method="post"
+                  action="/employeeLogin">
+
+                <label>Email</label>
+                <input type="email"
+                       name="email"
+                       required>
+
+                <label>Adgangskode</label>
+                <input type="password"
+                       name="password"
+                       required>
+
+                <p class="error-msg" th:if="${msg != null}" th:text="${msg}"></p>
+
+                <button type="submit">
+                    Login som medarbejder
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+</body>
+</html>

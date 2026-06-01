@@ -1,0 +1,154 @@
+/* ===============================
+   PAGE WRAPPER
+================================ */
+
+.order-page {
+    background-color: var(--main-body-background);
+    padding: 20px;
+}
+
+.order-container {
+    max-width: 1680px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* ===============================
+   BREADCRUMB
+================================ */
+
+.breadcrumb {
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: var(--navbar-text);
+}
+
+/* ===============================
+   GRID LAYOUT
+================================ */
+
+.order-grid {
+    display: grid;
+    gap: 60px;
+}
+
+@media (min-width: 1024px) {
+    .order-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* ===============================
+   INFO SECTION
+================================ */
+
+.order-info h1 {
+    font-size: 28px;
+    margin-bottom: 25px;
+}
+
+.order-info p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+/* ===============================
+   FORM SECTION
+================================ */
+
+.order-form-wrapper {
+    background-color: var(--roof-form-background);
+    padding: 40px;
+    border-radius: 4px;
+}
+
+.order-form-wrapper h2 {
+    margin-bottom: 30px;
+}
+
+/* ===============================
+   FORM ELEMENTS
+================================ */
+
+.order-form .form-group {
+    margin-bottom: 25px;
+}
+
+.order-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.order-form select,
+.order-form input,
+.order-form textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid var(--roof-form-border);
+    background-color: white;
+}
+
+.order-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* ===============================
+   INPUT GRID
+================================ */
+
+.input-grid {
+    display: grid;
+    gap: 10px;
+}
+
+@media (min-width: 600px) {
+    .input-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* ===============================
+   CONSENT
+================================ */
+
+.consent-group input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+    accent-color: var(--fog-blue);
+}
+
+.consent-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.privacy-link {
+    text-decoration: none ;
+    color: var(--fog-blue);
+}
+
+/* ===============================
+   BUTTON
+================================ */
+
+.submit-btn {
+    margin-top: 30px;
+    padding: 12px 25px;
+    background-color: var(--fog-blue);
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    opacity: 0.85;
+}

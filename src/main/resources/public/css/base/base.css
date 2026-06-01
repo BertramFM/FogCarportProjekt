@@ -1,0 +1,53 @@
+@font-face {
+    font-family: "Dinpro";
+    src: url("/assets/fonts/Dinpro-Regular.woff") format("woff2");
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "DinPro";
+    src: url("/assets/fonts/Dinpro-Medium.woff") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "DinPro";
+    src: url("/assets/fonts/Dinpro-Bold.woff") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+}
+
+:root {
+    --white: rgb(255,255,255);
+    --black: rgb(0,0,0);
+
+    --fog-blue: rgb(1,61,122);
+
+    --navbar-advert-text: rgb(2,37,70);
+    --navbar-text: rgb(16,24,32);
+
+    --main-body-background: rgb(245,245,245);
+
+    --roof-form-background: rgb(207, 218, 216);
+    --roof-form-border: rgb(55, 53, 47);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Dinpro", helvetica, arial, sans-serif;
+    margin: 0;
+    height: 100vh;
+    background-color: var(--main-body-background);
+}
+
+h2, p {
+    margin: 0;
+    padding: 0;
+}

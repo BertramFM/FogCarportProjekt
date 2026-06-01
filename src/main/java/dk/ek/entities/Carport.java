@@ -8,8 +8,9 @@ public class Carport {
     private RoofType roofType;
     private int length;
     private int width;
-    private List<Material> carportMaterial = new ArrayList<>();
-    private List<Material> roofMaterial = new ArrayList<>();
+    private int roofAngle;
+    private List<Materials> carportMaterials = new ArrayList<>();
+    private List<Materials> roofMaterials = new ArrayList<>();
 
     public Carport(int id, RoofType roofType, int length, int width) {
         this.id = id;
@@ -20,20 +21,20 @@ public class Carport {
 
     public Carport(){}
 
-    public List<Material> getCarportMaterial() {
-        return carportMaterial;
+    public List<Materials> getCarportMaterial() {
+        return carportMaterials;
     }
 
-    public void setCarportMaterial(List<Material> carportMaterial) {
-        this.carportMaterial = carportMaterial;
+    public void setCarportMaterial(List<Materials> carportMaterials) {
+        this.carportMaterials = carportMaterials;
     }
 
-    public List<Material> getRoofMaterial() {
-        return roofMaterial;
+    public List<Materials> getRoofMaterial() {
+        return roofMaterials;
     }
 
-    public void setRoofMaterial(List<Material> roofMaterial) {
-        this.roofMaterial = roofMaterial;
+    public void setRoofMaterial(List<Materials> roofMaterials) {
+        this.roofMaterials = roofMaterials;
     }
 
     public int getId() {
@@ -50,6 +51,14 @@ public class Carport {
 
     public void setRoofType(RoofType roofType) {
         this.roofType = roofType;
+    }
+
+    public int getRoofAngle() {
+        return roofAngle;
+    }
+
+    public void setRoofAngle(int roofAngle) {
+        this.roofAngle = roofAngle;
     }
 
     public int getLength() {

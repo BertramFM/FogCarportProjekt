@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>Hej <span th:text="${firstname}"></span>, Tak for din forespørgsel.</p>
+
+<p>Du vil blive kontaktet af en sælger inden for 3 hverdage, angående stykliste og plantegning af din brugerdefinerede carport.</p>
+
+<h3>Carport detaljer:</h3>
+<ul>
+    <li>Bredde af Carport: <span th:text="${carportWidth}"></span>cm</li>
+    <li>Længde af Carport: <span th:text="${carportLength}"></span>cm</li>
+    <li>Taghældning: <span th:text="${roofAngle == 0 ? 'Flat' : roofAngle + '°'}"></span></li>
+    <li>
+        Redskabsrum:
+        <span th:text="${toolShed ? 'Ja - ' + shedWidth + 'cm x ' + shedLength + 'cm' : 'Nej'}"></span>
+    </li>
+</ul>
+
+<p>Bruger bemærkning: <span th:text="${note}"></span></p>
+
+<h3>Hvis du har spørgsmål kan du kontakte os med følgende:</h3>
+<ul>
+    <li>Johannes Fog A/S CVR-nr. 16314439</li>
+    <li>Email: info@johannesfog.dk.</li>
+    <li>Telefon: 47 16 08 00</li>
+</ul>
+
+<img src="cid:logo">
+
+</body>
+</html>

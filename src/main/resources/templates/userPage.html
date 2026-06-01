@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bruger panel</title>
+    <link rel="stylesheet" th:href="@{/css/pages/user.css}">
+</head>
+
+<body>
+
+<main class="user-page">
+
+    <a href="/" class="back-button">
+        ← Tilbage til forsiden
+    </a>
+
+    <h1>Bruger panel</h1>
+
+    <section class="dashboard-card">
+
+        <h2>Mine ordrer</h2>
+
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th>Ordre ID</th>
+                    <th>Kunde</th>
+                    <th>Sælger</th>
+                    <th>Tagtype</th>
+                    <th>Bredde</th>
+                    <th>Længde</th>
+                    <th>Skur</th>
+                    <th>Status</th>
+                    <th>Oprettet</th>
+                </tr>
+
+                <tr th:each="order : ${customerOrders}">
+                    <td th:text="${order.id}"></td>
+                    <td th:text="${order.customerId}"></td>
+                    <td th:text="${order.employeeId}"></td>
+                    <td th:text="${order.roofMaterial}"></td>
+                    <td th:text="${order.carportWidth}"></td>
+                    <td th:text="${order.carportLength}"></td>
+                    <td th:text="${order.hasToolShed ? 'Ja' : 'Nej'}"></td>
+                    <td th:text="${order.status}"></td>
+                    <td th:text="${order.createdAt}"></td>
+                </tr>
+            </table>
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

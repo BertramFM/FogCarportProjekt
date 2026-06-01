@@ -1,0 +1,139 @@
+.main-body-item {
+    margin: 0px auto;
+    padding-left: 70px;
+    padding-right: 70px;
+}
+
+.main-image-box {
+    position: relative;
+    aspect-ratio: 2.5 / 1;
+}
+
+.main-body-item img {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    inset: 0px;
+    object-position: unset;
+    color: transparent;
+    object-fit: cover;
+}
+
+.main-body-section {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: 0px auto;
+    width: 100%;
+}
+
+.main-body-content {
+    max-width: 1680px;
+    margin: 0px auto;
+    width: 100%;
+}
+
+.main-body-content h2 {
+    font-size: 27px;
+    line-height: 30px;
+    font-weight: 500;
+}
+
+.main-body-spacer {
+    width: 100%;
+    height: 30px;
+}
+
+.main-body-paragraph {
+    display: flex;
+    flex-flow: column;
+}
+
+.main-body-paragraph p {
+    min-height: 1em;
+    margin-bottom: 15px;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 200;
+}
+
+.roof-option-boxes {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(200px, 1fr));
+    gap: 5px;
+
+}
+
+.roof-option {
+    position: relative;
+    display: flex;
+    background-color: var(--white);
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 30px 10px;
+}
+
+.roof-option img {
+    width: 90px;
+    height: 90px;
+    color: transparent;
+    object-position: unset;
+    object-fit: contain;
+}
+
+.roof-option-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.roof-option-content p {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 600;
+}
+
+.roof-option-button {
+    font-family: "Dinpro", helvetica, arial, sans-serif;
+    text-decoration: none;
+    color: var(--navbar-text);
+    font-size: 12px;
+    position: absolute;
+    inset: 0px;
+}
+
+.roof-option-description {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 200;
+}
+
+.roof-option-description svg {
+    height: 20px;
+    width: 20px;
+    padding-left: 5px;
+    transition: transform 250ms cubic-bezier(0.35, 0, 0.15, 1);
+}
+
+.roof-option-description svg:hover {
+    transform: translateX(10px);
+}
+
+
+.roof-option-link {
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+    align-items: center;
+    background-image: linear-gradient(transparent calc(100% - 1px), var(--navbar-text) 1px);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    transition: color 0.2s, background-size 0.2s cubic-bezier(0.35, 0, 0.15, 1);
+}
+
+.roof-option-link:hover {
+    background-size: 0% 100%;
+}

@@ -1,0 +1,150 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+}
+
+.form-page{
+
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#004b73;
+
+}
+
+.form-card{
+
+    width:100%;
+    max-width:520px;
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:10px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+
+}
+
+.back-button{
+
+    border:none;
+
+    background:none;
+
+    color:#004b73;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    margin-bottom:30px;
+
+}
+
+.auth-tabs{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr 1fr;
+
+    gap:10px;
+
+    margin-bottom:30px;
+
+}
+
+.auth-tab{
+
+    border:none;
+
+    padding:14px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:#d9d9d9;
+
+}
+
+.auth-tab.active{
+
+    background:#004b73;
+
+    color:white;
+
+}
+
+.auth-form{
+
+    display:none;
+
+}
+
+.auth-form.active{
+
+    display:block;
+
+}
+
+h1{
+
+    margin-bottom:25px;
+
+    font-size:40px;
+
+}
+
+label{
+
+    display:block;
+
+    margin-top:15px;
+    margin-bottom:5px;
+
+    font-weight:bold;
+
+}
+
+input{
+
+    width:100%;
+
+    padding:14px;
+
+    border:1px solid #ccc;
+
+    margin-bottom:10px;
+
+}
+
+button[type="submit"]{
+
+    width:100%;
+
+    margin-top:20px;
+
+    padding:15px;
+
+    border:none;
+
+    background:#004b73;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}

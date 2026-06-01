@@ -1,19 +1,197 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/head :: head}"></head>
+
+<head>
+    <th:block th:insert="~{fragments/head :: head}"></th:block>
+
+    <link rel="stylesheet" th:href="@{/css/pages/index.css}">
+</head>
 
 <body>
-    <!-- Navbar -->
-    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <main>
-        <H1>Velkommen til Fog</H1>
-        <p>Her kommer cool magi</p>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-        <form th:action="@{/rooftypes}" method="get">
-            <button type="submit">Vælg</button>
-        </form>
+<main>
 
-    </main>
+    <!-- Hero image -->
+    <section class="main-body-section">
+
+        <div class="main-body-content">
+
+            <div class="main-body-item">
+
+                <div class="main-image-box">
+                    <img th:src="@{/images/carport.png}" alt="carport">
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Intro text -->
+    <section class="main-body-section">
+
+        <div class="main-body-content">
+
+            <div class="main-body-item">
+
+                <h2>
+                    Lad os tegne din carport drøm - bestil et Quick-Byg tilbud
+                </h2>
+
+                <div class="main-body-spacer"></div>
+
+                <div class="main-body-paragraph">
+
+                    <p>
+                        Med et specialudviklet computerprogram kan vi lynhurtigt
+                        beregne prisen og udskrive en skitsetegning på en carport
+                        indenfor vores standardprogram.
+                        <br>
+                        Tilbud og skitsetegning fremsendes på mail hurtigst muligt.
+                        <br>
+                        Ved bestilling medfølger standardbyggevejledning.
+                    </p>
+
+                    <p>
+                        Vælg nedenfor, om du ønsker tilbud på carport med fladt tag
+                        eller carport med høj rejsning.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Roof options -->
+    <section class="main-body-section">
+
+        <div class="main-body-content">
+
+            <div class="main-body-item">
+
+                <div class="roof-option-boxes">
+
+
+                    <!-- Flat roof -->
+                    <div class="roof-option">
+
+                        <form action="/carport" method="post">
+
+                            <input type="hidden"
+                                   name="roofType"
+                                   value="Flat">
+
+                            <button type="submit"
+                                    class="roof-option-button"
+                                    style="all: unset; cursor: pointer; width: 100%;">
+
+                                <div class="roof-option-content">
+
+                                    <img th:src="@{/images/flatroof.svg}"
+                                         style="position: unset"
+                                         alt="flatroof">
+
+                                    <p>Carport med fladt tag</p>
+
+                                    <div class="roof-option-description">
+
+                                        Bestil tilbud på Quick-Byg carport med fladt tag
+
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="0 0 25 25"
+                                             width="1em"
+                                             height="1em">
+
+                                            <path fill="none"
+                                                  fill-rule="evenodd"
+                                                  stroke="currentColor"
+                                                  stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  stroke-width="2"
+                                                  d="m13 18 5-6-5-6m5 6H7">
+                                            </path>
+
+                                        </svg>
+
+                                    </div>
+
+                                </div>
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <!-- High roof -->
+                    <div class="roof-option">
+
+                        <form action="/carport" method="post">
+
+                            <input type="hidden"
+                                   name="roofType"
+                                   value="High">
+
+                            <button type="submit"
+                                    class="roof-option-button"
+                                    style="all: unset; cursor: pointer; width: 100%;">
+
+                                <div class="roof-option-content">
+
+                                    <img th:src="@{/images/highroof.svg}"
+                                         style="position: unset"
+                                         alt="highroof">
+
+                                    <p>Carport med høj rejsning</p>
+
+                                    <div class="roof-option-description">
+
+                                        Bestil tilbud på Quick-Byg carport med høj rejsning
+
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="0 0 25 25"
+                                             width="1em"
+                                             height="1em">
+
+                                            <path fill="none"
+                                                  fill-rule="evenodd"
+                                                  stroke="currentColor"
+                                                  stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  stroke-width="2"
+                                                  d="m13 18 5-6-5-6m5 6H7">
+                                            </path>
+
+                                        </svg>
+
+                                    </div>
+
+                                </div>
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
 </body>
 </html>
