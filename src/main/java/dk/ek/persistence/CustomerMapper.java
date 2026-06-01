@@ -255,35 +255,6 @@ public class CustomerMapper {
         }
     }
 
-    public static String getCityByZipcode(
-            int zipcode,
-            ConnectionPool connectionPool
-    ) throws DatabaseException {
-
-        String sql =
-                "SELECT city FROM zip_code WHERE zip_code = ?";
-
-        try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql)
-        ) {
-
-            ps.setInt(1, zipcode);
-
-            try (ResultSet rs = ps.executeQuery()) {
-
-                if (rs.next()) {
-                    return rs.getString("city");
-                }
-
-                throw new DatabaseException("Postnummer ikke fundet");
-            }
-
-        } catch (SQLException e) {
-            throw new DatabaseException(e.getMessage());
-        }
-    }
-
     public static Customer getCustomerFromEmailAndPhone(
             String email,
             String phone,
