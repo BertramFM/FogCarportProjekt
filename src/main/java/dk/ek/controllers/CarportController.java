@@ -13,7 +13,7 @@ import java.util.List;
 public class CarportController {
 
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
-        app.post("/carport", ctx -> createTempCarport(ctx, connectionPool));
+        app.post("/carport", ctx -> showCarportPage(ctx, connectionPool));
 
         app.post("/carport/saveFlat", ctx -> saveCarportFlat(ctx, connectionPool));
         app.post("/carport/saveHigh", ctx -> saveCarportHigh(ctx, connectionPool));
@@ -23,8 +23,17 @@ public class CarportController {
         app.get("/drawing", ctx -> showDrawing(ctx, connectionPool));
     }
 
-    private static void confirmation(@NotNull Context ctx) {
-        ctx.render("orderConfirmation.html");
+    private static void showCarportPage(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        String roofTypeName = ctx.formParam("roofType");
+        List<Materials> allMaterials = MaterialMapper.getAllMaterials(connectionPool);
+
+        ctx.attribute("materials", allMaterials);
+
+        if (roofTypeName.equalsIgnoreCase("flat")) {
+            ctx.render("flatRoof.html");
+        } else {
+            ctx.render("highRoof.html");
+        }
     }
 
     private static void saveCarportFlat(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
@@ -133,44 +142,8 @@ public class CarportController {
         ctx.redirect("/confirmation");
     }
 
-    private static void createTempCarport(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        String roofTypeName = ctx.formParam("roofType");
-
-        Carport carport = new Carport();
-        RoofType roofType = new RoofType(0, roofTypeName);
-        carport.setRoofType(roofType);
-
-        List<Materials> allMaterials = MaterialMapper.getAllMaterials(connectionPool);
-
-        ctx.sessionAttribute("carport", carport);
-        ctx.attribute("materials", allMaterials);
-
-        ctx.render(getCarportTemplate(carport));
-    }
-
-    private static void showCarportPage(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        List<Materials> allMaterials = MaterialMapper.getAllMaterials(connectionPool);
-        Carport carport = ctx.sessionAttribute("carport");
-
-        if (carport == null) {
-            ctx.result("No carport found");
-            return;
-        }
-
-        ctx.attribute("carport", carport);
-        ctx.attribute("materials", allMaterials);
-
-        ctx.render(getCarportTemplate(carport));
-    }
-
-    private static String getCarportTemplate(Carport carport) {
-        String roofType = carport.getRoofType().getName();
-
-        if (roofType.equalsIgnoreCase("flat")) {
-            return "flatRoof.html";
-        }
-
-        return "highRoof.html";
+    private static void confirmation(@NotNull Context ctx) {
+        ctx.render("orderConfirmation.html");
     }
 
     private static void showDrawing(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
