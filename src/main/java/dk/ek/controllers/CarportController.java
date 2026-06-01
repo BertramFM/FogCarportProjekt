@@ -3,7 +3,6 @@ package dk.ek.controllers;
 import dk.ek.entities.*;
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.*;
-import dk.ek.services.MaterialCalculatorService;
 import dk.ek.services.CarportSvg;
 import dk.ek.services.BillOfMaterialsService;
 import io.javalin.Javalin;
