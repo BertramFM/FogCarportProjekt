@@ -3,7 +3,7 @@ function draw() {
     const svg = document.getElementById("svg");
     svg.innerHTML = "";
 
-    const scale = 0.8;
+    const scale = 0.8 ;
 
     const width = order.width * scale;
     const length = order.length * scale;

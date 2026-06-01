@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Order</title>
+</head>
+
+<body>
+
+<h1>Edit Order</h1>
+
+<a href="/seller">← Back</a>
+
+<form method="post" th:action="@{'/seller/edit/' + ${order.id} }">
+
+    <input type="hidden" name="id" th:value="${order.id}" />
+
+    <label>Roof material</label>
+    <input type="text" name="roofMaterial" th:value="${order.roofMaterial}" />
+
+    <label>Width</label>
+    <input type="number" name="carportWidth" th:value="${order.carportWidth}" />
+
+    <label>Length</label>
+    <input type="number" name="carportLength" th:value="${order.carportLength}" />
+
+    <label>Has tool shed</label>
+    <select name="hasToolShed">
+        <option th:value="true" th:selected="${order.hasToolShed}">Yes</option>
+        <option th:value="false" th:selected="${!order.hasToolShed}">No</option>
+    </select>
+
+    <label>Shed width</label>
+    <input type="number" name="shedWidth" th:value="${order.shedWidth}" />
+
+    <label>Shed length</label>
+    <input type="number" name="shedLength" th:value="${order.shedLength}" />
+
+    <label>Note</label>
+    <textarea name="note" th:text="${order.note}"></textarea>
+
+    <label>Roof angle</label>
+    <input type="number" name="roofAngle" th:value="${order.roofAngle}" />
+
+    <button type="submit">Update order</button>
+
+</form>
+
+</body>
+
+</html>

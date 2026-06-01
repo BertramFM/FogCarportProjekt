@@ -17,10 +17,27 @@ public class UserController {
 
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
 
+        app.before("/userPanel", ctx -> {
+            Customer customer = ctx.sessionAttribute("currentCustomer");
+
+            if (customer == null) {
+                ctx.redirect("/login");
+            }
+        });
+
+        app.before("/seller", ctx -> {
+            Employee employee = ctx.sessionAttribute("currentEmployee");
+
+            if (employee == null) {
+                ctx.redirect("/employeeLogin");
+            }
+        });
+
         app.get("/login", ctx -> showLogin(ctx));
         app.post("/login", ctx -> login(ctx, connectionPool));
         app.get("/logout", ctx -> logout(ctx));
 
+        app.get("/employeeLogin", ctx -> showLogin(ctx));
         app.post("/employeeLogin", ctx -> employeeLogin(ctx, connectionPool));
         app.get("/seller", ctx -> showSeller(ctx, connectionPool));
 
@@ -32,11 +49,9 @@ public class UserController {
 
     private static void showUserPanel(Context ctx, ConnectionPool connectionPool) {
         try {
-            Customer customer = ctx.sessionAttribute("currentUser");
 
-            if (customer == null) {
-                ctx.redirect("/login");
-            }
+            Customer customer = ctx.sessionAttribute("currentCustomer");
+
             int customerId = customer.getId();
             ctx.attribute("customerId", customerId);
 
@@ -93,14 +108,14 @@ public class UserController {
             return;
         }
 
-        if (!BCrypt.checkpw(password, customer.getPassword())) {
+        if (!BCrypt.    checkpw(password, customer.getPassword())) {
             ctx.attribute("msg", "Forkert email eller adgangskode");
             ctx.attribute("activeTab", "login");
             ctx.render("login");
             return;
         }
 
-        ctx.sessionAttribute("currentUser", customer);
+        ctx.sessionAttribute("currentCustomer", customer);
         ctx.redirect("/userPanel");
     }
 
@@ -138,11 +153,19 @@ public class UserController {
             return;
         }
 
-        ctx.sessionAttribute("currentUser", employee);
+        ctx.sessionAttribute("currentEmployee", employee);
         ctx.redirect("/seller");
     }
 
     private static void showSeller(Context ctx, ConnectionPool connectionPool) {
+
+        try {
+            ctx.attribute("employees", EmployeeMapper.getAllEmployees(connectionPool));
+            ctx.attribute("orders", OrderMapper.getAllOrders(connectionPool));
+        } catch (DatabaseException e) {
+            e.getMessage();
+        }
+
         ctx.render("seller.html");
     }
 
@@ -176,7 +199,7 @@ public class UserController {
         }
 
         String message = Validator.validatePassword(password);
-        if (message != null){
+        if (message != null) {
             ctx.attribute("msg", message);
             ctx.attribute("activeTab", "register");
             ctx.render("login");
