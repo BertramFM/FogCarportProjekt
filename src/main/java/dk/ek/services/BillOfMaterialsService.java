@@ -105,15 +105,4 @@ public class BillOfMaterialsService {
             //System.out.println(orderMaterial.getName() + " | " + orderMaterial.getMaterialDescription() + " | "+ orderMaterial.getLengthMeasurement() + " | " + orderMaterial.getAmount() + " | " + orderMaterial.getUnitOfAmount() + " | " + orderMaterial.getUsageDescription());
         }
     }
-
-    public static int getRafterAmount(Order order, ConnectionPool connectionPool) throws DatabaseException {
-        List<Materials> materialsList = MaterialMapper.getAllMaterials(connectionPool);
-
-        Materials rafter = materialsList.stream()
-                .filter(material -> material.getName().equalsIgnoreCase("Spær"))
-                .findFirst()
-                .orElseThrow();
-
-        return calculateAmountOfRafters(order.getCarportLength(), rafter);
-    }
 }
