@@ -9,7 +9,7 @@ public class CarportSvg {
 
     public static String generateCarportSvg(Order order, ConnectionPool connectionPool) throws DatabaseException {
         int margin = 35;
-        int leftMargin = 70;
+        int leftMargin = 60;
         int width = order.getCarportWidth();
         int length = order.getCarportLength();
         double rafterWidth = 4.5;
