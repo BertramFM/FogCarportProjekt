@@ -65,7 +65,7 @@ public class OrderMaterials {
         this.unitOfAmount = unitOfAmount;
     }
 
-    public String getDescription() {
+    public String getUsageDescription() {
         return usageDescription;
     }
 

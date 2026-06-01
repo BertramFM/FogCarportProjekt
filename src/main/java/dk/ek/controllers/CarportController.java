@@ -5,6 +5,7 @@ import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.*;
 import dk.ek.services.MaterialCalculatorService;
 import dk.ek.services.CarportSvg;
+import dk.ek.services.BillOfMaterialsService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import org.jetbrains.annotations.NotNull;
@@ -72,7 +73,7 @@ public class CarportController {
         int orderId = OrderMapper.createOrder(order, connectionPool);
 
         // Get bill of materials
-        MaterialCalculatorService.calculateFlatCarportMaterialList(order, connectionPool);
+        BillOfMaterialsService.calculateFlatCarportMaterialList(order, connectionPool);
 
         ctx.sessionAttribute("orderId", orderId);
 
@@ -132,7 +133,6 @@ public class CarportController {
 
         ctx.redirect("/confirmation");
     }
-
 
     private static void createTempCarport(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         String roofTypeName = ctx.formParam("roofType");

@@ -20,7 +20,6 @@ public class MailController {
         thymeleafContext.setVariable("roofAngle", order.getRoofAngle());
         thymeleafContext.setVariable("carportWidth", order.getCarportWidth());
         thymeleafContext.setVariable("carportLength", order.getCarportLength());
-        //thymeleafContext.setVariable("carportMaterialId", ctx.formParam("carportMaterialId"));
 
         thymeleafContext.setVariable("toolShed", order.getHasToolShed());
         thymeleafContext.setVariable("shedWidth", order.getShedWidth());
