@@ -20,7 +20,6 @@ public class CarportController {
 
         app.get("/carport", ctx -> showCarportPage(ctx, connectionPool));
         app.get("/confirmation", ctx -> confirmation(ctx));
-        app.get("/drawing", ctx -> showDrawing(ctx, connectionPool));
     }
 
     private static void showCarportPage(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
@@ -144,19 +143,5 @@ public class CarportController {
 
     private static void confirmation(@NotNull Context ctx) {
         ctx.render("orderConfirmation.html");
-    }
-
-    private static void showDrawing(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-//        int orderId = ctx.sessionAttribute("orderId");
-        int orderId = 1;
-        Order order = OrderMapper.getOrderById(orderId, connectionPool);
-
-        String svg = CarportSvg.generateCarportSvg(order, connectionPool);
-//        List<BOMLine> bom = CalcService.calcMaterials(order.getCarportWidth(), order.getCarportLength());
-
-
-        ctx.attribute("svg", svg);
-//        ctx.attribute("bom", bom);
-        ctx.render("showDrawing.html");
     }
 }

@@ -1,10 +1,14 @@
 package dk.ek.controllers;
 
 import dk.ek.entities.Order;
+import dk.ek.entities.OrderMaterials;
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.*;
+import dk.ek.services.CarportSvg;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+
+import java.util.List;
 
 
 public class SellerController {
@@ -60,8 +64,13 @@ public class SellerController {
         int orderId = Integer.parseInt(ctx.pathParam("id"));
 
         Order order = OrderMapper.getOrderById(orderId, connectionPool);
+        List<OrderMaterials> bomList = OrderMaterialMapper.getOrderMaterials(orderId, connectionPool);
+        String svg = CarportSvg.generateCarportSvg(order, connectionPool);
 
         ctx.attribute("order", order);
-        ctx.render("drawing.html");
+        ctx.attribute("bom", bomList);
+        ctx.attribute("svg", svg);
+
+        ctx.render("showDrawing.html");
     }
 }
