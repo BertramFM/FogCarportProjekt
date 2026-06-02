@@ -13,6 +13,10 @@ import jakarta.mail.internet.MimeMultipart;
 import jakarta.mail.util.ByteArrayDataSource;
 
 import java.io.InputStream;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Properties;
 
 public class MailService {
@@ -20,53 +24,30 @@ public class MailService {
     private static final String RESEND_API_KEY = System.getenv("RESEND_API_KEY");
 
     public static void sendMail(String to, String subject, String body) {
-
-        Properties properties = new Properties();
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.ssl.enable", "true");
-        properties.put("mail.smtp.host", "smtp.resend.com");
-        properties.put("mail.smtp.port", "465");
-        properties.put("mail.smtp.ssl.trust", "smtp.resend.com");
-
-        Session session = Session.getInstance(
-                properties,
-                new Authenticator() {
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("resend", RESEND_API_KEY);
-                    }
-                }
-        );
-
         try {
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(FROM_EMAIL));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-            message.setSubject(subject);
+            String json = String.format("""
+                {
+                    "from": "%s",
+                    "to": ["%s"],
+                    "subject": "%s",
+                    "html": "%s"
+                }
+                """, FROM_EMAIL, to, subject, body.replace("\"", "\\\"").replace("\n", "\\n"));
 
-            MimeBodyPart htmlPart = new MimeBodyPart();
-            htmlPart.setContent(body, "text/html; charset=utf-8");
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://api.resend.com/emails"))
+                    .header("Authorization", "Bearer " + RESEND_API_KEY)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json))
+                    .build();
 
-            MimeBodyPart imagePart = new MimeBodyPart();
-            InputStream imageStream = MailService.class
-                    .getResourceAsStream("/public/images/logo.png");
+            HttpResponse<String> response = HttpClient.newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString());
 
-            if (imageStream != null) {
-                imagePart.setDataHandler(new DataHandler(
-                        new ByteArrayDataSource(imageStream, "image/png")
-                ));
-                imagePart.setHeader("Content-ID", "<logo>");
-                imagePart.setDisposition(MimeBodyPart.INLINE);
-            }
-
-            MimeMultipart multipart = new MimeMultipart();
-            multipart.addBodyPart(htmlPart);
-            if (imageStream != null) multipart.addBodyPart(imagePart);
-
-            message.setContent(multipart);
-            Transport.send(message);
+            System.out.println("Mail response: " + response.statusCode() + " " + response.body());
 
         } catch (Exception e) {
+            System.out.println("Mail error: " + e.getMessage());
             e.printStackTrace();
         }
     }
