@@ -9,6 +9,7 @@ import io.javalin.Javalin;
 import io.javalin.http.Context;
 
 import java.util.List;
+import java.util.Objects;
 
 
 public class SellerController {
@@ -25,6 +26,11 @@ public class SellerController {
         String status = ctx.formParam("status");
 
         OrderMapper.updateStatus(id, status, connectionPool);
+
+        if(Objects.equals(status, "Pending")) {
+            MailController.sendOrderMail(ctx, connectionPool);
+        }
+
         ctx.redirect("/seller");
     }
 
