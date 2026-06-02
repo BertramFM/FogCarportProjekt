@@ -47,14 +47,14 @@
                     <td>
                         <span th:if="${order.status == 'unclaimed'}">Ubehandlet</span>
                         <span th:if="${order.status == 'claimed'}">Tildelt</span>
-                        <span th:if="${order.status == 'pending'}">Afventende betaling</span>
+                        <span th:if="${order.status == 'Pending'}">Afventende betaling</span>
                         <span th:if="${order.status == 'completed'}">Betalt</span>
                     </td>
                     <td th:text="${order.createdAt}"></td>
                     <td>
                         <form th:action="@{/sendOrderMail}" method="post">
                             <input type="hidden" name="orderId" th:value="${order.id}" />
-                            <button type="submit" class="submit-btn" th:disabled="${order.status != 'pending'}">
+                            <button type="submit" class="submit-btn" th:disabled="${order.status != 'Pending'}">
                                 Betal ➔
                             </button>
                         </form>
