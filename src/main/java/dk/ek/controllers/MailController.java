@@ -49,7 +49,7 @@ public class MailController {
 
         MailService.sendMail(email, "Order received", html);
 
-        ctx.result("OK");
+        ctx.result("OK"); 
     }
 
     public static void sendOrderMail(io.javalin.http.Context ctx, ConnectionPool connectionPool) throws DatabaseException {
