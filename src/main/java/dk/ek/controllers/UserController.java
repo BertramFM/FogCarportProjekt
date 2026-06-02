@@ -208,6 +208,6 @@ public class UserController {
 
         CustomerMapper.updatePassword(email, password, connectionPool);
         ctx.sessionAttribute("currentUser", customer);
-        ctx.redirect("/userPanel");
+        ctx.redirect("/registerUser");
     }
 }
