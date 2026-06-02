@@ -42,7 +42,6 @@ public class CarportController {
         int carportWidth = Integer.parseInt(ctx.formParam("carportWidth"));
         int carportLength = Integer.parseInt(ctx.formParam("carportLength"));
         boolean toolShed = Boolean.parseBoolean(ctx.formParam("toolShed"));
-        int roofAngle = 0;
 
         int shedWidth = 0;
         int shedLength = 0;
@@ -76,7 +75,7 @@ public class CarportController {
 
         ctx.sessionAttribute("customerId", customerId);
 
-        Order order = new Order(0, customerId, 0, roofMaterial, roofAngle, carportWidth, carportLength, toolShed, shedWidth, shedLength, note, "unclaimed", null);
+        Order order = new Order(0, customerId, 0, roofMaterial, carportWidth, carportLength, toolShed, shedWidth, shedLength, note, "unclaimed", null, 0.00);
         int orderId = OrderMapper.createOrder(order, connectionPool);
 
         // Get bill of materials
@@ -131,7 +130,7 @@ public class CarportController {
 
         ctx.sessionAttribute("customerId", customerId);
 
-        Order order = new Order(0, customerId, 0, roofMaterial, roofAngle, carportWidth, carportLength, toolShed, shedWidth, shedLength, note, "unclaimed", null);
+        Order order = new Order(0, customerId, 0, roofMaterial, roofAngle, carportWidth, carportLength, toolShed, shedWidth, shedLength, note, "unclaimed", null, 0.00);
         int orderId = OrderMapper.createOrder(order, connectionPool);
 
         ctx.sessionAttribute("orderId", orderId);
