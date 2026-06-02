@@ -32,10 +32,10 @@ Login_Registrer --> EmployeePage : Medarbejder login succes
 
 state "Bruger login" as UserLogin {
     state MineOrdre
-    MineOrdre --> Betalt
+    MineOrdre --> Betal
     MineOrdre --> Forside
-    state Betalt
-    Betalt --> MineOrdre
+    state Betal
+    Betal --> MineOrdre
 }
 
 state "Medarbejder login" as EmployeeLogin {
@@ -43,8 +43,13 @@ state "Medarbejder login" as EmployeeLogin {
     EmployeePage --> Forside
     EmployeePage --> ViewOrder
     EmployeePage --> EditOrder
+
     state ViewOrder
+    ViewOrder --> EmployeePage
+
     state EditOrder
+    EditOrder --> EmployeePage
+    EditOrder --> EditOrder : Opdater mål / pris
 }
 
 @enduml
