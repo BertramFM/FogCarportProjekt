@@ -1,0 +1,50 @@
+@startuml
+!pragma layout smetana
+hide empty description
+title Navigationsdiagram - Fog Carport
+
+[*] --> Forside
+
+state Forside
+
+state "Carport type" as CarportType {
+    state CarportFlatTag
+    state CarportHøjRejsning
+}
+
+Forside --> Login_Registrer : Til login
+Forside --> CarportFlatTag
+Forside --> CarportHøjRejsning
+
+CarportFlatTag --> OrdreBekræftelse : indsend ordre
+CarportFlatTag --> Login_Registrer
+
+CarportHøjRejsning --> OrdreBekræftelse : indsend ordre
+CarportHøjRejsning --> Login_Registrer
+
+state OrdreBekræftelse
+OrdreBekræftelse --> Forside
+
+state Login_Registrer
+Login_Registrer --> Login_Registrer : Login fejl / bruger oprettet
+Login_Registrer --> MineOrdre : Kunde login succes
+Login_Registrer --> EmployeePage : Medarbejder login succes
+
+state "Bruger login" as UserLogin {
+    state MineOrdre
+    MineOrdre --> Betalt
+    MineOrdre --> Forside
+    state Betalt
+    Betalt --> MineOrdre
+}
+
+state "Medarbejder login" as EmployeeLogin {
+    state EmployeePage
+    EmployeePage --> Forside
+    EmployeePage --> ViewOrder
+    EmployeePage --> EditOrder
+    state ViewOrder
+    state EditOrder
+}
+
+@enduml
