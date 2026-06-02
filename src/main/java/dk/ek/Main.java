@@ -24,7 +24,7 @@ public class Main {
             config.staticFiles.add("/public");
             config.jetty.modifyServletContextHandler(handler -> handler.setSessionHandler(SessionConfig.sessionConfig()));
             config.fileRenderer(new JavalinThymeleaf(ThymeleafConfig.templateEngine()));
-        }).start(7070);
+        }).start(8080);
 
         MainController.addRoutes(app, connectionPool);
         UserController.addRoutes(app, connectionPool);
