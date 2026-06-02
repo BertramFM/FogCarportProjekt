@@ -84,7 +84,7 @@ public class CarportController {
         ctx.sessionAttribute("orderId", orderId);
 
         // Send mail to customer
-        //MailController.sendOrderConfirmation(ctx, order);
+        MailController.sendOrderConfirmation(ctx, order);
 
         ctx.redirect("/confirmation");
     }
