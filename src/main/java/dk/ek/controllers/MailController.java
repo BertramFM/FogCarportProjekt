@@ -57,8 +57,6 @@ public class MailController {
 
         OrderMapper.updateStatus(orderId, "completed", connectionPool);
 
-        //MailService.sendPaymentMail(orderId);
-
-        ctx.redirect("/userPanel");
+        ctx.render("paidFeedback.html");
     }
 }
