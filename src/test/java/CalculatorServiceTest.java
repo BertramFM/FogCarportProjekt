@@ -1,9 +1,6 @@
 import dk.ek.entities.Materials;
-import dk.ek.persistence.MaterialMapper;
 import dk.ek.services.CalculatorService;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
