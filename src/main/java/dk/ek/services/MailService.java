@@ -14,6 +14,7 @@ import jakarta.mail.util.ByteArrayDataSource;
 
 import java.io.InputStream;
 import java.util.Properties;
+
 public class MailService {
     private static final String FROM_EMAIL = System.getenv("MAIL_FROM");
     private static final String RESEND_API_KEY = System.getenv("RESEND_API_KEY");
