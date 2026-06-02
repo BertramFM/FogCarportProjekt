@@ -118,7 +118,7 @@
 
                         <td th:text="${order.status}"></td>
 
-                        <td th:text="${order.createdAt}"></td>
+                        <td th:text="${#temporals.format(order.createdAt, 'dd-MM-yyyy')}"></td>
 
                         <td>
 
