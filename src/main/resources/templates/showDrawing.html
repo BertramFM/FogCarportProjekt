@@ -1,34 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="da">
 <head>
+    <meta charset="UTF-8">
     <title>Carport tegning</title>
 </head>
 <body>
 
 <h1>Carport tegning</h1>
+
+<button class="back-button"
+        onclick="window.location.href='/seller'">
+    ← Tilbage til forsiden
+</button>
+
 <div th:utext="${svg}"></div>
 
-<!--<h2>Stykliste</h2>-->
-<!--<table border="1">-->
-<!--    <thead>-->
-<!--    <tr>-->
-<!--        <th>Materiale</th>-->
-<!--        <th>Antal</th>-->
-<!--        <th>Enhed</th>-->
-<!--        <th>Længde (cm)</th>-->
-<!--        <th>Beskrivelse</th>-->
-<!--    </tr>-->
-<!--    </thead>-->
-<!--    <tbody>-->
-<!--    <tr th:each="line : ${bom}">-->
-<!--        <td th:text="${line.name}"></td>-->
-<!--        <td th:text="${line.amount}"></td>-->
-<!--        <td th:text="${line.unit}"></td>-->
-<!--        <td th:text="${line.length > 0} ? ${line.length} + ' cm' : '-'"></td>-->
-<!--        <td th:text="${line.description}"></td>-->
-<!--    </tr>-->
-<!--    </tbody>-->
-<!--</table>-->
+<h2>Stykliste</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Materiale</th>
+        <th>Beskrivelse</th>
+        <th>Længde</th>
+        <th>Antal</th>
+        <th>Enhed</th>
+        <th>Bruges til</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="line : ${bom}">
+        <td th:text="${line.name}"></td>
+        <td th:text="${line.materialDescription}"></td>
+        <td th:text="${line.lengthMeasurement > 0} ? ${line.lengthMeasurement} + ' cm' : '-'"></td>
+        <td th:text="${line.amount}"></td>
+        <td th:text="${line.unitOfAmount}"></td>
+        <td th:text="${line.usageDescription}"></td>
+    </tr>
+    </tbody>
+</table>
 
 </body>
 </html>

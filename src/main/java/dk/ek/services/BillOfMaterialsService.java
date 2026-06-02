@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class BillOfMaterialsService {
-    public static void calculateFlatCarportMaterialList(Order order, ConnectionPool connectionPool) throws DatabaseException {
+    public static void calculateFlatCarportMaterialList(int orderId, Order order, ConnectionPool connectionPool) throws DatabaseException {
         List<OrderMaterials> billOfMaterials = new java.util.ArrayList<>(List.of());
 
         List<Materials> materialsList = MaterialMapper.getAllMaterials(connectionPool);
@@ -100,7 +100,7 @@ public class BillOfMaterialsService {
 
 
         for (OrderMaterials orderMaterial : billOfMaterials) {
-            OrderMaterialMapper.createOrderMaterial(order.getId(), orderMaterial, connectionPool);
+            OrderMaterialMapper.createOrderMaterial(orderId, orderMaterial, connectionPool);
 
             //System.out.println(orderMaterial.getName() + " | " + orderMaterial.getMaterialDescription() + " | "+ orderMaterial.getLengthMeasurement() + " | " + orderMaterial.getAmount() + " | " + orderMaterial.getUnitOfAmount() + " | " + orderMaterial.getUsageDescription());
         }

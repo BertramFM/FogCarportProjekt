@@ -79,7 +79,7 @@ public class CarportController {
         int orderId = OrderMapper.createOrder(order, connectionPool);
 
         // Get bill of materials
-        BillOfMaterialsService.calculateFlatCarportMaterialList(order, connectionPool);
+        BillOfMaterialsService.calculateFlatCarportMaterialList(orderId ,order, connectionPool);
 
         ctx.sessionAttribute("orderId", orderId);
 
