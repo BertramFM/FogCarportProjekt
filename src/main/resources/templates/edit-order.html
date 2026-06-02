@@ -16,6 +16,7 @@
 <td>
     <form th:action="@{'/seller/updateStatus/' + ${order.id}}" method="post">
         <select name="status" onchange="this.form.submit()">
+            <option value="" disabled selected hidden>Vælg status</option>
             <option value="Pending" th:selected="${order.status == 'Pending'}">Klar til betaling</option>
             <option value="Rejected" th:selected="${order.status == 'Rejected'}">Afvist</option>
             <option value="Completed" th:selected="${order.status == 'Completed'}">Afsluttet</option>
