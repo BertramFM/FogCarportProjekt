@@ -289,6 +289,38 @@ public class CustomerMapper {
         }
     }
 
+    public static String getEmailByOrderId(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+
+        String sql =
+            """
+                SELECT customers.email
+                FROM customers
+                JOIN public.orders on customers.id = orders.customer_id
+                WHERE orders.id = ?
+            """;
+
+
+        try (
+            Connection connection = connectionPool.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+
+            ps.setInt(1, orderId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                if (rs.next()) {
+                    return rs.getString("email");
+                }
+
+                return null;
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
     private static Customer customerRow(ResultSet rs)
             throws SQLException {
 
