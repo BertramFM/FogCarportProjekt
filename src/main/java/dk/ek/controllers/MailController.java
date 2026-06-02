@@ -5,6 +5,7 @@ import dk.ek.config.ThymeleafConfig;
 import dk.ek.entities.Order;
 import dk.ek.exceptions.DatabaseException;
 import dk.ek.persistence.ConnectionPool;
+import dk.ek.persistence.CustomerMapper;
 import dk.ek.persistence.OrderMapper;
 import dk.ek.services.MailService;
 import io.javalin.Javalin;
@@ -53,7 +54,17 @@ public class MailController {
     }
 
     public static void sendOrderMail(io.javalin.http.Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        Context thymeleafContext = new Context();
+
         int orderId = Integer.parseInt(ctx.formParam("orderId"));
+
+        String email = CustomerMapper.getEmailByOrderId(orderId, connectionPool);
+
+        String html = ThymeleafConfig.render("/mail/orderMail", thymeleafContext);
+
+        MailService.sendMail(email, "Order ready", html);
+
+        ctx.result("OK");
 
         OrderMapper.updateStatus(orderId, "completed", connectionPool);
 
