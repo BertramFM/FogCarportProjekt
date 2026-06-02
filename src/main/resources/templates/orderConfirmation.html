@@ -1,10 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <th:block th:insert="~{fragments/head :: head}"></th:block>
+
+    <link rel="stylesheet" th:href="@{/css/pages/confirmationPage.css}">
 </head>
+
 <body>
-<h1>Din bestilling er blevet sendt</h1>
+
+<main class="confirmation-page">
+
+    <section class="confirmation-card">
+
+        <button class="back-button"
+                onclick="window.location.href='/'">
+            ← Tilbage til forsiden
+        </button>
+
+        <div class="confirmation-message">
+            <h1>Din forespørgsel er sendt!</h1>
+            <h2> Forvent et opkald eller en mail fra en af vores sælgere inden for et par hverdage.</h2>
+        </div>
+    </section>
+</main>
 </body>
 </html>

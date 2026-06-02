@@ -1,0 +1,42 @@
+.confirmation-page {
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#004b73;
+}
+
+.confirmation-card {
+    width:100%;
+    max-width:520px;
+    background: var(--white);
+    padding:40px;
+    border-radius:10px;
+    box-shadow:0 10px 30px rgba(var(--black),.25);
+}
+
+.back-button {
+    border:none;
+    background:none;
+    color:#004b73;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-bottom:30px;
+}
+
+.confirmation-message {
+    display:block;
+}
+
+h1 {
+    margin-bottom:25px;
+    font-size:40px;
+}
+
+label {
+    display:block;
+    margin-top:15px;
+    margin-bottom:5px;
+    font-weight:bold;
+}
