@@ -52,7 +52,7 @@
                     </td>
                     <td th:text="${order.createdAt}"></td>
                     <td>
-                        <form th:action="@{/sendOrderMail}" method="post">
+                        <form th:action="@{/completeOrder}" method="post">
                             <input type="hidden" name="orderId" th:value="${order.id}" />
                             <button type="submit" class="submit-btn" th:disabled="${order.status != 'Pending'}">
                                 Betal ➔

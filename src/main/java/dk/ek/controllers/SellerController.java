@@ -28,7 +28,7 @@ public class SellerController {
         OrderMapper.updateStatus(id, status, connectionPool);
 
         if(Objects.equals(status, "Pending")) {
-            MailController.sendOrderMail(ctx, connectionPool);
+            MailController.sendOrderMail(ctx, id, connectionPool);
         }
 
         ctx.redirect("/seller");
