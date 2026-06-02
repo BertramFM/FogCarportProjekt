@@ -43,11 +43,9 @@ public class MailService {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
             message.setSubject(subject);
 
-            // HTML del
             MimeBodyPart htmlPart = new MimeBodyPart();
             htmlPart.setContent(body, "text/html; charset=utf-8");
 
-            // Logo fra classpath (virker i JAR)
             MimeBodyPart imagePart = new MimeBodyPart();
             InputStream imageStream = MailService.class
                     .getResourceAsStream("/public/images/logo.png");
