@@ -3,13 +3,21 @@ package dk.ek.controllers;
 
 import dk.ek.config.ThymeleafConfig;
 import dk.ek.entities.Order;
+import dk.ek.exceptions.DatabaseException;
+import dk.ek.persistence.ConnectionPool;
+import dk.ek.persistence.OrderMapper;
 import dk.ek.services.MailService;
+import io.javalin.Javalin;
 import org.thymeleaf.context.Context;
 
 
 public class MailController {
 
     public MailController() {
+    }
+
+    public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
+        app.post("/sendOrderMail", ctx -> sendOrderMail(ctx, connectionPool));
     }
 
     public static void sendOrderConfirmation(io.javalin.http.Context ctx, Order order) {
@@ -42,5 +50,15 @@ public class MailController {
         MailService.sendMail(email, "Order received", html);
 
         ctx.result("OK");
+    }
+
+    public static void sendOrderMail(io.javalin.http.Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        int orderId = Integer.parseInt(ctx.formParam("orderId"));
+
+        OrderMapper.updateStatus(orderId, "completed", connectionPool);
+
+        //MailService.sendPaymentMail(orderId);
+
+        ctx.redirect("/userPanel");
     }
 }

@@ -32,6 +32,7 @@
                     <th>Skur</th>
                     <th>Status</th>
                     <th>Oprettet</th>
+                    <th>Betal</th>
                 </tr>
 
                 <tr th:each="order : ${customerOrders}">
@@ -44,6 +45,14 @@
                     <td th:text="${order.hasToolShed ? 'Ja' : 'Nej'}"></td>
                     <td th:text="${order.status}"></td>
                     <td th:text="${order.createdAt}"></td>
+                    <td th:if="${order.status == 'pending'}">
+                        <form th:action="@{/sendOrderMail}" method="post">
+                            <input type="hidden" name="orderId" th:value="${order.id}" />
+                            <button type="submit" class="submit-btn">
+                                Betal ➔
+                            </button>
+                        </form>
+                    </td>
                 </tr>
             </table>
         </div>
