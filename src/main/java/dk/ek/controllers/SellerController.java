@@ -17,6 +17,15 @@ public class SellerController {
         app.get("/seller/draw/{id}", ctx -> showDrawing(ctx, connectionPool));
         app.get("/seller/edit/{id}", ctx -> showEditOrder(ctx, connectionPool));
         app.post("/seller/edit/{id}", ctx -> editOrder(ctx, connectionPool));
+        app.post("/seller/updateStatus/{id}", ctx -> updateStatus(ctx, connectionPool));
+    }
+
+    private static void updateStatus(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        int id = Integer.parseInt(ctx.pathParam("id"));
+        String status = ctx.formParam("status");
+
+        OrderMapper.updateStatus(id, status, connectionPool);
+        ctx.redirect("/seller");
     }
 
     private static void editOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
