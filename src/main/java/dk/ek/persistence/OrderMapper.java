@@ -10,13 +10,7 @@ import java.util.List;
 public class OrderMapper {
 
     public static void updateOrderFields(int id, String roofMaterial, int carportWidth, int carportLength, boolean hasToolShed,
-                                         int shedWidth,
-                                         int shedLength,
-                                         String note,
-                                         int roofAngle,
-                                         ConnectionPool connectionPool
-    ) throws DatabaseException {
-
+                                         int shedWidth, int shedLength, String note, int roofAngle, double totalPrice, ConnectionPool connectionPool) throws DatabaseException {
         String sql = """
                 UPDATE orders
                 SET roof_type = ?,
@@ -26,7 +20,8 @@ public class OrderMapper {
                     shed_width = ?,
                     shed_length = ?,
                     note = ?,
-                    roof_slope = ?
+                    roof_slope = ?,
+                    total_price = ?
                 WHERE id = ?
                 """;
 
@@ -41,7 +36,8 @@ public class OrderMapper {
             ps.setInt(6, shedLength);
             ps.setString(7, note);
             ps.setInt(8, roofAngle);
-            ps.setInt(9, id);
+            ps.setDouble(9, totalPrice);
+            ps.setInt(10, id);
 
             ps.executeUpdate();
 
@@ -186,7 +182,8 @@ public class OrderMapper {
                 rs.getInt("shed_length"),
                 rs.getString("note"),
                 rs.getString("status"),
-                rs.getTimestamp("created_at").toLocalDateTime()
+                rs.getTimestamp("created_at").toLocalDateTime(),
+                rs.getInt("total_price")
         );
     }
 }
