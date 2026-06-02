@@ -1,5 +1,7 @@
 @startuml
 'https://plantuml.com/state-diagram
+!pragma layout smetana
+
 
 state start <<start>>
 

@@ -151,48 +151,9 @@
             </div>
 
         </section>
-
-        <!-- DRAWINGS -->
-
-        <section class="dashboard-card">
-
-            <div class="drawing-header">
-
-                <h2>Tegninger</h2>
-
-                <button class="draw-button"
-                        onclick="drawOrders()">
-
-                    Draw all orders
-
-                </button>
-
-            </div>
-
-            <div class="svg-wrapper">
-
-                <svg id="svg"
-                     width="1200"
-                     height="800">
-
-                </svg>
-
-            </div>
-
-        </section>
-
     </section>
 
 </main>
-
-<script th:inline="javascript">
-
-    const orders = /*[[${orders}]]*/ [];
-
-</script>
-
-<script src="/js/drawing.js"></script>
-
 </body>
 
 </html>

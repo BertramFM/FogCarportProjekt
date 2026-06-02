@@ -1,5 +1,7 @@
 @startuml
 'https://plantuml.com/deployment-diagram
+!pragma layout smetana
+
 
 title Brugerroller
 
