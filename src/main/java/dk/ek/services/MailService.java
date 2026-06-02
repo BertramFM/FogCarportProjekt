@@ -17,13 +17,8 @@ import jakarta.mail.internet.MimeMultipart;
 
 import java.util.Properties;
 public class MailService {
-    ConnectionPool connectionPool;
     private static final String FROM_EMAIL = "jasminagar21@gmail.com";
     private static final String APP_PASSWORD = "hpzbuwveaxhjfcef";
-
-    public MailService(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
-    }
 
     public static void sendMail(String to, String subject, String body) {
 

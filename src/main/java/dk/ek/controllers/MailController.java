@@ -9,9 +9,6 @@ import org.thymeleaf.context.Context;
 
 public class MailController {
 
-    public MailController() {
-    }
-
     public static void sendOrderConfirmation(io.javalin.http.Context ctx, Order order) {
 
         Context thymeleafContext = new Context();
