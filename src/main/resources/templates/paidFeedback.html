@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <th:block th:insert="~{fragments/head :: head}"></th:block>
+
+    <link rel="stylesheet" th:href="@{/css/pages/confirmationPage.css}">
+</head>
+
+<body>
+
+<main class="confirmation-page">
+
+    <section class="confirmation-card">
+
+        <button class="back-button"
+                onclick="window.location.href='/userPanel'">
+            ← Tilbage til bruger panel
+        </button>
+
+        <div class="confirmation-message">
+            <h1>Din betaling er gennemført!</h1>
+            <h2>Du kan se din byggevejledning i brugerportalen.</h2>
+        </div>
+    </section>
+</main>
+</body>
+</html>

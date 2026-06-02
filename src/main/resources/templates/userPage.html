@@ -32,6 +32,8 @@
                     <th>Skur</th>
                     <th>Status</th>
                     <th>Oprettet</th>
+                    <th>Betal</th>
+                    <th>Manual</th>
                 </tr>
 
                 <tr th:each="order : ${customerOrders}">
@@ -42,8 +44,30 @@
                     <td th:text="${order.carportWidth}"></td>
                     <td th:text="${order.carportLength}"></td>
                     <td th:text="${order.hasToolShed ? 'Ja' : 'Nej'}"></td>
-                    <td th:text="${order.status}"></td>
+                    <td>
+                        <span th:if="${order.status == 'unclaimed'}">Ubehandlet</span>
+                        <span th:if="${order.status == 'claimed'}">Tildelt</span>
+                        <span th:if="${order.status == 'pending'}">Afventende betaling</span>
+                        <span th:if="${order.status == 'completed'}">Betalt</span>
+                    </td>
                     <td th:text="${order.createdAt}"></td>
+                    <td>
+                        <form th:action="@{/sendOrderMail}" method="post">
+                            <input type="hidden" name="orderId" th:value="${order.id}" />
+                            <button type="submit" class="submit-btn" th:disabled="${order.status != 'pending'}">
+                                Betal ➔
+                            </button>
+                        </form>
+                    </td>
+
+                    <td th:if="${order.status == 'completed'}">
+
+                        <a class="table-link"
+                           th:href="@{'/seller/draw/' + ${order.id}}"> <!-- SKRIV DIT KODE HER BERTRAM -->
+                            Se Byggevejledning
+                        </a>
+
+                    </td>
                 </tr>
             </table>
         </div>
