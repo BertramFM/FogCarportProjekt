@@ -30,6 +30,8 @@ public class OrderMaterialMapper {
             ps.setString(6, orderMaterial.getUnitOfAmount());
             ps.setString(7, orderMaterial.getUsageDescription());
 
+            ps.executeUpdate();
+
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
