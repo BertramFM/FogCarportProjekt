@@ -31,6 +31,7 @@ public class SellerController {
         int shedLength = Integer.parseInt(ctx.formParam("shedLength"));
         String note = ctx.formParam("note");
         int roofAngle = Integer.parseInt(ctx.formParam("roofAngle"));
+        double totalPrice = Double.parseDouble(ctx.formParam("totalPrice"));
 
         OrderMapper.updateOrderFields(
                 id,
@@ -42,6 +43,7 @@ public class SellerController {
                 shedLength,
                 note,
                 roofAngle,
+                totalPrice,
                 connectionPool
         );
 
