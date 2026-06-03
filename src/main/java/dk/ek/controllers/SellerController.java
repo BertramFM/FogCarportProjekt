@@ -67,11 +67,27 @@ public class SellerController {
 
     private static void showEditOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         int id = Integer.parseInt(ctx.pathParam("id"));
-        String email = ctx.formParam("email");
 
         Order order = OrderMapper.getOrderById(id, connectionPool);
+        List<OrderMaterials> bom = OrderMaterialMapper.getBomWithPrices(id, connectionPool);
 
+        double costPrice     = bom.stream()
+                .mapToDouble(line -> line.getPricePerUnit() * line.getAmount())
+                .sum();
+
+        // DækningsGrad
+        double coveragePrice = costPrice / (1 - 0.35);
+        // markup
+        double markupPrice   = costPrice * 1.35;
+        // moms
+        double incVat        = coveragePrice * 1.25;
+
+        ctx.attribute("costPrice", costPrice);
+        ctx.attribute("coveragePrice", coveragePrice);
+        ctx.attribute("markupPrice", markupPrice);
+        ctx.attribute("incVat", incVat);
         ctx.attribute("order", order);
+
         ctx.render("edit-order.html");
 
     }
@@ -87,6 +103,10 @@ public class SellerController {
         ctx.attribute("order", order);
         ctx.attribute("bom", bomList);
         ctx.attribute("svg", svg);
+
+        String back = ctx.queryParam("back");
+
+        ctx.attribute("backUrl", back);
 
         ctx.render("showDrawing.html");
     }

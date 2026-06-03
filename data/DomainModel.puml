@@ -1,28 +1,54 @@
 @startuml
-'https://plantuml.com/deployment-diagram
 !pragma layout smetana
+title Domænemodel - Fog Carport
 
+class Kunde {
+    navn
+    email
+    telefon
+}
 
-title Brugerroller
+class Sælger {
+    navn
+    email
+}
 
-card Kunde #lightgreen
-card Sælger #violet
-card Forespørgsel #yellow
-card Konfiguration #lightblue
-card Administrator #orange
-card Tilbud #lightgreen
-card Stykliste #lightgray
-card Ordre #lightblue
-card Betaling #lightgreen
+class Forespørgsel
 
-Sælger --> Konfiguration : justerer
-Sælger --> Kunde : behandler
-Kunde --> Forespørgsel : opretter
-Forespørgsel --> Konfiguration : indeholder
-Konfiguration --> Tilbud : danner
-Tilbud --> Stykliste : indeholder
-Tilbud --> Ordre : godkendes til
-Administrator -[dashed]-> Ordre : overvåger
-Ordre --> Betaling : udløser
-Betaling -[dashed]-> Stykliste : frigiver
+class Konfiguration {
+    længde
+    bredde
+    tagtype
+}
+
+class Tilbud {
+    pris
+    dato
+}
+
+class Ordre {
+    status
+    dato
+}
+
+class Stykliste
+
+class Betaling {
+    betalingsdato
+    beløb
+}
+
+Kunde "1" -- "0..*" Forespørgsel
+Forespørgsel "1" -- "1" Konfiguration
+
+Sælger "1" -- "0..*" Tilbud
+Konfiguration "1" -- "0..1" Tilbud
+
+Tilbud "1" -- "1" Stykliste
+Tilbud "1" -- "0..1" Ordre
+
+Ordre "1" -- "0..1" Betaling
+Sælger "1" -- "0..*" Ordre
+Kunde "1" -- "0..*" Ordre
+
 @enduml

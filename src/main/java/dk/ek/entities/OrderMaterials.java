@@ -7,22 +7,29 @@ public class OrderMaterials {
     private int amount;
     private String unitOfAmount;
     private String usageDescription;
+    private double pricePerUnit;
+    private int materialId;
 
-    public OrderMaterials(String name, String materialDescription, int lengthMeasurement, int amount, String unitOfAmount, String description) {
+    public OrderMaterials(String name, String materialDescription, int lengthMeasurement, int amount, String unitOfAmount, String description, int materialId) {
         this.name = name;
         this.materialDescription = materialDescription;
         this.lengthMeasurement = lengthMeasurement;
         this.amount = amount;
         this.unitOfAmount = unitOfAmount;
         this.usageDescription = description;
+        this.materialId = materialId;
     }
 
-    public OrderMaterials(String name, int amount, String unitOfAmount, int lengthMeasurement, String usageDescription) {
+
+
+    public OrderMaterials(String name, String materialDescription, int lengthMeasurement, int amount, String unitOfAmount, String usageDescription, double pricePerUnit) {
         this.name = name;
+        this.materialDescription = materialDescription;
+        this.lengthMeasurement = lengthMeasurement;
         this.amount = amount;
         this.unitOfAmount = unitOfAmount;
-        this.lengthMeasurement = lengthMeasurement;
         this.usageDescription = usageDescription;
+        this.pricePerUnit = pricePerUnit;
     }
 
     public String getName() {
@@ -71,6 +78,22 @@ public class OrderMaterials {
 
     public void setDescription(String description) {
         this.usageDescription = description;
+    }
+
+    public double getPricePerUnit() {
+        return pricePerUnit;
+    }
+
+    public void setPricePerUnit(double pricePerUnit) {
+        this.pricePerUnit = pricePerUnit;
+    }
+
+    public int getMaterialId() {
+        return materialId;
+    }
+
+    public void setMaterialId(int materialId) {
+        this.materialId = materialId;
     }
 }
 

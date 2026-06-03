@@ -8,10 +8,9 @@
 
 <h1>Carport tegning</h1>
 
-<button class="back-button"
-        onclick="window.location.href='/seller'">
+<a class="back-button" th:href="${backUrl}">
     ← Tilbage til forsiden
-</button>
+</a>
 
 <div th:utext="${svg}"></div>
 

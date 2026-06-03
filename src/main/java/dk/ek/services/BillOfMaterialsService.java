@@ -24,10 +24,10 @@ public class BillOfMaterialsService {
             .orElseThrow();
 
         int claddingLength = CalculatorService.calculateLengthwiseCladding(order.getCarportLength());
-        billOfMaterials.add(new OrderMaterials("For- og bag-beklædning", cladding.getMaterialWidth() + "x" + cladding.getMaterialHeight() + "cm " + cladding.getCategory(), claddingLength, 2, cladding.getUnitOfMeasurement(), "Yderbeklædning til længden af carporten"));
+        billOfMaterials.add(new OrderMaterials("For- og bag-beklædning", cladding.getMaterialWidth() + "x" + cladding.getMaterialHeight() + "cm " + cladding.getCategory(), claddingLength, 2, cladding.getUnitOfMeasurement(), "Yderbeklædning til længden af carporten", cladding.getId()));
 
         int claddingWidth = CalculatorService.calculateWidthwiseCladding(order.getCarportWidth(), cladding);
-        billOfMaterials.add(new OrderMaterials("Side-beklædning", cladding.getMaterialWidth() + "x" + cladding.getMaterialHeight() + "cm " + cladding.getCategory(), claddingWidth, 2, cladding.getUnitOfMeasurement(), "Yderbeklædning til bredden af carporten"));
+        billOfMaterials.add(new OrderMaterials("Side-beklædning", cladding.getMaterialWidth() + "x" + cladding.getMaterialHeight() + "cm " + cladding.getCategory(), claddingWidth, 2, cladding.getUnitOfMeasurement(), "Yderbeklædning til bredden af carporten", cladding.getId()));
 
         // Calculate beams (rem)
         Materials beam = materialsList.stream()
@@ -36,7 +36,7 @@ public class BillOfMaterialsService {
             .orElseThrow();
 
         int beamLength = CalculatorService.calculateLengthwiseBeam(order.getCarportLength(), cladding);
-        billOfMaterials.add(new OrderMaterials("Rem", beam.getMaterialWidth() + "x" + beam.getMaterialHeight() + "cm " + beam.getCategory(), beamLength, 2, beam.getUnitOfMeasurement(), "Remme til længden af carporten"));
+        billOfMaterials.add(new OrderMaterials("Rem", beam.getMaterialWidth() + "x" + beam.getMaterialHeight() + "cm " + beam.getCategory(), beamLength, 2, beam.getUnitOfMeasurement(), "Remme til længden af carporten", beam.getId()));
 
         // Calculate posts (stolper)
         Materials post = materialsList.stream()
@@ -46,7 +46,7 @@ public class BillOfMaterialsService {
 
         int postAmount = CalculatorService.calculateAmountOfPosts(order.getCarportLength(), order.getHasToolShed());
 
-        billOfMaterials.add(new OrderMaterials("Stolper", post.getMaterialWidth() + "x" + post.getMaterialHeight() + "cm " + post.getCategory(), 300, postAmount, post.getUnitOfMeasurement(), "Stolper til fundamentet af carport"));
+        billOfMaterials.add(new OrderMaterials("Stolper", post.getMaterialWidth() + "x" + post.getMaterialHeight() + "cm " + post.getCategory(), 300, postAmount, post.getUnitOfMeasurement(), "Stolper til fundamentet af carport", post.getId()));
 
         // Calculate rafters (spær)
         Materials rafter = materialsList.stream()
@@ -56,7 +56,7 @@ public class BillOfMaterialsService {
 
         int rafterAmount = CalculatorService.calculateAmountOfRafters(order.getCarportLength(), rafter);
         int rafterLength = CalculatorService.calculateRafterLength(order.getCarportWidth(), cladding);
-        billOfMaterials.add(new OrderMaterials("Spær", rafter.getMaterialWidth() + "x" + rafter.getMaterialHeight() + "cm " + rafter.getCategory(), rafterLength, rafterAmount, rafter.getUnitOfMeasurement(), "Spær til montering på rem"));
+        billOfMaterials.add(new OrderMaterials("Spær", rafter.getMaterialWidth() + "x" + rafter.getMaterialHeight() + "cm " + rafter.getCategory(), rafterLength, rafterAmount, rafter.getUnitOfMeasurement(), "Spær til montering på rem", rafter.getId()));
 
         // Calculate roof plates (Plasttrapezplader)
         if (Objects.equals(order.getRoofMaterial(), "Plasttrapezplader")) {
@@ -67,7 +67,7 @@ public class BillOfMaterialsService {
 
             int roofPlateAmount = CalculatorService.calculateAmountOfRoofPlates(order.getCarportWidth(), roofPlate);
             int roofPlateLength = CalculatorService.calculateRoofPlateLength(order.getCarportLength(), roofPlate);
-            billOfMaterials.add(new OrderMaterials("Plasttrapezplader", roofPlate.getMaterialWidth() + "x" + roofPlate.getMaterialHeight() + "cm " + roofPlate.getCategory(), roofPlateLength, roofPlateAmount, roofPlate.getUnitOfMeasurement(), "Tagplader til montering på spær"));
+            billOfMaterials.add(new OrderMaterials("Plasttrapezplader", roofPlate.getMaterialWidth() + "x" + roofPlate.getMaterialHeight() + "cm " + roofPlate.getCategory(), roofPlateLength, roofPlateAmount, roofPlate.getUnitOfMeasurement(), "Tagplader til montering på spær", roofPlate.getId()));
         }
 
         // Static materials needed
@@ -75,27 +75,27 @@ public class BillOfMaterialsService {
             .filter(material -> material.getName().equalsIgnoreCase("PlastmoBundskruer"))
             .findFirst()
             .orElseThrow();
-        billOfMaterials.add(new OrderMaterials("Plastmo bundskruer", roofScrews.getCategory(), 0, 3, roofScrews.getUnitOfMeasurement(), "Skruer til tagplader"));
+        billOfMaterials.add(new OrderMaterials("Plastmo bundskruer", roofScrews.getCategory(), 0, 3, roofScrews.getUnitOfMeasurement(), "Skruer til tagplader", roofScrews.getId()));
 
         Materials screws = materialsList.stream()
             .filter(material -> material.getName().equalsIgnoreCase("Skruer"))
             .findFirst()
             .orElseThrow();
-        billOfMaterials.add(new OrderMaterials("Skruer", screws.getMaterialWidth() + "x" + screws.getMaterialHeight() + "mm. " + screws.getCategory(), 0, 4, screws.getUnitOfMeasurement(), "Skruer til beslag og spær"));
+        billOfMaterials.add(new OrderMaterials("Skruer", screws.getMaterialWidth() + "x" + screws.getMaterialHeight() + "mm. " + screws.getCategory(), 0, 4, screws.getUnitOfMeasurement(), "Skruer til beslag og spær", screws.getId()));
 
         Materials bolts = materialsList.stream()
             .filter(material -> material.getName().equalsIgnoreCase("Bræddebolt"))
             .findFirst()
             .orElseThrow();
         int amountOfBolts = CalculatorService.calculateAmountOfBolts(postAmount);
-        billOfMaterials.add(new OrderMaterials("Bræddebolt", bolts.getMaterialWidth() + "x" + bolts.getMaterialHeight() + "mm. " + bolts.getCategory(), 0, amountOfBolts, bolts.getUnitOfMeasurement(), "Bolte til montering af rem på stolper"));
+        billOfMaterials.add(new OrderMaterials("Bræddebolt", bolts.getMaterialWidth() + "x" + bolts.getMaterialHeight() + "mm. " + bolts.getCategory(), 0, amountOfBolts, bolts.getUnitOfMeasurement(), "Bolte til montering af rem på stolper", bolts.getId()));
 
         Materials angleBracket = materialsList.stream()
             .filter(material -> material.getName().equalsIgnoreCase("VinkelBeslag"))
             .findFirst()
             .orElseThrow();
         int amountOfBrackets = CalculatorService.calculateAmountOfBrackets(postAmount, rafterAmount);
-        billOfMaterials.add(new OrderMaterials("Vinkelbeslag", angleBracket.getCategory(), 0, amountOfBrackets, angleBracket.getUnitOfMeasurement(), "Til montering af rem på stolper og spær på rem"));
+        billOfMaterials.add(new OrderMaterials("Vinkelbeslag", angleBracket.getCategory(), 0, amountOfBrackets, angleBracket.getUnitOfMeasurement(), "Til montering af rem på stolper og spær på rem", angleBracket.getId()));
 
 
 
