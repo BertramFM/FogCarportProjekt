@@ -1,23 +1,9 @@
 package dk.ek.services;
 
-import jakarta.mail.Authenticator;
-import jakarta.mail.PasswordAuthentication;
-import jakarta.mail.Message;
-import jakarta.mail.Session;
-import jakarta.mail.Transport;
-import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.activation.DataHandler;
-import jakarta.mail.internet.MimeBodyPart;
-import jakarta.mail.internet.MimeMultipart;
-import jakarta.mail.util.ByteArrayDataSource;
-
-import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Properties;
 
 public class MailService {
     private static final String FROM_EMAIL = System.getenv("MAIL_FROM");
