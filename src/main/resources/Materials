@@ -1,0 +1,9 @@
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (1, 'Beklædning', 'Stk', 10.95, 'trykimp. Brædt', 1.5, 40.0);
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (2, 'Rem', 'Stk', 8.45, 'spærtræ ubh.', 5.0, 20.0);
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (3, 'Spær', 'Stk', 8.45, 'spærtræ ubh.', 5.0, 20.0);
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (4, 'Stolpe', 'Stk', 10.00, 'trykimp. Stolpe', 10.0, 10.0);
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (5, 'Plasttrapezplader', 'Stk', 5.45, 'Plastmo Ecolite Blåtonet', 120.0, 5.0);
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (6, 'PlastmoBundskruer', 'Pakker', 8.95, 'Plastmo Bundskruer 200 stk.', 0.0, 0.0);
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (7, 'Skruer', 'Pakker', 5.45, 'Skruer 400 stk.', 4.5, 50.0);
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (8, 'Bræddebolt', 'Stk', 6.69, 'bræddebolt', 10.0, 80.0);
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (9, 'VinkelBeslag', 'Stk', 3.95, 'Vinkelbeslag', 0.0, 0.0);
