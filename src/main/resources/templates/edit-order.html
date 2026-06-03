@@ -55,6 +55,25 @@
     <label>Roof angle</label>
     <input type="number" name="roofAngle" th:value="${order.roofAngle}" />
 
+    <div class="price-section">
+        <label>Prisberegning</label>
+
+        <div class="price-row">
+            <span>Kostpris (materialer)</span>
+            <span th:text="${#numbers.formatDecimal(costPrice, 1, 2)} + ' kr.'"></span>
+        </div>
+
+        <div class="price-row">
+            <span>Foreslået salgspris ex. moms</span>
+            <span th:text="${#numbers.formatDecimal(coveragePrice, 1, 2)} + ' kr.'"></span>
+        </div>
+
+        <div class="price-row">
+            <span>Foreslået salgspris inkl. moms</span>
+            <span th:text="${#numbers.formatDecimal(incVat, 1, 2)} + ' kr.'"></span>
+        </div>
+    </div>
+
     <label>Pris</label>
     <input type="number" name="totalPrice" th:value="${order.totalPrice}" step="0.01" />
 
