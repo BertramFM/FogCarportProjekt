@@ -17,13 +17,9 @@ import jakarta.mail.internet.MimeMultipart;
 
 import java.util.Properties;
 public class MailService {
-    ConnectionPool connectionPool;
     private static final String FROM_EMAIL = "jasminagar21@gmail.com";
     private static final String APP_PASSWORD = "hpzbuwveaxhjfcef";
-
-    public MailService(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
-    }
+    private static final String API_KEY ="re_6oELP93b_AMJ6majQBisMMvLZfnsKb5se";
 
     public static void sendMail(String to, String subject, String body) {
 
@@ -87,4 +83,4 @@ public class MailService {
             e.printStackTrace();
         }
     }
-}
+ }

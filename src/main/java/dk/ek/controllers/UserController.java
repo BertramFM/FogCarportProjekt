@@ -30,6 +30,10 @@ public class UserController {
 
             if (employee == null) {
                 ctx.redirect("/employeeLogin");
+                return;
+            }
+            if(!employee.getRole().equalsIgnoreCase("sales")){
+                ctx.redirect("/employeeLogin");
             }
         });
 
@@ -162,6 +166,7 @@ public class UserController {
         try {
             ctx.attribute("employees", EmployeeMapper.getAllEmployees(connectionPool));
             ctx.attribute("orders", OrderMapper.getAllOrders(connectionPool));
+            ctx.attribute("customers", CustomerMapper.getAllCustomers(connectionPool));
         } catch (DatabaseException e) {
             e.getMessage();
         }
@@ -208,6 +213,6 @@ public class UserController {
 
         CustomerMapper.updatePassword(email, password, connectionPool);
         ctx.sessionAttribute("currentUser", customer);
-        ctx.redirect("/userPanel");
+        ctx.redirect("/registerUser");
     }
 }

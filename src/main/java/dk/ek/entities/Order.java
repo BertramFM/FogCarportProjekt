@@ -16,9 +16,10 @@ public class Order {
     private String note;
     private String status;
     private LocalDateTime createdAt;
+    private double totalPrice;
 
     // === FLAT ROOF ===
-    public Order(int id, int customerId, int employeeId, String roofMaterial, int carportWidth, int carportLength, boolean hasToolShed, int shedWidth, int shedLength, String note, String status, LocalDateTime createdAt) {
+    public Order(int id, int customerId, int employeeId, String roofMaterial, int carportWidth, int carportLength, boolean hasToolShed, int shedWidth, int shedLength, String note, String status, LocalDateTime createdAt, double totalPrice) {
         this.id = id;
         this.customerId = customerId;
         this.employeeId = employeeId;
@@ -31,10 +32,11 @@ public class Order {
         this.note = note;
         this.status = status;
         this.createdAt = createdAt;
+        this.totalPrice = totalPrice;
     }
 
     // === HIGH ROOF ===
-    public Order(int id, int customerId, int employeeId, String roofMaterial, int roofAngle, int carportWidth, int carportLength, boolean hasToolShed, int shedWidth, int shedLength, String note, String status, LocalDateTime createdAt) {
+    public Order(int id, int customerId, int employeeId, String roofMaterial, int roofAngle, int carportWidth, int carportLength, boolean hasToolShed, int shedWidth, int shedLength, String note, String status, LocalDateTime createdAt, double totalPrice) {
         this.id = id;
         this.customerId = customerId;
         this.employeeId = employeeId;
@@ -48,6 +50,7 @@ public class Order {
         this.note = note;
         this.status = status;
         this.createdAt = createdAt;
+        this.totalPrice = totalPrice;
     }
 
     public int getId() {
@@ -152,5 +155,13 @@ public class Order {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

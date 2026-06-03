@@ -1,5 +1,7 @@
 package dk.ek.services;
 
+import java.util.Locale;
+
 public class Svg {
 
     private static final String ARROW_DEFS = """
@@ -16,7 +18,7 @@ public class Svg {
     private StringBuilder svg = new StringBuilder();
 
     public Svg(int x, int y, String viewBox, String width, String height, boolean arrowDefs) {
-        svg.append(String.format(
+        svg.append(String.format(Locale.US,
                 "<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" " +
                         "x=\"%d\" y=\"%d\" width=\"%s\" height=\"%s\" viewBox=\"%s\" preserveAspectRatio=\"xMinYMin meet\">\n",
                 x, y, width, height, viewBox
@@ -27,7 +29,7 @@ public class Svg {
     }
 
     public Svg(int x, int y, String viewBox, int width, int height, boolean arrowDefs) {
-        svg.append(String.format(
+        svg.append(String.format(Locale.US,
                 "<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" " +
                         "x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" viewBox=\"%s\" preserveAspectRatio=\"xMinYMin meet\">\n",
                 x, y, width, height, viewBox
@@ -38,21 +40,21 @@ public class Svg {
     }
 
     public void addRectangle(int x, int y, double width, double height, String style) {
-        svg.append(String.format(
+        svg.append(String.format(Locale.US,
                 "  <rect x=\"%d\" y=\"%d\" width=\"%.1f\" height=\"%.1f\" style=\"%s\"/>\n",
                 x, y, width, height, style
         ));
     }
 
     public void addLine(int x1, int y1, int x2, int y2, String style) {
-        svg.append(String.format(
+        svg.append(String.format(Locale.US,
                 "  <line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" style=\"%s\"/>\n",
                 x1, y1, x2, y2, style
         ));
     }
 
     public void addArrow(int x1, int y1, int x2, int y2, String style) {
-        svg.append(String.format(
+        svg.append(String.format(Locale.US,
                 "  <line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" style=\"%s; " +
                         "marker-start: url(#beginArrow); marker-end: url(#endArrow);\"/>\n",
                 x1, y1, x2, y2, style
@@ -61,12 +63,12 @@ public class Svg {
 
     public void addText(int x, int y, int rotation, String text) {
         if (rotation != 0) {
-            svg.append(String.format(
+            svg.append(String.format(Locale.US,
                     "  <text style=\"text-anchor: middle\" transform=\"translate(%d,%d) rotate(%d)\">%s</text>\n",
                     x, y, rotation, text
             ));
         } else {
-            svg.append(String.format(
+            svg.append(String.format(Locale.US,
                     "  <text style=\"text-anchor: middle\" x=\"%d\" y=\"%d\">%s</text>\n",
                     x, y, text
             ));

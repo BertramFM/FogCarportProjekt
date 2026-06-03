@@ -4,37 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Order</title>
+    <link rel="stylesheet" href="/css/pages/edit-order.css">
 </head>
 
 <body>
 
-<h1>Edit Order</h1>
+<h1>Rediger Ordre</h1>
 
-<a href="/seller">← Back</a>
+<a href="/seller">← Tilbage</a>
+
+<td>
+    <form th:action="@{'/seller/updateStatus/' + ${order.id}}" method="post">
+        <select name="status" onchange="this.form.submit()">
+            <option value="" disabled selected hidden>Vælg status</option>
+            <option value="Pending" th:selected="${order.status == 'Pending'}">Klar til betaling</option>
+            <option value="Rejected" th:selected="${order.status == 'Rejected'}">Afvist</option>
+            <option value="Completed" th:selected="${order.status == 'Completed'}">Afsluttet</option>
+        </select>
+    </form>
+</td>
 
 <form method="post" th:action="@{'/seller/edit/' + ${order.id} }">
 
     <input type="hidden" name="id" th:value="${order.id}" />
 
-    <label>Roof material</label>
+    <label>Tag materiale</label>
     <input type="text" name="roofMaterial" th:value="${order.roofMaterial}" />
 
-    <label>Width</label>
+    <label>Bredde</label>
     <input type="number" name="carportWidth" th:value="${order.carportWidth}" />
 
-    <label>Length</label>
+    <label>Længde</label>
     <input type="number" name="carportLength" th:value="${order.carportLength}" />
 
-    <label>Has tool shed</label>
+    <label>Medvalgt skur</label>
     <select name="hasToolShed">
-        <option th:value="true" th:selected="${order.hasToolShed}">Yes</option>
-        <option th:value="false" th:selected="${!order.hasToolShed}">No</option>
+        <option th:value="true" th:selected="${order.hasToolShed}">Ja</option>
+        <option th:value="false" th:selected="${!order.hasToolShed}">Nej</option>
     </select>
 
-    <label>Shed width</label>
+    <label>Skur bredde</label>
     <input type="number" name="shedWidth" th:value="${order.shedWidth}" />
 
-    <label>Shed length</label>
+    <label>Skur længde</label>
     <input type="number" name="shedLength" th:value="${order.shedLength}" />
 
     <label>Note</label>
@@ -43,7 +55,29 @@
     <label>Roof angle</label>
     <input type="number" name="roofAngle" th:value="${order.roofAngle}" />
 
-    <button type="submit">Update order</button>
+    <div class="price-section">
+        <label>Prisberegning</label>
+
+        <div class="price-row">
+            <span>Kostpris (materialer)</span>
+            <span th:text="${#numbers.formatDecimal(costPrice, 1, 2)} + ' kr.'"></span>
+        </div>
+
+        <div class="price-row">
+            <span>Foreslået salgspris ex. moms</span>
+            <span th:text="${#numbers.formatDecimal(coveragePrice, 1, 2)} + ' kr.'"></span>
+        </div>
+
+        <div class="price-row">
+            <span>Foreslået salgspris inkl. moms</span>
+            <span th:text="${#numbers.formatDecimal(incVat, 1, 2)} + ' kr.'"></span>
+        </div>
+    </div>
+
+    <label>Pris</label>
+    <input type="number" name="totalPrice" th:value="${order.totalPrice}" step="0.01" />
+
+    <button type="submit">Opdater ordre</button>
 
 </form>
 

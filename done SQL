@@ -1,0 +1,117 @@
+CREATE TABLE IF NOT EXISTS public.customers
+(
+    id serial NOT NULL,
+    firstname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    lastname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    address character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    phone character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    zip_code integer NOT NULL,
+    password_hash character varying(100) COLLATE pg_catalog."default",
+    CONSTRAINT customers_pkey PRIMARY KEY (id),
+    CONSTRAINT customers_email_key UNIQUE (email)
+);
+
+CREATE TABLE IF NOT EXISTS public.employees
+(
+    id serial NOT NULL,
+    firstname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    lastname character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    role character varying(50) COLLATE pg_catalog."default" NOT NULL DEFAULT 'sales'::character varying,
+    password_hash character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT employees_pkey PRIMARY KEY (id),
+    CONSTRAINT employees_email_key UNIQUE (email)
+);
+
+CREATE TABLE IF NOT EXISTS public.materials
+(
+    id serial NOT NULL,
+    name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    unit_of_measurement character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    price_per_unit numeric(10, 2) NOT NULL,
+    category character varying(50) COLLATE pg_catalog."default",
+    material_width numeric(10, 1) NOT NULL,
+    material_height numeric(10, 1) NOT NULL DEFAULT 0,
+    CONSTRAINT materials_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.order_materials
+(
+    id serial NOT NULL,
+    order_id integer NOT NULL,
+    material_name character varying COLLATE pg_catalog."default" NOT NULL,
+    material_description character varying COLLATE pg_catalog."default" NOT NULL,
+    material_length integer NOT NULL,
+    amount integer NOT NULL,
+    unit_of_amount character varying COLLATE pg_catalog."default" NOT NULL,
+    usage_description character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT order_materials_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.orders
+(
+    id serial NOT NULL,
+    customer_id integer NOT NULL,
+    employee_id integer,
+    roof_type character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    width integer NOT NULL,
+    length integer NOT NULL,
+    tool_shed boolean NOT NULL,
+    shed_width integer,
+    shed_length integer,
+    note text COLLATE pg_catalog."default",
+    status character varying(20) COLLATE pg_catalog."default" NOT NULL DEFAULT 'unclaimed'::character varying,
+    created_at timestamp without time zone NOT NULL DEFAULT now(),
+    roof_slope integer,
+    total_price numeric(10, 2) DEFAULT 0.00,
+    CONSTRAINT orders_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.zip_code
+(
+    zip_code integer NOT NULL,
+    city character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT zip_code_pkey PRIMARY KEY (zip_code)
+);
+
+ALTER TABLE IF EXISTS public.customers
+    ADD CONSTRAINT customers_zip_code_fkey FOREIGN KEY (zip_code)
+    REFERENCES public.zip_code (zip_code) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.order_materials
+    ADD CONSTRAINT order_materials_order_id_fkey FOREIGN KEY (order_id)
+    REFERENCES public.orders (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.orders
+    ADD CONSTRAINT orders_customer_id_fkey FOREIGN KEY (customer_id)
+    REFERENCES public.customers (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.orders
+    ADD CONSTRAINT orders_employee_id_fkey FOREIGN KEY (employee_id)
+    REFERENCES public.employees (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+END;
+
+
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (1, 'Beklædning', 'Stk', 10.95, 'trykimp. Brædt', 1.5, 40.0);
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (2, 'Rem', 'Stk', 8.45, 'spærtræ ubh.', 5.0, 20.0);
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (3, 'Spær', 'Stk', 8.45, 'spærtræ ubh.', 5.0, 20.0);
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (4, 'Stolpe', 'Stk', 10.00, 'trykimp. Stolpe', 10.0, 10.0);
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (5, 'Plasttrapezplader', 'Stk', 5.45, 'Plastmo Ecolite Blåtonet', 120.0, 5.0);
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (6, 'PlastmoBundskruer', 'Pakker', 8.95, 'Plastmo Bundskruer 200 stk.', 0.0, 0.0);
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (7, 'Skruer', 'Pakker', 5.45, 'Skruer 400 stk.', 4.5, 50.0);
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (8, 'Bræddebolt', 'Stk', 6.69, 'bræddebolt', 10.0, 80.0);
+INSERT INTO public.materials (id, name, unit_of_measurement, price_per_unit, category, material_width, material_height) VALUES (9, 'VinkelBeslag', 'Stk', 3.95, 'Vinkelbeslag', 0.0, 0.0);
