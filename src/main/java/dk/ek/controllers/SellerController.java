@@ -88,6 +88,10 @@ public class SellerController {
         ctx.attribute("bom", bomList);
         ctx.attribute("svg", svg);
 
+        String back = ctx.queryParam("back");
+
+        ctx.attribute("backUrl", back);
+
         ctx.render("showDrawing.html");
     }
 }

@@ -63,7 +63,7 @@
                     <td th:if="${order.status == 'completed'}">
 
                         <a class="table-link"
-                           th:href="@{'/seller/draw/' + ${order.id}}"> <!-- SKRIV DIT KODE HER BERTRAM -->
+                           th:href="@{'/seller/draw/' + ${order.id}(back='/userPanel')}">
                             Se Byggevejledning
                         </a>
 
