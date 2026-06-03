@@ -1,4 +1,5 @@
 @startuml
+!pragma layout smetana
 title Domænemodel - Fog Carport
 
 class Kunde {
