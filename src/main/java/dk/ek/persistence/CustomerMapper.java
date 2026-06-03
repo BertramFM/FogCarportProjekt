@@ -84,52 +84,6 @@ public class CustomerMapper {
         }
     }
 
-    public static Customer login(
-            String email,
-            String password,
-            ConnectionPool connectionPool
-    ) throws DatabaseException {
-
-        String sql =
-                "SELECT c.*, z.city " +
-                        "FROM customers c " +
-                        "JOIN zip_code z USING (zip_code) " +
-                        "WHERE c.email = ?";
-
-        try (
-                Connection connection = connectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(sql)
-        ) {
-
-            ps.setString(1, email);
-
-            try (ResultSet rs = ps.executeQuery()) {
-
-                if (rs.next()) {
-
-                    Customer customer = customerRow(rs);
-
-                    if (customer.getPassword() == null) {
-                        return null;
-                    }
-
-                    if (BCrypt.checkpw(
-                            password,
-                            customer.getPassword()
-                    )) {
-
-                        return customer;
-                    }
-                }
-
-                return null;
-            }
-
-        } catch (SQLException e) {
-            throw new DatabaseException(e.getMessage());
-        }
-    }
-
     public static void updatePassword(
             String email,
             String password,
@@ -224,9 +178,7 @@ public class CustomerMapper {
         }
     }
 
-    public static List<Customer> getAllCustomers(
-            ConnectionPool connectionPool
-    ) throws DatabaseException {
+    public static List<Customer> getAllCustomers(ConnectionPool connectionPool) throws DatabaseException {
 
         String sql =
                 "SELECT c.*, z.city " +
@@ -255,11 +207,7 @@ public class CustomerMapper {
         }
     }
 
-    public static Customer getCustomerFromEmailAndPhone(
-            String email,
-            String phone,
-            ConnectionPool connectionPool
-    ) throws DatabaseException {
+    public static Customer getCustomerFromEmailAndPhone(String email, String phone, ConnectionPool connectionPool) throws DatabaseException {
 
         String sql =
                 "SELECT c.*, z.city " +
@@ -321,27 +269,17 @@ public class CustomerMapper {
         }
     }
 
-    private static Customer customerRow(ResultSet rs)
-            throws SQLException {
+    private static Customer customerRow(ResultSet rs) throws SQLException {
 
         return new Customer(
-
                 rs.getInt("id"),
-
                 rs.getString("firstname"),
-
                 rs.getString("lastname"),
-
                 rs.getString("address"),
-
                 rs.getString("email"),
-
                 rs.getString("phone"),
-
                 rs.getInt("zip_code"),
-
                 rs.getString("city"),
-
                 rs.getString("password_hash")
         );
     }
