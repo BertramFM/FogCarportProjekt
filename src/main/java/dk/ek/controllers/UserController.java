@@ -30,6 +30,10 @@ public class UserController {
 
             if (employee == null) {
                 ctx.redirect("/employeeLogin");
+                return;
+            }
+            if(!employee.getRole().equalsIgnoreCase("sales")){
+                ctx.redirect("/employeeLogin");
             }
         });
 
